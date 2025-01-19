@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:smarth_save/outils/navigation.dart';
+import 'package:smarth_save/screen/Athantification/login_page.dart';
+import 'package:smarth_save/screen/Athantification/sig_up.dart';
 import 'package:smarth_save/screen/widget/onbordWidget.dart';
 import 'package:smarth_save/screen/widget/onbordingBtn.dart';
 
@@ -54,7 +57,7 @@ class _OnbordingPageState extends State<OnbordingPage> {
                             }))
                     : startIndex == swipeableBody.length - 1
                         ? onbordingBtn(
-                            label: "C'est parti !", onPressed: () => ())
+                            label: "C'est parti !", onPressed: () => navigationTonextPage(context,SigUpPage()))
                         : onbordingBtn(
                             label: "Suivant",
                             onPressed: () => setState(() {
