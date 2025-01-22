@@ -3,15 +3,17 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:plaid_flutter/plaid_flutter.dart';
+import 'package:smarth_save/outils/navigation.dart';
+import 'package:smarth_save/screen/dashboard.dart';
 
-class Ex extends StatefulWidget {
-  const Ex({super.key});
+class PlaidLogin extends StatefulWidget {
+  const PlaidLogin({super.key});
 
   @override
   _ExState createState() => _ExState();
 }
 
-class _ExState extends State<Ex> {
+class _ExState extends State<PlaidLogin> {
   LinkTokenConfiguration? _configuration;
   StreamSubscription<LinkEvent>? _streamEvent;
   StreamSubscription<LinkExit>? _streamExit;
@@ -22,7 +24,8 @@ class _ExState extends State<Ex> {
   plaidConnect() async {
     final dio = Dio();
     final response =
-        await dio.get('http://192.168.255.116:8000/api/plaid/link-token');
+        // await dio.get('http://192.168.255.116:8000/api/plaid/link-token');
+        await dio.get('http://10.92.4.217:8000/api/plaid/link-token');
 
     setState(() {
       _configuration = LinkTokenConfiguration(
@@ -65,6 +68,7 @@ class _ExState extends State<Ex> {
     final metadata = event.metadata.description();
     print("onSuccess: $token, metadata: $metadata");
     setState(() => _successObject = event);
+    navigationTonextPage(context, const Dashboard());
   }
 
   void _onExit(LinkExit event) {
@@ -79,20 +83,29 @@ class _ExState extends State<Ex> {
     double largeur = MediaQuery.of(context).size.width;
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Plaid Link Example",
-              style: TextStyle(color: Colors.white)),
-          backgroundColor: Colors.blue,
-        ),
+        // appBar: AppBar(
+        //   title: const Text("Connexion ",
+        //       style: TextStyle(color: Colors.white)),
+        //   backgroundColor: Colors.blue,
+        // ),
         body: loading
             ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Authentification avce votre banque"),
-                    SizedBox(height: longeur / 50.0),
-                    const CircularProgressIndicator(),
-                  ],
+                child: Card(
+                  elevation: 8.0,
+                  child: IntrinsicHeight(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: longeur / 15.0, horizontal: longeur / 50.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const CircularProgressIndicator(),
+                          SizedBox(height: longeur / 50.0),
+                          const Text("Authentification avce votre banque"),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               )
             : null);
