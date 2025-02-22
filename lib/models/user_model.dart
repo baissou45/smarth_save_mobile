@@ -5,6 +5,13 @@ String? email;
 String? password;
 DateTime? createdAt;
 
+UserModel({
+  required this.nom,
+  required this.prenom,
+  required this.email,
+  required this.password,
+});
+
 // Pour convertir un JSON en UserModel
 UserModel.fromMap(Map<String, dynamic> json) {
   nom = json['nom'];

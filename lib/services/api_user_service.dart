@@ -9,7 +9,7 @@ class APIService {
   final API api = API();
 
 
-  Future<dynamic> signUp(String token, String nom, String prenom, String email, String password, String uid) async {
+  Future<dynamic> signUp( String nom, String prenom, String email, String password) async {
 
     // Construction de l'URL
     String url = api.baseURL + registerRoute;
