@@ -6,6 +6,7 @@ import 'package:smarth_save/outils/navigation.dart';
 import 'package:smarth_save/screen/Athantification/sig_up.dart';
 import 'package:smarth_save/screen/widget/textfield.dart';
 
+// ignore: must_be_immutable
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
   var nameController = TextEditingController();

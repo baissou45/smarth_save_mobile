@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:smarth_save/outils/navigation.dart';
-import 'package:smarth_save/screen/Athantification/login_page.dart';
 import 'package:smarth_save/screen/Athantification/sig_up.dart';
 import 'package:smarth_save/screen/widget/onbordWidget.dart';
 import 'package:smarth_save/screen/widget/onbordingBtn.dart';

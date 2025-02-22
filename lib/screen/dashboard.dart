@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smarth_save/widgets/banque_card.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
