@@ -9,7 +9,7 @@ class APIService {
   final API api = API();
 
 
-  Future<dynamic> signUp( String nom, String prenom, String email, String password) async {
+  Future<dynamic> register( String nom, String prenom, String email, String password) async {
 
     // Construction de l'URL
     String url = api.baseURL + registerRoute;
@@ -39,7 +39,7 @@ class APIService {
   Future<dynamic> login( String email, String password) async {
 
     // Construction de l'URL
-    String url = api.baseURL + registerRoute;
+    String url = api.baseURL + loginRoute;
 
     // Envoi de la requête POST à l'API
     final response = await htt.post(Uri.parse(url), body:
