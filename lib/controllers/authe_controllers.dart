@@ -32,6 +32,7 @@ class AutheControllers {
       BuildContext context, String email, String password) async {
     try {
       await userProvider.login(email, password);
+      await UserModel.getUser();
       if (userProvider.token != null) {
         print("il est connecter ${UserModel.sessionUser?.nom}");
         Navigator.of(context).pushAndRemoveUntil(
@@ -41,7 +42,6 @@ class AutheControllers {
       }
     } catch (e) {
       if (userProvider.message != null) {
-
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(userProvider.message)));
       }
