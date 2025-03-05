@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smarth_save/models/user_model.dart';
 import 'package:smarth_save/providers/userProvider.dart';
 import 'package:smarth_save/screen/Athantification/login_page.dart';
 import 'package:smarth_save/screen/Athantification/sig_up.dart';
@@ -15,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // loadtoken();
+    UserModel.getUser();
     _checkOnboardingStatus();
   }
 
