@@ -12,15 +12,6 @@ class APIService {
   Future<dynamic> register(UserModel user) async {
     // Construction de l'URL
     String url = api.baseURL + registerRoute;
-
-    // Corps de la requête encodé en JSON
-    // final body = jsonEncode({
-    //   "nom": nom,
-    //   "prenom": prenom,
-    //   "email": email,
-    //   "password": password,
-    // });
-
     // Envoi de la requête POST à l'API
     final response = await http.post(
       Uri.parse(url),
@@ -78,20 +69,23 @@ class APIService {
   Future<dynamic> modifmotdepasse(String email) async {
     // Construction de l'URL
     String url = api.baseURL + modifmotdepassefRoute;
-
-    // Envoi de la requête POST à l'API
-    final response = await http.patch(Uri.parse(url), body: {
+    var body = jsonEncode({
       "email": email,
-    }, headers: {
+    });
+    // Envoi de la requête POST à l'API
+    final response = await http.post(Uri.parse(url), body: body, headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
     });
+    
+    print("Response: ${jsonDecode(response.body)}");
+
 
     // Vérification du statut de la réponse
     if (response.statusCode == 200) {
-      return true;
+    return jsonDecode(response.body);
     } else {
-      return jsonDecode(response.body)["error"];
+    return jsonDecode(response.body);
     }
   }
 }

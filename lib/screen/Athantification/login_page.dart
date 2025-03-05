@@ -5,6 +5,7 @@ import 'package:smarth_save/PlaidLogin.dart';
 import 'package:smarth_save/controllers/authe_controllers.dart';
 import 'package:smarth_save/outils/navigation.dart';
 import 'package:smarth_save/providers/userProvider.dart';
+import 'package:smarth_save/screen/Athantification/modifPasse.dart';
 import 'package:smarth_save/screen/Athantification/sig_up.dart';
 import 'package:smarth_save/screen/widget/textfield.dart';
 
@@ -48,7 +49,7 @@ class LoginPage extends StatelessWidget {
                             color: Colors.white),
                       ),
                     ),
-                    SizedBox(height: longeur / 5.0),
+                    SizedBox(height: longeur / 15.0),
                     SVTextField(
                       controller: emailController,
                       hint: 'Nom d\'utilisateur',
@@ -65,6 +66,8 @@ class LoginPage extends StatelessWidget {
                     Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                       TextButton(
                         onPressed: () async {
+                        FocusScope.of(context)
+                        .unfocus(); // Cacher le clavier
                           if (_formKey.currentState!.validate()) {
                             await AutheControllers().loginController(
                               context,
@@ -99,7 +102,7 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: longeur / 50.0),
+            SizedBox(height: longeur / 190.0),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text('Vous n\'avez pas de compte ?',
                   style: GoogleFonts.poppins(
@@ -117,6 +120,21 @@ class LoginPage extends StatelessWidget {
                         fontWeight: FontWeight.w600)),
               )
             ]),
+             
+            TextButton(
+            onPressed: () async {
+             
+              navigationTonextPage(context,  Modifpasse());
+            },
+            style: const ButtonStyle(
+            ),
+            child: const Text("Mot de passe oublier",
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.white,
+                )),
+          ),
+        
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               SizedBox(
                   width: 100,

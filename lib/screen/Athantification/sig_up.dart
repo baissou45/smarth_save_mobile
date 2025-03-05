@@ -85,6 +85,8 @@ class SigUpPage extends StatelessWidget {
                     Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                       TextButton(
                         onPressed: () async {
+                        FocusScope.of(context)
+                        .unfocus(); // Cacher le clavier
                           if (_formKey.currentState!.validate()) {
                             if (passwordController.text ==
                                 confirmPasswordController.text) {

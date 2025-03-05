@@ -43,7 +43,7 @@ class AutheControllers {
     } catch (e) {
       if (userProvider.message != null) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(userProvider.message)));
+            .showSnackBar(SnackBar(content: Text("${userProvider.message}")));
       }
     }
   }
@@ -52,11 +52,11 @@ class AutheControllers {
   Future<void> modifmotdepasseController(
       BuildContext context, String email) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final response = await userProvider.modifmotdepasse(email);
-    if (response == true) {
-      errorToast(context, response);
+    await userProvider.modifmotdepasse(email);
+    if (userProvider.error != null) {
+      errorToast(context, userProvider.error);
     } else {
-      errorToast(context, response);
+      successToast(context, userProvider.message);
     }
   }
 

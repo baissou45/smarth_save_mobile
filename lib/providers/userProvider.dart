@@ -9,13 +9,17 @@ class UserProvider extends ChangeNotifier {
   bool _isLoading = false;
   String? _token;
   UserModel? _user;
-  late String _message;
+  String? _message;
+  String? _error;
 
   bool get isLoading => _isLoading;
   String? get token => _token;
   bool get isLoggedIn => _token != null;
   UserModel? get user => _user;
-  String get message => _message;
+  String? get message => _message;
+  String? get error => _error;
+
+  get response => null;
 
   Future<bool> register(UserModel user) async {
     _isLoading = true; // Début du chargement
@@ -36,12 +40,11 @@ class UserProvider extends ChangeNotifier {
     _isLoading = true; // Début du chargement
     notifyListeners(); // Notifier les écouteurs que l'état a changé
     try {
-      var responce = await APIService().login(email, password);
-      print(responce["token"]);
-      _message = responce["message"];
-      _token = responce['token'];
+      var response = await APIService().login(email, password);
+      _message = response["message"];
+      _token = response['token'];
       await _saveToken(_token!);
-      _user = UserModel.fromMap(responce['data']);
+      _user = UserModel.fromMap(response['data']);
       await UserModel.saveUser(_user!);
       notifyListeners();
     } catch (e) {
@@ -54,7 +57,13 @@ class UserProvider extends ChangeNotifier {
 
   Future<dynamic> modifmotdepasse(String email) async {
     try {
-      await APIService().modifmotdepasse(email);
+      var response = await APIService().modifmotdepasse(email);
+      print("la reponse ${response["erreur"]}");
+      if (response.containsKey('erreur')) {
+        _error = response["erreur"];
+      } else {
+        _message = response["message"];
+      }
       notifyListeners();
     } catch (e) {
       rethrow;

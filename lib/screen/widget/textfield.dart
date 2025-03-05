@@ -72,7 +72,7 @@ class _SVTextFieldState extends State<SVTextField> {
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Veuillez entrer';
+          return 'Veuillez entrer ${widget.hint}';
         }
         return null;
       },

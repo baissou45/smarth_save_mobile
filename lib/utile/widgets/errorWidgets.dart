@@ -8,6 +8,10 @@ import 'package:smarth_save/utile/widgets/commonWidgets.dart';
 errorToast(BuildContext context, error){
   return GFToast.showToast("$error", context, toastDuration: 4, backgroundColor: Colors.red.shade700, textStyle: normalFont(Colors.white, 14), toastPosition: GFToastPosition.BOTTOM,);
 }
+//errorToast ______________________________
+successToast(BuildContext context, error){
+  return GFToast.showToast("$error", context, toastDuration: 4, backgroundColor:  Colors.green, textStyle: normalFont(Colors.white, 14), toastPosition: GFToastPosition.BOTTOM,);
+}
 
 
 //SNACKBARS----------------------------------
