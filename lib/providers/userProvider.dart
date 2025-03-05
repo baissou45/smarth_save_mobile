@@ -1,51 +1,83 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:smarth_save/models/user_model.dart';
 import 'package:smarth_save/services/api_user_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProvider extends ChangeNotifier {
-  dynamic response;
+  bool _isLoading = false;
+  String? _token;
   UserModel? _user;
+  late String _message;
 
+  bool get isLoading => _isLoading;
+  String? get token => _token;
+  bool get isLoggedIn => _token != null;
   UserModel? get user => _user;
+  String get message => _message;
 
-  Future<dynamic> register(
-      String nom, String prenom, String email, String password) async {
+  Future<bool> register(UserModel user) async {
+    _isLoading = true; // Début du chargement
+    notifyListeners(); // Notifier les écouteurs que l'état a changé
+
     try {
-      response = await APIService().register(nom, prenom, email, password);
-      if (response.statusCode == 200) {
-        _user = UserModel.fromMap(response);
-      }
-      notifyListeners();
+      await APIService().register(user); // Appel à l'API
+      return true; // Retourner true en cas de succès
     } catch (e) {
-      response = e.toString();
+      rethrow; // Relancer l'exception pour que le Controller puisse la gérer
+    } finally {
+      _isLoading = false; // Fin du chargement
+      notifyListeners(); // Notifier les écouteurs que l'état a changé
     }
-    return response;
   }
 
   Future<dynamic> login(String email, String password) async {
+    _isLoading = true; // Début du chargement
+    notifyListeners(); // Notifier les écouteurs que l'état a changé
     try {
-      response = await APIService().login(email, password);
-      if (response.statusCode == 200) {
-        _user = UserModel.fromMap(response);
-      }
-
+      var responce = await APIService().login(email, password);
+      print(responce["token"]);
+      _message = responce["message"];
+      _token = responce['token'];
+      await _saveToken(_token!);
+      _user = UserModel.fromMap(responce['data']);
+      await UserModel.saveUser(_user!);
       notifyListeners();
     } catch (e) {
-      response = e.toString();
+      rethrow;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
-    return response;
   }
 
   Future<dynamic> modifmotdepasse(String email) async {
     try {
-      response = await APIService().modifmotdepasse(email);
-      if (response.statusCode == 200) {
-        _user = UserModel.fromMap(response);
-      }
+      await APIService().modifmotdepasse(email);
       notifyListeners();
     } catch (e) {
-      response = e.toString();
+      rethrow;
     }
-    return response;
+  }
+
+  Future<void> _saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('auth_token', token);
+  }
+
+  Future<void> loadToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    _token = prefs.getString('auth_token');
+
+    print('on es la ${_token} ${isLoggedIn}');
+    notifyListeners();
+  }
+
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('auth_token');
+    _token = null;
+    notifyListeners();
   }
 }

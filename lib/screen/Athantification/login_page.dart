@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smarth_save/PlaidLogin.dart';
+import 'package:smarth_save/controllers/authe_controllers.dart';
 import 'package:smarth_save/outils/navigation.dart';
+import 'package:smarth_save/providers/userProvider.dart';
 import 'package:smarth_save/screen/Athantification/sig_up.dart';
 import 'package:smarth_save/screen/widget/textfield.dart';
 
 // ignore: must_be_immutable
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
-  var nameController = TextEditingController();
-  var userNameController = TextEditingController();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
-  var confirmPasswordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  UserProvider userProvider = UserProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +36,7 @@ class LoginPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                   vertical: longeur / 10.0, horizontal: largeur / 25.0),
               child: Form(
+                key: _formKey,
                 child: Column(
                   children: [
                     Center(
@@ -48,7 +50,7 @@ class LoginPage extends StatelessWidget {
                     ),
                     SizedBox(height: longeur / 5.0),
                     SVTextField(
-                      controller: userNameController,
+                      controller: emailController,
                       hint: 'Nom d\'utilisateur',
                       keyboardType: TextInputType.name,
                     ),
@@ -57,13 +59,26 @@ class LoginPage extends StatelessWidget {
                       controller: passwordController,
                       hint: 'Mot de passe',
                       keyboardType: TextInputType.name,
-                      obscureText: true,
+                      isPassword: true,
                     ),
                     SizedBox(height: longeur / 15.0),
                     Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                       TextButton(
-                        onPressed: () {
-                          navigationTonextPage(context, const PlaidLogin());
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            await AutheControllers().loginController(
+                              context,
+                              emailController.text,
+                              passwordController.text,
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'Veuillez remplir tous les champs')));
+                          }
+
+                          // navigationTonextPage(context, const PlaidLogin());
                         },
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all(
@@ -131,7 +146,7 @@ class LoginPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(100)),
                 child: TextButton(
                   onPressed: () {
-                    navigationTonextPage(context, const PlaidLogin());
+                    print(userProvider.token);
                   },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(

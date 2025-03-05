@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:smarth_save/models/user_model.dart';
+import 'package:smarth_save/screen/Athantification/login_page.dart';
+import 'package:smarth_save/screen/naveBar.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -14,6 +17,7 @@ class _DashboardState extends State<Dashboard> {
     double longeur = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      drawer: Navebar(),
       body: Stack(
         children: [
           Container(
@@ -43,12 +47,12 @@ class _DashboardState extends State<Dashboard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Robert Fox',
+                          "${UserModel.sessionUser?.prenom} ${UserModel.sessionUser?.nom}",
                           style: TextStyle(
                               fontSize: largeur / 20, color: Colors.white),
                         ),
                         Text(
-                          'michael.mitc@example.com',
+                          "${UserModel.sessionUser?.email}",
                           style: TextStyle(
                               fontSize: largeur / 30, color: Colors.white),
                         ),

@@ -1,10 +1,14 @@
+import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
 class UserModel {
 String? nom;
 String? prenom;
 String? email;
 String? password;
-DateTime? createdAt;
-
+// Variable statique pour l'utilisateur en session
+static UserModel? sessionUser;
 UserModel({
   required this.nom,
   required this.prenom,
@@ -18,7 +22,6 @@ UserModel.fromMap(Map<String, dynamic> json) {
   prenom = json['prenom'];
   email = json['email'];
   password = json['password'];
-  createdAt = _parseDateTime(json['createdAt']);
 }
 
 // Méthode pour convertir UserModel en Map (pour l'enregistrer)
@@ -27,8 +30,33 @@ Map<String, dynamic> toMap() => {
   "prenom": prenom,
   "email": email,
   "password": password,
-  "createdAt": createdAt?.toIso8601String(),
 };
+
+
+ // Méthode asynchrone pour sauvegarder un utilisateur
+ static Future<void> saveUser(UserModel user) async {
+SharedPreferences pref = await SharedPreferences.getInstance();
+String data = json.encode(user.toMap());  // Convertir l'utilisateur en JSON
+await pref.setString("user", data);  // Sauvegarde
+}
+
+// Méthode asynchrone pour récupérer un utilisateur
+static  getUser() async {
+SharedPreferences pref = await SharedPreferences.getInstance();
+String? data = pref.getString("user");  // Récupération de la chaîne JSON
+
+if (data != null) {
+  // Si les données existent, on les décode et les assigne à sessionUser
+  Map<String, dynamic> decodedData = json.decode(data);
+  sessionUser = UserModel.fromMap(decodedData);
+  print("Utilisateur récupéré : ${sessionUser!.nom}");
+  return sessionUser;
+} else {
+  print("Aucun utilisateur trouvé.");
+  return null;
+}
+}
+
 
 // Fonction utilitaire pour convertir une valeur en booléen
 bool? _parseBool(dynamic value) {

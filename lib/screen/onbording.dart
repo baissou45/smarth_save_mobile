@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smarth_save/outils/navigation.dart';
+import 'package:smarth_save/providers/userProvider.dart';
 import 'package:smarth_save/screen/Athantification/sig_up.dart';
 import 'package:smarth_save/screen/widget/onbordWidget.dart';
 import 'package:smarth_save/screen/widget/onbordingBtn.dart';
 
 class OnbordingPage extends StatefulWidget {
-  const OnbordingPage({super.key});
+  final VoidCallback onComplete;
+  const OnbordingPage({super.key, required this.onComplete});
 
   @override
   State<OnbordingPage> createState() => _OnbordingPageState();
@@ -21,8 +25,11 @@ class _OnbordingPageState extends State<OnbordingPage> {
         "L'application analyse cos habitudes financières et vous propose des recommandations pour économiser, mieux gerer votre budget et optimiser vos dépenses.")
   ];
   int startIndex = 0;
+
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+
     return Scaffold(
         body: PageView.builder(
             controller: PageController(initialPage: startIndex),
@@ -33,7 +40,8 @@ class _OnbordingPageState extends State<OnbordingPage> {
               });
             },
             itemBuilder: (context, index) {
-              return swipeableBody[startIndex];
+              return swipeableBody[
+                  index]; // Utilisez 'index' au lieu de 'startIndex'
             }),
         bottomNavigationBar: Padding(
             padding: const EdgeInsets.only(left: 15, right: 15, bottom: 50),
@@ -57,8 +65,12 @@ class _OnbordingPageState extends State<OnbordingPage> {
                     : startIndex == swipeableBody.length - 1
                         ? onbordingBtn(
                             label: "C'est parti !",
-                            onPressed: () =>
-                                navigationTonextPage(context, SigUpPage()))
+                            onPressed: () async {
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              await prefs.setBool('hasSeenOnboarding', true);
+                              navigationTonextPage(context, SigUpPage());
+                            })
                         : onbordingBtn(
                             label: "Suivant",
                             onPressed: () => setState(() {

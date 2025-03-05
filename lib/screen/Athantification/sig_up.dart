@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smarth_save/PlaidLogin.dart';
+import 'package:smarth_save/controllers/authe_controllers.dart';
 import 'package:smarth_save/outils/navigation.dart';
 import 'package:smarth_save/screen/Athantification/login_page.dart';
 import 'package:smarth_save/screen/widget/textfield.dart';
@@ -14,6 +15,7 @@ class SigUpPage extends StatelessWidget {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class SigUpPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                   vertical: longeur / 10.0, horizontal: largeur / 30.0),
               child: Form(
+                key: _formKey,
                 child: Column(
                   children: [
                     Center(
@@ -69,21 +72,45 @@ class SigUpPage extends StatelessWidget {
                       controller: passwordController,
                       hint: 'Mot de passe',
                       keyboardType: TextInputType.name,
-                      obscureText: true,
+                      isPassword: true,
                     ),
                     const SizedBox(height: 20),
                     SVTextField(
                       controller: confirmPasswordController,
                       hint: 'confirmation de mot de passe',
                       keyboardType: TextInputType.name,
-                      obscureText: true,
+                      isPassword: true,
                     ),
                     const SizedBox(height: 20),
                     Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                       TextButton(
-                        onPressed: () {
-                          navigationTonextPage(context, const PlaidLogin());
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            if (passwordController.text ==
+                                confirmPasswordController.text) {
+                              await AutheControllers().registerController(
+                                context,
+                                nameController.text,
+                                userNameController.text,
+                                emailController.text,
+                                passwordController.text,
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          'Les mots de passe ne correspondent pas')));
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'Veuillez remplir tous les champs')));
+                          }
+
+                          // navigationTonextPage(context, const PlaidLogin());
                         },
+                        
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all(
                               const Color.fromARGB(255, 15, 45, 179)),
