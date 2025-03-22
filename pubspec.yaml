@@ -39,6 +39,9 @@ dependencies:
   dio: ^5.7.0
   onboarding: ^4.0.2
   google_fonts: ^6.2.1
+  provider: ^6.1.2
+  getwidget: ^5.0.0
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
