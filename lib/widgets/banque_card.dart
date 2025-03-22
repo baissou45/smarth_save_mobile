@@ -1,12 +1,10 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class BanqueCard extends StatelessWidget {
-  String logo;
-  String nom;
+  final String logo;
+  final String nom;
 
-  BanqueCard({
+  const BanqueCard({
     super.key,
     required this.logo,
     required this.nom,
@@ -15,27 +13,64 @@ class BanqueCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double largeur = MediaQuery.of(context).size.width;
-    double longeur = MediaQuery.of(context).size.width;
+    double hauteur = MediaQuery.of(context).size.height;
 
-    return SizedBox(
-      width: largeur / 1.7,
+    return Container(
       child: Card(
-        elevation: 8.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18.0),
+        ),
+        elevation: 3.0,
         child: Padding(
           padding: EdgeInsets.symmetric(
-              vertical: longeur / 20.0, horizontal: largeur / 30.0),
+            vertical: largeur / 40.0,
+            horizontal: largeur / 40.0,
+          ),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CircleAvatar(
-                backgroundImage: AssetImage(logo),
-                radius: largeur / 15,
+              Container(
+                height: largeur / 10.0,
+                padding: const EdgeInsets.all(1),
+                decoration: const BoxDecoration(
+                  color: Colors.black,
+                  shape: BoxShape.circle,
+                ),
+                child: CircleAvatar(
+                  backgroundImage: AssetImage(logo),
+                  radius: largeur / 15,
+                  backgroundColor: Colors.white,
+                ),
               ),
-              Text(
-                nom,
-                // softWrap: true,
-                overflow: TextOverflow.clip,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
+              Flexible(
+                  child: Column(
+                    mainAxisSize:
+                        MainAxisSize.min, // Évite l'expansion excessive
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        nom.split(" ").first,
+                        maxLines: 1, // Empêche le débordement vertical
+                        overflow: TextOverflow
+                            .ellipsis, // Coupe proprement si trop long
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        nom.split(" ").skip(1).join(" "),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              
             ],
           ),
         ),

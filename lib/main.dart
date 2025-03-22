@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:smarth_save/providers/userProvider.dart';
-import 'package:smarth_save/screen/splashScreen.dart';
+import 'package:smarth_save/screen/redirectPage.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   // 🔥 Création de l'instance unique de UserProvider
   final userProvider = UserProvider();
   await userProvider
@@ -35,7 +37,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: SplashScreen()
+        home: Redirectpage()
        );
   }
 }

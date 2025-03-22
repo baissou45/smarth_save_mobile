@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smarth_save/models/user_model.dart';
 import 'package:smarth_save/providers/userProvider.dart';
@@ -6,18 +7,20 @@ import 'package:smarth_save/screen/Athantification/login_page.dart';
 import 'package:smarth_save/screen/Athantification/sig_up.dart';
 import 'package:smarth_save/screen/dashboard.dart';
 import 'package:smarth_save/screen/onbording.dart';
+import 'package:smarth_save/screen/pages/wellcommePage.dart';
 
-class SplashScreen extends StatefulWidget {
+class Redirectpage extends StatefulWidget {
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  _RedirectpageState createState() => _RedirectpageState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _RedirectpageState extends State<Redirectpage> {
   @override
   void initState() {
     super.initState();
     UserModel.getUser();
     _checkOnboardingStatus();
+    FlutterNativeSplash.remove();
   }
 
   Future<void> loadtoken() async {}
@@ -32,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (hasSeenOnboarding) {
       if (userProvider.isLoggedIn) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const Dashboard()),
+          MaterialPageRoute(builder: (context) => const Wellcommepage()),
         );
       } else {
         // Naviguer vers l'écran principal si l'onboarding a déjà été vu
@@ -55,9 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
+      body:Text("")
     );
   }
 }
