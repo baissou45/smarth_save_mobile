@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smarth_save/outils/navigation.dart';
-import 'package:smarth_save/providers/userProvider.dart';
 import 'package:smarth_save/screen/Athantification/sig_up.dart';
 import 'package:smarth_save/widgets/onbordWidget.dart';
 import 'package:smarth_save/widgets/onbordingBtn.dart';
@@ -28,7 +26,6 @@ class _OnbordingPageState extends State<OnbordingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
         body: PageView.builder(

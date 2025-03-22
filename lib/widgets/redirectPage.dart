@@ -3,9 +3,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smarth_save/models/user_model.dart';
 import 'package:smarth_save/providers/userProvider.dart';
-import 'package:smarth_save/screen/Athantification/login_page.dart';
-import 'package:smarth_save/widgets/onbording.dart';
-import 'package:smarth_save/screen/pages/wellcommePage.dart';
 import 'package:go_router/go_router.dart';
 
 class RedirectPage extends StatefulWidget {

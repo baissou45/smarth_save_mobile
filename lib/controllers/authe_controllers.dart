@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:smarth_save/models/user_model.dart';
 import 'package:smarth_save/providers/userProvider.dart';
-import 'package:smarth_save/screen/Athantification/login_page.dart';
 import 'package:smarth_save/utile/widgets/errorWidgets.dart';
 
 class AutheControllers {

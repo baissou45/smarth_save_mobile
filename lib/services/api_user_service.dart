@@ -1,5 +1,4 @@
 import 'dart:convert'; // Pour jsonDecode
-import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:smarth_save/models/user_model.dart';
 import 'package:smarth_save/services/api.dart';

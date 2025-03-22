@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/models/user_model.dart';
 import 'package:smarth_save/providers/userProvider.dart';
-import 'package:smarth_save/screen/Athantification/login_page.dart';
 import 'dart:math' as math;
 
 class Navebar extends StatefulWidget {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/models/user_model.dart';
-import 'package:smarth_save/screen/Athantification/login_page.dart';
 import 'package:smarth_save/widgets/naveBar.dart';
 
 class Dashboard extends StatefulWidget {

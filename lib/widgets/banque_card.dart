@@ -13,7 +13,6 @@ class BanqueCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double largeur = MediaQuery.of(context).size.width;
-    double hauteur = MediaQuery.of(context).size.height;
 
     return Container(
       child: Card(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smarth_save/PlaidLogin.dart';
 import 'package:smarth_save/controllers/authe_controllers.dart';
 import 'package:smarth_save/outils/navigation.dart';
 import 'package:smarth_save/providers/userProvider.dart';
