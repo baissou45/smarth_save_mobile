@@ -47,6 +47,7 @@ class BanqueCard extends StatelessWidget {
                     mainAxisSize:
                         MainAxisSize.min, // Évite l'expansion excessive
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    
                     children: [
                       Text(
                         nom.split(" ").first,
@@ -68,7 +69,9 @@ class BanqueCard extends StatelessWidget {
                         ),
                       ),
                     ],
-                  ),
+                  
+                  
+                    ),
                 ),
               
             ],

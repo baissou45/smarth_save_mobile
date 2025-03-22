@@ -4,7 +4,7 @@ import 'package:smarth_save/PlaidLogin.dart';
 import 'package:smarth_save/controllers/authe_controllers.dart';
 import 'package:smarth_save/outils/navigation.dart';
 import 'package:smarth_save/screen/Athantification/login_page.dart';
-import 'package:smarth_save/screen/widget/textfield.dart';
+import 'package:smarth_save/widgets/textfield.dart';
 
 // ignore: must_be_immutable
 class SigUpPage extends StatelessWidget {

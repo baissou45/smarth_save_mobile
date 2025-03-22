@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:plaid_flutter/plaid_flutter.dart';
 import 'package:smarth_save/outils/navigation.dart';
-import 'package:smarth_save/screen/dashboard.dart';
+import 'package:smarth_save/widgets/dashboard.dart';
 
 class PlaidLogin extends StatefulWidget {
   const PlaidLogin({super.key});

@@ -21,7 +21,8 @@ class APIService {
         'Accept': 'application/json',
       },
     );
-    print(response.body);
+    print("il est connecter ${response.body}");
+
 
     // Vérification du statut de la réponse
     if (response.statusCode == 200) {

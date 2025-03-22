@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/models/user_model.dart';
-import 'package:smarth_save/screen/naveBar.dart';
+import 'package:smarth_save/widgets/naveBar.dart';
 import 'package:smarth_save/widgets/banque_card.dart';
 
 class Wellcommepage extends StatefulWidget {
@@ -19,7 +20,7 @@ class _WellcommepageState extends State<Wellcommepage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.teal,
+        backgroundColor: kPrimaryColor1,
         elevation: 0,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,7 +66,7 @@ class _WellcommepageState extends State<Wellcommepage> {
             children: [
               // Container vert (background)
               Container(
-                color: Colors.teal,
+                color: kPrimaryColor1,
                 height: hauteur / 5,
                 width: double.infinity,
                 child: Column(
@@ -132,7 +133,7 @@ class _WellcommepageState extends State<Wellcommepage> {
                           height: hauteur / 190,
                           width: largeur / 8,
                           child: Container(
-                            color: Colors.teal,
+                            color: kPrimaryColor1,
                           ),
                         ),
                       ),
@@ -236,7 +237,7 @@ class _WellcommepageState extends State<Wellcommepage> {
             //             height: MediaQuery.of(context).size.height / 180,
             //             width: MediaQuery.of(context).size.height / 8,
             //             child: Container(
-            //               color: Colors.teal,
+            //               color: kPrimaryColor1,
             //             ),
             //           ),
             //         ),

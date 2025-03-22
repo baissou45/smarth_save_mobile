@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/models/user_model.dart';
 import 'package:smarth_save/screen/Athantification/login_page.dart';
-import 'package:smarth_save/screen/naveBar.dart';
+import 'package:smarth_save/widgets/naveBar.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -23,7 +24,7 @@ class _DashboardState extends State<Dashboard> {
           Container(
             height: longeur / 1.5,
             decoration: BoxDecoration(
-              color: Colors.teal,
+              color: kPrimaryColor1,
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(largeur / 7),
                 bottomRight: Radius.circular(largeur / 7),
