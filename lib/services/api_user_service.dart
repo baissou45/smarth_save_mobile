@@ -1,12 +1,11 @@
 import 'dart:convert'; // Pour jsonDecode
-import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:smarth_save/models/user_model.dart';
 import 'package:smarth_save/services/api.dart';
 
 import 'api_routes.dart';
 
-class APIService {
+class ApiUserService {
   final API api = API();
 
   Future<dynamic> register(UserModel user) async {
@@ -21,7 +20,8 @@ class APIService {
         'Accept': 'application/json',
       },
     );
-    print(response.body);
+    print("il est connecter ${response.body}");
+
 
     // Vérification du statut de la réponse
     if (response.statusCode == 200) {

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/models/user_model.dart';
 import 'package:smarth_save/providers/userProvider.dart';
-import 'package:smarth_save/screen/Athantification/login_page.dart';
 import 'dart:math' as math;
 
 class Navebar extends StatefulWidget {
@@ -18,66 +19,77 @@ class _NavebarState extends State<Navebar> {
     double largeur = MediaQuery.of(context).size.width;
     double longeur = MediaQuery.of(context).size.width;
     return Drawer(
-        child: ListView(children: [
-      Container(
-        alignment: Alignment.center,
-        height: 150, // Ajustez la hauteur selon vos besoins
-        decoration: const BoxDecoration(
-          color: Colors.teal,
-          borderRadius: BorderRadius.only(
-            bottomLeft:
-                Radius.circular(20), // Ajustez le rayon selon vos besoins
-            bottomRight: Radius.circular(20),
+      
+        child: ListView(
+          children: [
+
+          SafeArea(
+        child: Container(
+          alignment: Alignment.center,
+          height: longeur / 1.6, // Ajustez la hauteur selon vos besoins
+          decoration: const BoxDecoration(
+            color: kPrimaryColor1,
+            borderRadius: BorderRadius.only(
+              bottomLeft:
+                  Radius.circular(20), // Ajustez le rayon selon vos besoins
+              bottomRight: Radius.circular(20),
+            ),
           ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(5.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              CircleAvatar(
-                radius: largeur / 9,
-                backgroundImage: AssetImage('assets/images/image_one.png'),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("${UserModel.sessionUser?.prenom} ${ UserModel.sessionUser?.nom  }",
-                    
-                    style: TextStyle(
-                        fontSize: largeur / 9,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w900),
-                  ),
-                  Stack(
-                    children: [
-                      Text("${UserModel.sessionUser?.email }"
-                        ,
+          child: Padding(
+            padding: EdgeInsets.all(5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CircleAvatar(
+                  radius: largeur / 9,
+                  backgroundImage: AssetImage('assets/images/image_one.png'),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: largeur / 2,
+                      child: Text(
+                        "${UserModel.sessionUser?.prenom} ${UserModel.sessionUser?.nom}",
+                        maxLines: 1, // Empêche le débordement vertical
+                        overflow: TextOverflow.ellipsis, // Coup
                         style: TextStyle(
-                          fontSize: largeur / 25,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                        ),
+                            fontSize: largeur / 9,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w900),
                       ),
-                      Positioned(
-                        bottom:
-                            0, // Ajustez cette valeur pour contrôler l'espacement
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          height: 2, // Épaisseur de la ligne
-                          color: Colors.white, // Couleur de la ligne
+                    ),
+                    Stack(
+                      children: [
+                        Text(
+                          "${UserModel.sessionUser?.email}",
+                          style: TextStyle(
+                            fontSize: largeur / 25,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ],
+                        Positioned(
+                          bottom:
+                              0, // Ajustez cette valeur pour contrôler l'espacement
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            height: 2, // Épaisseur de la ligne
+                            color: Colors.white, // Couleur de la ligne
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
+    
       Container(
         margin: const EdgeInsets.only(left: 50),
         width: double.infinity,
@@ -89,75 +101,89 @@ class _NavebarState extends State<Navebar> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 ListTile(
-                  leading: const Icon(Icons.home_filled,
-                  color: Colors.teal,),
-                  title:  Text('Accueil'
-                  ,style: TextStyle(
-                    fontSize:largeur/16
-                  ),),
+                  leading: const Icon(
+                    Icons.home_filled,
+                    color: kPrimaryColor1,
+                  ),
+                  title: Text(
+                    'Accueil',
+                    style: TextStyle(fontSize: largeur / 16),
+                  ),
                   onTap: () => {},
                 ),
                 ListTile(
-                  leading: const Icon(Icons.account_circle_outlined,
-                  color: Colors.teal,),
-                  title:  Text('Mon compte'
-                  ,style: TextStyle(
-                    fontSize:largeur/16
-                  ),),
+                  leading: const Icon(
+                    Icons.account_circle_outlined,
+                    color: kPrimaryColor1,
+                  ),
+                  title: Text(
+                    'Mon compte',
+                    style: TextStyle(fontSize: largeur / 16),
+                  ),
                   onTap: () => {},
                 ),
                 ListTile(
-                  leading: const Icon(Icons.account_balance_wallet,
-                  color: Colors.teal,),
-                  title:  Text('Portefeuilles'
-                  ,style: TextStyle(
-                    fontSize:largeur/16
-                  ),),
+                  leading: const Icon(
+                    Icons.account_balance_wallet,
+                    color: kPrimaryColor1,
+                  ),
+                  title: Text(
+                    'Portefeuilles',
+                    style: TextStyle(fontSize: largeur / 16),
+                  ),
                   onTap: () => {},
                 ),
                 ListTile(
-                  leading: const Icon(Icons.notes,
-                  color: Colors.teal,),
-                  title:  Text('Projets'
-                  ,style: TextStyle(
-                    fontSize:largeur/16
-                  ),),
+                  leading: const Icon(
+                    Icons.notes,
+                    color: kPrimaryColor1,
+                  ),
+                  title: Text(
+                    'Projets',
+                    style: TextStyle(fontSize: largeur / 16),
+                  ),
                   onTap: () => {},
                 ),
                 ListTile(
-                  leading: const Icon(Icons.notifications_none,
-                  color: Colors.teal,),
-                  title:  Text('Notification'
-                  ,style: TextStyle(
-                    fontSize:largeur/16
-                  ),),
+                  leading: const Icon(
+                    Icons.notifications_none,
+                    color: kPrimaryColor1,
+                  ),
+                  title: Text(
+                    'Notification',
+                    style: TextStyle(fontSize: largeur / 16),
+                  ),
                   onTap: () => {},
                 ),
                 ListTile(
-                  leading: const Icon(Icons.settings,
-                  color: Colors.teal,),
-                  title:  Text('Paramètres'
-                  ,style: TextStyle(
-                    fontSize:largeur/16
-                  ),),
+                  leading: const Icon(
+                    Icons.settings,
+                    color: kPrimaryColor1,
+                  ),
+                  title: Text(
+                    'Paramètres',
+                    style: TextStyle(fontSize: largeur / 16),
+                  ),
                   onTap: () => {},
                 ),
                 ListTile(
-                  leading: const Icon(Icons.account_box,
-                  color: Colors.teal,),
-                  title:  Text('Nous contacter'
-                  ,style: TextStyle(
-                    fontSize:largeur/16
-                  ),),
-                  onTap: () => {},
+                  leading: const Icon(
+                    Icons.account_box,
+                    color: kPrimaryColor1,
+                  ),
+                  title: Text(
+                    'Nous contacter',
+                    style: TextStyle(fontSize: largeur / 16),
+                  ),
+                  onTap: () => {context.go("")},
                 ),
-                SizedBox(height: largeur / 7),
+                SizedBox(height: largeur / 44),
               ]),
         ),
       ),
       Container(
         padding: EdgeInsets.all(6),
-        color: Colors.teal,
+        color: kPrimaryColor1,
         width: largeur / 2,
         height: largeur / 6,
         alignment: Alignment.center,
@@ -194,10 +220,7 @@ class _NavebarState extends State<Navebar> {
                           onPressed: () async {
                             // Handle button press
                             await _userProvider.logout();
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => LoginPage()),
-                                (route) => false);
+                            context.go("/login");
                           },
                           child: const Text(
                             'Deconnexion',
@@ -252,8 +275,7 @@ class _NavebarState extends State<Navebar> {
                         ),
                       ]),
                 ),
-              
-                ],
+              ],
             )),
       ),
     ]));

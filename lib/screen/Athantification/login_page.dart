@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:smarth_save/PlaidLogin.dart';
 import 'package:smarth_save/controllers/authe_controllers.dart';
 import 'package:smarth_save/outils/navigation.dart';
 import 'package:smarth_save/providers/userProvider.dart';
 import 'package:smarth_save/screen/Athantification/modifPasse.dart';
 import 'package:smarth_save/screen/Athantification/sig_up.dart';
-import 'package:smarth_save/screen/widget/textfield.dart';
+import 'package:smarth_save/widgets/textfield.dart';
 
 // ignore: must_be_immutable
 class LoginPage extends StatelessWidget {
@@ -66,8 +65,7 @@ class LoginPage extends StatelessWidget {
                     Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                       TextButton(
                         onPressed: () async {
-                        FocusScope.of(context)
-                        .unfocus(); // Cacher le clavier
+                          FocusScope.of(context).unfocus(); // Cacher le clavier
                           if (_formKey.currentState!.validate()) {
                             await AutheControllers().loginController(
                               context,
@@ -120,21 +118,17 @@ class LoginPage extends StatelessWidget {
                         fontWeight: FontWeight.w600)),
               )
             ]),
-             
             TextButton(
-            onPressed: () async {
-             
-              navigationTonextPage(context,  Modifpasse());
-            },
-            style: const ButtonStyle(
+              onPressed: () async {
+                navigationTonextPage(context, Modifpasse());
+              },
+              style: const ButtonStyle(),
+              child: const Text("Mot de passe oublier",
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                  )),
             ),
-            child: const Text("Mot de passe oublier",
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.white,
-                )),
-          ),
-        
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               SizedBox(
                   width: 100,

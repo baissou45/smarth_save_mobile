@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:plaid_flutter/plaid_flutter.dart';
 import 'package:smarth_save/outils/navigation.dart';
-import 'package:smarth_save/screen/dashboard.dart';
+import 'package:smarth_save/widgets/dashboard.dart';
 
 class PlaidLogin extends StatefulWidget {
   const PlaidLogin({super.key});
@@ -18,7 +18,7 @@ class _ExState extends State<PlaidLogin> {
   StreamSubscription<LinkEvent>? _streamEvent;
   StreamSubscription<LinkExit>? _streamExit;
   StreamSubscription<LinkSuccess>? _streamSuccess;
-  LinkObject? _successObject;
+  LinkObject? successObject;
   bool loading = true;
 
   plaidConnect() async {
@@ -67,7 +67,7 @@ class _ExState extends State<PlaidLogin> {
     final token = event.publicToken;
     final metadata = event.metadata.description();
     print("onSuccess: $token, metadata: $metadata");
-    setState(() => _successObject = event);
+    setState(() => successObject = event);
     navigationTonextPage(context, const Dashboard());
   }
 
@@ -80,7 +80,6 @@ class _ExState extends State<PlaidLogin> {
   @override
   Widget build(BuildContext context) {
     double longeur = MediaQuery.of(context).size.height;
-    double largeur = MediaQuery.of(context).size.width;
 
     return Scaffold(
         // appBar: AppBar(

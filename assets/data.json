@@ -1,0 +1,107 @@
+{
+    "status": "success",
+    "nb_data": "5",
+    "data": [
+      {
+        "id": 1,
+        "institution": {
+          "id": 101,
+          "libelle": "Banque de Paris",
+          "logo": "https://example.com/logos/banque_paris.png"
+        },
+        "categorie": {
+          "id": 10,
+          "libelle": "Crédit"
+        },
+        "type": "Virement",
+        "montant": 1500,
+        "devise": "EUR",
+        "commentaire": "Remboursement prêt personnel",
+        "destinataire": "Jean Dupont",
+        "destinataire_logo": "https://example.com/logos/jean_dupont.png",
+        "date_emission": "2025-03-25",
+        "date_validation": "2025-03-28T12:00:00"
+      },
+      {
+        "id": 2,
+        "institution": {
+          "id": 102,
+          "libelle": "Crédit Agricole",
+          "logo": "https://example.com/logos/credit_agricole.png"
+        },
+        "categorie": {
+          "id": 11,
+          "libelle": "Débit"
+        },
+        "type": "Paiement",
+        "montant": 200,
+        "devise": "EUR",
+        "commentaire": "Achat en ligne",
+        "destinataire": "Amazon",
+        "destinataire_logo": "https://example.com/logos/amazon.png",
+        "date_emission": "2025-03-24",
+        "date_validation": "2025-02-15T16:45:00"
+      },
+      {
+        "id": 3,
+        "institution": {
+          "id": 103,
+          "libelle": "Société Générale",
+          "logo": "https://example.com/logos/societe_generale.png"
+        },
+        "categorie": {
+          "id": 12,
+          "libelle": "Transfert"
+        },
+        "type": "Virement",
+        "montant": 5000,
+        "devise": "USD",
+        "commentaire": "Investissement projet immobilier",
+        "destinataire": "Sophie Martin",
+        "destinataire_logo": "https://example.com/logos/sophie_martin.png",
+        "date_emission": "2025-03-20",
+        "date_validation": "2025-03-28T12:00:00"
+      },
+      {
+        "id": 4,
+        "institution": {
+          "id": 104,
+          "libelle": "BNP Paribas",
+          "logo": "https://example.com/logos/bnp_paribas.png"
+        },
+        "categorie": {
+          "id": 13,
+          "libelle": "Crédit"
+        },
+        "type": "Prêt",
+        "montant": 25000,
+        "devise": "EUR",
+        "commentaire": "Crédit immobilier maison",
+        "destinataire": "Marie Lefevre",
+        "destinataire_logo": "https://example.com/logos/marie_lefevre.png",
+        "date_emission": "2025-03-15",
+        "date_validation": "2025-03-20T09:30:00"
+      },
+      {
+        "id": 5,
+        "institution": {
+          "id": 105,
+          "libelle": "La Banque Postale",
+          "logo": "https://example.com/logos/banque_postale.png"
+        },
+        "categorie": {
+          "id": 14,
+          "libelle": "Transfert"
+        },
+        "type": "Virement",
+        "montant": 1200,
+        "devise": "USD",
+        "commentaire": "Virement international",
+        "destinataire": "Carlos Rivera",
+        "destinataire_logo": "https://example.com/logos/carlos_rivera.png",
+        "date_emission": "2025-03-18",
+        "date_validation": "2025-03-28T12:00:00"
+      }
+    ]
+  }
+  
