@@ -12,6 +12,7 @@ class Wellcommepage extends StatefulWidget {
 }
 
 class _WellcommepageState extends State<Wellcommepage> {
+  var montant ="1095,02";
   @override
   Widget build(BuildContext context) {
     double largeur = MediaQuery.of(context).size.width;
@@ -73,7 +74,7 @@ class _WellcommepageState extends State<Wellcommepage> {
                   children: [
                     SizedBox(height: largeur / 20),
                     Text(
-                      "1095,02 €",
+                    "${montant.split("").join("")} €",
                       style: TextStyle(
                         fontSize: largeur / 10,
                         color: Colors.white,
@@ -108,7 +109,8 @@ class _WellcommepageState extends State<Wellcommepage> {
                 padding: EdgeInsets.all(10),
                 margin:
                     EdgeInsets.only(top: hauteur / 5 - 30, left: 10, right: 10),
-                child: Container(
+                child: 
+                Container(
                   // padding: EdgeInsets.all(hauteur / 100),
                   height: hauteur / 6,
                   width: double.infinity,
@@ -140,6 +142,7 @@ class _WellcommepageState extends State<Wellcommepage> {
                       SizedBox(
                         height: hauteur / 40,
                       ),
+
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
@@ -174,11 +177,14 @@ class _WellcommepageState extends State<Wellcommepage> {
                           ],
                         ),
                       ),
-                    ],
+                    
+                      ],
                   ),
                 ),
-              ),
-            ],
+              
+                ),
+            
+              ],
           ),
         ]),
       ),

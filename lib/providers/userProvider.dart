@@ -24,7 +24,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners(); // Notifier les écouteurs que l'état a changé
 
     try {
-      await APIService().register(user); // Appel à l'API
+      await ApiUserService().register(user); // Appel à l'API
       return true; // Retourner true en cas de succès
     } catch (e) {
       rethrow; // Relancer l'exception pour que le Controller puisse la gérer
@@ -38,7 +38,7 @@ class UserProvider extends ChangeNotifier {
     _isLoading = true; // Début du chargement
     notifyListeners(); // Notifier les écouteurs que l'état a changé
     try {
-      var response = await APIService().login(email, password);
+      var response = await ApiUserService().login(email, password);
       _message = response["message"];
       _token = response['token'];
       await _saveToken(_token!);
@@ -55,7 +55,7 @@ class UserProvider extends ChangeNotifier {
 
   Future<dynamic> modifmotdepasse(String email) async {
     try {
-      var response = await APIService().modifmotdepasse(email);
+      var response = await ApiUserService().modifmotdepasse(email);
       print("la reponse ${response["erreur"]}");
       if (response.containsKey('erreur')) {
         _error = response["erreur"];

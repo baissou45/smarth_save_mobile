@@ -5,7 +5,7 @@ import 'package:smarth_save/services/api.dart';
 
 import 'api_routes.dart';
 
-class APIService {
+class ApiUserService {
   final API api = API();
 
   Future<dynamic> register(UserModel user) async {

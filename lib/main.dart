@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:smarth_save/config/router.dart';
+import 'package:smarth_save/providers/transactionProvider.dart';
 import 'package:smarth_save/providers/userProvider.dart';
 
 void main() async {
@@ -15,6 +16,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: userProvider),
+        ChangeNotifierProvider.value(value: Transactionprovider()),
       ],
       child: const MyApp(),
     ),

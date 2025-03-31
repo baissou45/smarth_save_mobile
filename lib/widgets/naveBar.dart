@@ -19,62 +19,38 @@ class _NavebarState extends State<Navebar> {
     double largeur = MediaQuery.of(context).size.width;
     double longeur = MediaQuery.of(context).size.width;
     return Drawer(
-        child: ListView(children: [
-      Container(
-        alignment: Alignment.center,
-        height: longeur/2.5, // Ajustez la hauteur selon vos besoins
-        decoration: const BoxDecoration(
-          color: kPrimaryColor1,
-          borderRadius: BorderRadius.only(
-            bottomLeft:
-                Radius.circular(20), // Ajustez le rayon selon vos besoins
-            bottomRight: Radius.circular(20),
-          ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(5.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              CircleAvatar(
-                radius: largeur / 9,
-                backgroundImage: AssetImage('assets/images/image_one.png'),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                      width: largeur / 2,
-                      child: 
+      
+        child: ListView(
+          children: [
 
-                      // Column(
-                      //   crossAxisAlignment: CrossAxisAlignment.start,
-                      //   children: [
-                      //     Text(
-                      //       "${UserModel.sessionUser?.prenom}",
-                      //       maxLines: 1, // Empêche le débordement vertical
-                      //       overflow: TextOverflow
-                      //           .ellipsis, // Coupe proprement si trop long
-                      //       style: TextStyle(
-                      //           fontSize: largeur / 9,
-                      //           color: Colors.white,
-                      //           fontWeight: FontWeight.w900),
-                      //     ),
-                      //     Text(
-                      //       "${UserModel.sessionUser?.nom}",
-                      //       maxLines: 1,
-                      //       overflow: TextOverflow.ellipsis,
-                      //       style: TextStyle(
-                      //           fontSize: largeur / 9,
-                      //           color: Colors.white,
-                      //           fontWeight: FontWeight.w900),
-                      //     ),
-                      //   ],
-                      // )
-                      
-                      
-                      Text(
+          SafeArea(
+        child: Container(
+          alignment: Alignment.center,
+          height: longeur / 1.6, // Ajustez la hauteur selon vos besoins
+          decoration: const BoxDecoration(
+            color: kPrimaryColor1,
+            borderRadius: BorderRadius.only(
+              bottomLeft:
+                  Radius.circular(20), // Ajustez le rayon selon vos besoins
+              bottomRight: Radius.circular(20),
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(5.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CircleAvatar(
+                  radius: largeur / 9,
+                  backgroundImage: AssetImage('assets/images/image_one.png'),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: largeur / 2,
+                      child: Text(
                         "${UserModel.sessionUser?.prenom} ${UserModel.sessionUser?.nom}",
                         maxLines: 1, // Empêche le débordement vertical
                         overflow: TextOverflow.ellipsis, // Coup
@@ -83,35 +59,37 @@ class _NavebarState extends State<Navebar> {
                             color: Colors.white,
                             fontWeight: FontWeight.w900),
                       ),
-                      ),
-                  Stack(
-                    children: [
-                      Text(
-                        "${UserModel.sessionUser?.email}",
-                        style: TextStyle(
-                          fontSize: largeur / 25,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
+                    ),
+                    Stack(
+                      children: [
+                        Text(
+                          "${UserModel.sessionUser?.email}",
+                          style: TextStyle(
+                            fontSize: largeur / 25,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      Positioned(
-                        bottom:
-                            0, // Ajustez cette valeur pour contrôler l'espacement
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          height: 2, // Épaisseur de la ligne
-                          color: Colors.white, // Couleur de la ligne
+                        Positioned(
+                          bottom:
+                              0, // Ajustez cette valeur pour contrôler l'espacement
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            height: 2, // Épaisseur de la ligne
+                            color: Colors.white, // Couleur de la ligne
+                          ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ],
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
+    
       Container(
         margin: const EdgeInsets.only(left: 50),
         width: double.infinity,

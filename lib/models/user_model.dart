@@ -7,6 +7,7 @@ String? nom;
 String? prenom;
 String? email;
 String? password;
+String? token;
 // Variable statique pour l'utilisateur en session
 static UserModel? sessionUser;
 UserModel({
@@ -22,6 +23,7 @@ UserModel.fromMap(Map<String, dynamic> json) {
   prenom = json['prenom'];
   email = json['email'];
   password = json['password'];
+  token = json['token'];
 }
 
 // Méthode pour convertir UserModel en Map (pour l'enregistrer)
@@ -30,6 +32,7 @@ Map<String, dynamic> toMap() => {
   "prenom": prenom,
   "email": email,
   "password": password,
+  "token": token,
 };
 
 
