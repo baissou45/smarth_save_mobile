@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/utils/theme/colors.dart';
 
@@ -13,7 +14,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
     type: BottomNavigationBarType.fixed,
     backgroundColor: seedColor,
     selectedItemColor: kPrimaryColor,
-    unselectedItemColor: kPrimaryColor1,
+    unselectedItemColor: Colors.black,
     currentIndex: navigationShell.currentIndex,
     showUnselectedLabels: true, // Assurez-vous que les labels non sélectionnés sont visibles
     selectedLabelStyle: TextStyle(color: Colors.black), // Style du label sélectionné
@@ -21,25 +22,34 @@ class ScaffoldWithNavBar extends StatelessWidget {
     onTap: (index) {
       navigationShell.goBranch(index);
     },
-    items: const [
+    items: [
       BottomNavigationBarItem(
-        icon: Icon(Icons.home),
+        icon: SvgPicture.asset("assets/svg/home.svg", height: 22),
+        activeIcon: SvgPicture.asset("assets/svg/home.svg", height: 24, color: kPrimaryColor),
         label: 'Accueil',
       ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.account_balance_wallet),
+       BottomNavigationBarItem(
+        icon:  SvgPicture.asset("assets/svg/portefeuille.svg", height: 22),
+        activeIcon: SvgPicture.asset("assets/svg/portefeuille.svg", height: 24
+        , color: kPrimaryColor),
         label: 'Portfeuilles',
       ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.work),
+       BottomNavigationBarItem(
+        icon: SvgPicture.asset("assets/svg/projects.svg", height: 22),
+        activeIcon: SvgPicture.asset("assets/svg/projects.svg", height: 24, color:
+        kPrimaryColor),
         label: 'Projets',
       ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.swap_horiz),
+       BottomNavigationBarItem(
+        icon:  SvgPicture.asset("assets/svg/transaction.svg", height: 22),
+        activeIcon: SvgPicture.asset("assets/svg/transaction.svg", height: 24
+        , color: kPrimaryColor),
         label: 'Transactions',
       ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.person),
+       BottomNavigationBarItem(
+        icon: SvgPicture.asset("assets/svg/profil.svg", height: 22),
+        activeIcon: SvgPicture.asset("assets/svg/profil.svg", height: 24, color
+        : kPrimaryColor),
         label: 'Mon compte',
       ),
     ],

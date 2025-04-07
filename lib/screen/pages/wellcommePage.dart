@@ -188,7 +188,6 @@ class _WellcommepageState extends State<Wellcommepage> {
           ),
         ]),
       ),
-      // bottomNavigationBar: ,
     );
   }
 }
