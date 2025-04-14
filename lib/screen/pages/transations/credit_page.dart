@@ -11,14 +11,14 @@ import 'package:smarth_save/widgets/textfield.dart';
 import 'package:smarth_save/widgets/transaction_card.dart';
 import 'package:intl/intl.dart';
 
-class TransationPage extends StatefulWidget {
-  const TransationPage({super.key});
+class TransationPageCredi extends StatefulWidget {
+  const TransationPageCredi({super.key});
 
   @override
-  State<TransationPage> createState() => _TransationPageState();
+  State<TransationPageCredi> createState() => _TransationPageCrediState();
 }
 
-class _TransationPageState extends State<TransationPage> {
+class _TransationPageCrediState extends State<TransationPageCredi> {
   final ApiTransactionService apiTransactionService = ApiTransactionService();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController searcheController = TextEditingController();
@@ -91,135 +91,90 @@ class _TransationPageState extends State<TransationPage> {
   Widget build(BuildContext context) {
     double largeur = MediaQuery.of(context).size.width;
     double longeur = MediaQuery.of(context).size.height; // Correction ici
-    print("la taille ${transactions.length}");
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: kPrimaryColor1,
-        automaticallyImplyLeading: false,
-        title: const Text(
-          'Historique des transactions',
-          style: TextStyle(color: Colors.white),
-        ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-          ), // Icône de retour
-          onPressed: () {
-            context.go("/accueil"); // Revient à l'écran précédent
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.notifications_none_outlined),
-            onPressed: () {},
-            style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(Colors.white),
-              shape: WidgetStateProperty.all(const CircleBorder()),
-            ),
-          ),
-          Builder(
-            builder: (context) => IconButton(
-              icon: const Icon(
-                Icons.menu,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            ),
-          ),
-        ],
-      ),
-     
-     
       drawer: Navebar(),
       body: Column(
         children: [
           Stack(
+            alignment: Alignment.center,
             children: [
               Container(
                 alignment: Alignment.center,
                 height: longeur / 3,
                 decoration: const BoxDecoration(
-                  color: kPrimaryColor1,
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20),
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: largeur / 1.2,
-                        child: SVTextField(
-                          prefix: const Icon(Icons.search),
-                          controller: searcheController,
-                          hint: 'Search',
-                          keyboardType: TextInputType.name,
-                        ),
-                      ),
-                      const SizedBox(height: 25),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          _buildIconText(
-                              SvgPicture.asset(
-                                "assets/svg/credit.svg",
-                              ),
-                              'Crédit',
-                              () => context.push('/transaction/credit')),
-                          _buildIconText(
-                              SvgPicture.asset(
-                                "assets/svg/debit.svg",
-                              ),
-                              'Débit',
-                              () => context.push('/transaction/debit')),
-                          _buildIconText(
-                              SvgPicture.asset(
-                                "assets/svg/ajout.svg",
-                              ),
-                              'Ajouter',
-                              () => transationControllers
-                                  .getTransaction(context)),
-                        ],
-                      )
-                    ],
-                  ),
+                child: const Padding(
+                  padding: const EdgeInsets.all(8.0),
                 ),
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10,
-                      spreadRadius: 2,
-                      offset: Offset(8, 8),
-                    ),
-                  ],
+              Positioned(
+                top: 30,
+                left: largeur / 2.9,
+                child: CircleAvatar(
+                  radius: largeur / 4,
+                  backgroundColor: kSecondColor,
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                margin:
-                    EdgeInsets.only(top: longeur / 3.4, left: 10, right: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildFilterButton('Jour'),
-                        _buildFilterButton('Semaine'),
-                        _buildFilterButton('Mois'),
-                        _buildFilterButton('Année'),
-                      ],
-                    ),
-                  ],
+              ),
+              Positioned(
+                top: 5,
+                child: CircleAvatar(
+                  radius: largeur / 4,
+                  backgroundColor: kPrimaryColor1,
+                ),
+              ),
+              Positioned(
+                top: 20,
+                right: largeur / 3,
+                child: CircleAvatar(
+                  radius: largeur / 4,
+                  backgroundColor: kPrimaryColor1,
+                ),
+              ),
+              Positioned(
+                top: 40,
+                right: largeur / 5.5,
+                child: CircleAvatar(
+                  radius: largeur / 3.7,
+                  backgroundColor: const Color(0xFF737986),
+                ),
+              ),
+              Positioned(
+                top: 45,
+                right: largeur / 3.5,
+                child: CircleAvatar(
+                  radius: largeur / 3.8,
+                  backgroundColor: kPrimaryColor1,
+                ),
+              ),
+              Positioned(
+                top: 20,
+                right: largeur / 4.5,
+                child: CircleAvatar(
+                  radius: largeur / 3.6,
+                  backgroundColor: primaryButtonTextColor,
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Total entrées',
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w800,
+                            color: kPrimaryColor1),
+                      ),
+                      Text(
+                        '2 834,00 €',
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w900,
+                            color: kPrimaryColor1),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -248,15 +203,8 @@ class _TransationPageState extends State<TransationPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "Transactions",
+                    "Entrées",
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
-                  ),
-                  const SizedBox(height: 5),
-                  Container(
-                    margin: EdgeInsets.only(left: largeur / 5),
-                    width: largeur / 8,
-                    height: 4,
-                    color: kPrimaryColor1,
                   ),
                   const SizedBox(height: 10),
                   Expanded(
@@ -265,19 +213,31 @@ class _TransationPageState extends State<TransationPage> {
                       itemBuilder: (context, index) {
                         var transaction = transactions[index];
                         var transactionJson = transaction.toJson();
-                        return SizedBox(
-                          child: TransactionCard(
-                            logo: 'assets/images/image_two.png',
-                            label: transactionJson["institution"]["libelle"],
-                            date: transactionJson["dateValidation"] != null
-                                ? DateFormat('dd/MM/yyyy').format(
-                                    DateTime.parse(
-                                        transactionJson["dateValidation"]))
-                                : "Date inconnue",
-                            montant: transactionJson["montant"],
-                            type: transactionJson["categorie"]["libelle"],
-                          ),
-                        );
+
+                        if (transactionJson.containsKey("categorie") &&
+                            transactionJson["categorie"]
+                                .containsKey("libelle")) {
+                          if (transactionJson["categorie"]["libelle"].trim() ==
+                              "Crédit") {
+                            return SizedBox(
+                              child: TransactionCard(
+                                logo: 'assets/images/image_two.png',
+                                label: transactionJson["institution"]
+                                    ["libelle"],
+                                date: transactionJson["dateValidation"] != null
+                                    ? DateFormat('dd/MM/yyyy').format(
+                                        DateTime.parse(
+                                            transactionJson["dateValidation"]))
+                                    : "Date inconnue",
+                                montant: transactionJson["montant"],
+                                type: transactionJson["categorie"]["libelle"],
+                              ),
+                            );
+                          }
+                        }
+
+                        // Retourne un widget vide si la transaction ne correspond pas
+                        return SizedBox.shrink();
                       },
                     ),
                   ),
@@ -341,10 +301,24 @@ class _TransationPageState extends State<TransationPage> {
       child: Text(label),
     );
   }
-  // Widget _buildFilterButton(String label) {
-  //   return TextButton(
-  //     onPressed: () {},
-  //     child: Text(label),
-  //   );
-  // }
+}
+
+Widget _buildLayout(double left, double top, String label) {
+  return Positioned(
+    left: left,
+    top: top,
+    child: Container(
+      width: 174,
+      height: 169,
+      decoration: BoxDecoration(
+        color: Colors.blueAccent,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        label,
+        style: TextStyle(color: Colors.white, fontSize: 18),
+      ),
+    ),
+  );
 }
