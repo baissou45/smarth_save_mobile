@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smarth_save/screen/Athantification/login_page.dart';
+import 'package:smarth_save/screen/pages/contact.dart';
 import 'package:smarth_save/screen/pages/monComptePage.dart';
+import 'package:smarth_save/screen/pages/notificationPage.dart';
 import 'package:smarth_save/screen/pages/portfeuillesPage.dart';
 import 'package:smarth_save/screen/pages/projetPage.dart';
 import 'package:smarth_save/screen/pages/transationPage.dart';
@@ -21,17 +23,17 @@ final GoRouter router = GoRouter(
       builder: (context, state) => RedirectPage(),
     ),
     GoRoute(
-    path: '/login',
-    builder: (context, state) =>  LoginPage(),
-  ),
+      path: '/login',
+      builder: (context, state) => LoginPage(),
+    ),
     GoRoute(
-    path: '/onboarding',
-    builder: (context, state) => OnbordingPage(onComplete: () async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('hasSeenOnboarding', true);
-      context.go('/accueil');
-    }),
-  ),
+      path: '/onboarding',
+      builder: (context, state) => OnbordingPage(onComplete: () async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('hasSeenOnboarding', true);
+        context.go('/accueil');
+      }),
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return HomeApp(navigationShell: navigationShell);
@@ -42,6 +44,10 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: '/accueil',
               builder: (context, state) => const Wellcommepage(),
+            ),
+            GoRoute(
+              path: '/notification',
+              builder: (context, state) => const NotificationPage(),
             ),
           ],
         ),
@@ -76,7 +82,15 @@ final GoRouter router = GoRouter(
               builder: (context, state) => const MonComptePage(),
             ),
           ],
-        )
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/contact',
+              builder: (context, state) => const ContactPage(),
+            ),
+          ],
+        ),
       ],
     ),
   ],
