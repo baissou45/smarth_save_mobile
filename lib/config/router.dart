@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/screen/Athantification/login_page.dart';
 import 'package:smarth_save/screen/pages/contact.dart';
 import 'package:smarth_save/screen/pages/monComptePage.dart';
@@ -8,6 +10,7 @@ import 'package:smarth_save/screen/pages/notificationPage.dart';
 import 'package:smarth_save/screen/pages/portfeuillesPage.dart';
 import 'package:smarth_save/screen/pages/projetPage.dart';
 import 'package:smarth_save/screen/pages/transationPage.dart';
+import 'package:smarth_save/screen/pages/transations/transationScreen.dart';
 import 'package:smarth_save/screen/pages/wellcommePage.dart';
 import 'package:smarth_save/widgets/onbording.dart';
 import 'package:smarth_save/widgets/redirectPage.dart';
@@ -22,11 +25,132 @@ final GoRouter router = GoRouter(
       path: '/',
       builder: (context, state) => RedirectPage(),
     ),
+    // Route indépendante avec BottomNavigationBar
+    GoRoute(
+<<<<<<< HEAD
+      path: '/login',
+      builder: (context, state) => LoginPage(),
+    ),
+    GoRoute(
+=======
+      path: '/transaction/:type',
+      builder: (context, state) {
+        final type = state.pathParameters['type']!;
+        return Scaffold(
+          body: TransactionScreen(type: type),
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: seedColor,
+            // selectedItemColor: kPrimaryColor,
+            unselectedItemColor: Colors.black,
+            showUnselectedLabels:
+                true, // ✅ Assurez-vous que les labels sont visibles
+            showSelectedLabels:
+                true, // ✅ Ajouté pour être sûr que les labels s'affichent
+            // currentIndex: 3, // Correspond à l'onglet Transactions
+            onTap: (index) {
+              context.go([
+                '/accueil',
+                '/portfeuilles',
+                '/projets',
+                '/transactions',
+                '/moncompte'
+              ][index]);
+            },
+            items: [
+              BottomNavigationBarItem(
+                icon: Column(
+                  children: [
+                    SvgPicture.asset("assets/svg/home.svg", height: 22),
+                    SizedBox(
+                        height: 4), // ✅ Ajouté pour forcer l'affichage du texte
+                  ],
+                ),
+                activeIcon: Column(
+                  children: [
+                    SvgPicture.asset("assets/svg/home.svg",
+                        height: 24, color: kPrimaryColor1),
+                    SizedBox(height: 4), // ✅ Ajouté
+                  ],
+                ),
+                label: 'Accueil',
+              ),
+              BottomNavigationBarItem(
+                icon: Column(
+                  children: [
+                    SvgPicture.asset("assets/svg/portefeuille.svg", height: 22),
+                    SizedBox(height: 4),
+                  ],
+                ),
+                activeIcon: Column(
+                  children: [
+                    SvgPicture.asset("assets/svg/portefeuille.svg",
+                        height: 24, color: kPrimaryColor1),
+                    SizedBox(height: 4),
+                  ],
+                ),
+                label: 'Portfeuilles',
+              ),
+              BottomNavigationBarItem(
+                icon: Column(
+                  children: [
+                    SvgPicture.asset("assets/svg/projects.svg", height: 22),
+                    SizedBox(height: 4),
+                  ],
+                ),
+                activeIcon: Column(
+                  children: [
+                    SvgPicture.asset("assets/svg/projects.svg",
+                        height: 24, color: kPrimaryColor1),
+                    SizedBox(height: 4),
+                  ],
+                ),
+                label: 'Projets',
+              ),
+              BottomNavigationBarItem(
+                icon: Column(
+                  children: [
+                    SvgPicture.asset("assets/svg/transaction.svg", height: 22),
+                    SizedBox(height: 4),
+                  ],
+                ),
+                activeIcon: Column(
+                  children: [
+                    SvgPicture.asset("assets/svg/transaction.svg",
+                        height: 24, color: kPrimaryColor1),
+                    SizedBox(height: 4),
+                  ],
+                ),
+                label: 'Transactions',
+              ),
+              BottomNavigationBarItem(
+                icon: Column(
+                  children: [
+                    SvgPicture.asset("assets/svg/profil.svg", height: 22),
+                    SizedBox(height: 4),
+                  ],
+                ),
+                activeIcon: Column(
+                  children: [
+                    SvgPicture.asset("assets/svg/profil.svg",
+                        height: 24, color: kPrimaryColor1),
+                    SizedBox(height: 4),
+                  ],
+                ),
+                label: 'Mon compte',
+              ),
+            ],
+          ),
+        );
+      },
+    ),
+
     GoRoute(
       path: '/login',
       builder: (context, state) => LoginPage(),
     ),
     GoRoute(
+>>>>>>> 80f5de002482f7e203be9d9b1f2397b24c752dcd
       path: '/onboarding',
       builder: (context, state) => OnbordingPage(onComplete: () async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -70,7 +194,7 @@ final GoRouter router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/transations',
+              path: '/transactions',
               builder: (context, state) => const TransationPage(),
             ),
           ],
@@ -83,6 +207,7 @@ final GoRouter router = GoRouter(
             ),
           ],
         ),
+<<<<<<< HEAD
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -91,6 +216,16 @@ final GoRouter router = GoRouter(
             ),
           ],
         ),
+=======
+        // StatefulShellBranch(
+        //   routes: [
+        //     GoRoute(
+        //       path: '/transatdatail',
+        //       builder: (context, state) =>  TransactionScreen(type: "credit"),
+        //     ),
+        //   ],
+        // ),
+>>>>>>> 80f5de002482f7e203be9d9b1f2397b24c752dcd
       ],
     ),
   ],

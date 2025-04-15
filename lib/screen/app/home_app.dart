@@ -12,28 +12,30 @@ class HomeApp extends StatelessWidget {
     String currentLocation =
         GoRouter.of(context).routerDelegate.currentConfiguration.fullPath;
 
+    print(currentLocation);
+
     // Vérifiez si la route actuelle nécessite de masquer la BottomNavigationBar
     bool shouldShowBottomNavBar = !isRouteWithoutBottomNavBar(currentLocation);
 
     // Log pour vérifier la route actuelle
 
     return Scaffold(
-      body: navigationShell,
-      bottomNavigationBar: 
-      shouldShowBottomNavBar
-          ?
-           ScaffoldWithNavBar(
-              navigationShell: navigationShell,
-            )
-          : null,
-    );
+        body: navigationShell,
+        bottomNavigationBar:
+            shouldShowBottomNavBar
+                ?
+            ScaffoldWithNavBar(
+          navigationShell: navigationShell,
+        )
+        : null,
+        );
   }
 
-  // Fonction pour vérifier si la route actuelle doit masquer la BottomNavigationBar
+  // // Fonction pour vérifier si la route actuelle doit masquer la BottomNavigationBar
   bool isRouteWithoutBottomNavBar(String location) {
     // Ajoutez les routes où vous ne voulez pas afficher la BottomNavigationBar
     List<String> routesWithoutBottomNavBar = [
-      '/transations', // Exemple de route spécifique
+      '/transactions', // Exemple de route spécifique
     ];
     return routesWithoutBottomNavBar.contains(location);
   }

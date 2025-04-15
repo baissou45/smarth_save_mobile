@@ -83,6 +83,106 @@
         "date_validation": "2025-03-20T09:30:00"
       },
       {
+        "id": 4,
+        "institution": {
+          "id": 104,
+          "libelle": "BNP Paribas",
+          "logo": "https://example.com/logos/bnp_paribas.png"
+        },
+        "categorie": {
+          "id": 13,
+          "libelle": "Crédit"
+        },
+        "type": "Prêt",
+        "montant": 25000,
+        "devise": "EUR",
+        "commentaire": "Crédit immobilier maison",
+        "destinataire": "Marie Lefevre",
+        "destinataire_logo": "https://example.com/logos/marie_lefevre.png",
+        "date_emission": "2025-03-15",
+        "date_validation": "2025-03-20T09:30:00"
+      },
+      {
+        "id": 4,
+        "institution": {
+          "id": 104,
+          "libelle": "BNP Paribas",
+          "logo": "https://example.com/logos/bnp_paribas.png"
+        },
+        "categorie": {
+          "id": 13,
+          "libelle": "Crédit"
+        },
+        "type": "Prêt",
+        "montant": 25000,
+        "devise": "EUR",
+        "commentaire": "Crédit immobilier maison",
+        "destinataire": "Marie Lefevre",
+        "destinataire_logo": "https://example.com/logos/marie_lefevre.png",
+        "date_emission": "2025-03-15",
+        "date_validation": "2025-03-20T09:30:00"
+      },
+      {
+        "id": 4,
+        "institution": {
+          "id": 104,
+          "libelle": "BNP Paribas",
+          "logo": "https://example.com/logos/bnp_paribas.png"
+        },
+        "categorie": {
+          "id": 13,
+          "libelle": "Crédit"
+        },
+        "type": "Prêt",
+        "montant": 25000,
+        "devise": "EUR",
+        "commentaire": "Crédit immobilier maison",
+        "destinataire": "Marie Lefevre",
+        "destinataire_logo": "https://example.com/logos/marie_lefevre.png",
+        "date_emission": "2025-03-15",
+        "date_validation": "2025-03-20T09:30:00"
+      },
+      {
+        "id": 4,
+        "institution": {
+          "id": 104,
+          "libelle": "BNP Paribas",
+          "logo": "https://example.com/logos/bnp_paribas.png"
+        },
+        "categorie": {
+          "id": 13,
+          "libelle": "Crédit"
+        },
+        "type": "Prêt",
+        "montant": 25000,
+        "devise": "EUR",
+        "commentaire": "Crédit immobilier maison",
+        "destinataire": "Marie Lefevre",
+        "destinataire_logo": "https://example.com/logos/marie_lefevre.png",
+        "date_emission": "2025-03-15",
+        "date_validation": "2025-03-20T09:30:00"
+      },
+      {
+        "id": 4,
+        "institution": {
+          "id": 104,
+          "libelle": "BNP Paribas",
+          "logo": "https://example.com/logos/bnp_paribas.png"
+        },
+        "categorie": {
+          "id": 13,
+          "libelle": "Crédit"
+        },
+        "type": "Prêt",
+        "montant": 25000,
+        "devise": "EUR",
+        "commentaire": "Crédit immobilier maison",
+        "destinataire": "Marie Lefevre",
+        "destinataire_logo": "https://example.com/logos/marie_lefevre.png",
+        "date_emission": "2025-03-15",
+        "date_validation": "2025-03-20T09:30:00"
+      },
+      {
         "id": 5,
         "institution": {
           "id": 105,
