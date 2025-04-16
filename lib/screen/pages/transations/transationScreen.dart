@@ -33,7 +33,7 @@ class TransactionScreen extends StatelessWidget {
             color: Color.fromARGB(255, 126, 126, 126),
           ), // Icône de retour
           onPressed: () {
-            context.push("/");
+            context.go("/transactions");
             ; // Revient à l'écran précédent
           },
         ),
@@ -64,7 +64,7 @@ class TransactionScreen extends StatelessWidget {
                   alignment: Alignment.center,
                     child: TextButton(
                       onPressed: () {
-                        context.push('/transaction/credit');
+                        context.go('/transaction/credit');
                       },
                       child: Text(
                         "Crédi",
@@ -94,7 +94,7 @@ class TransactionScreen extends StatelessWidget {
                     alignment: Alignment.center,
                   child: TextButton(
                         onPressed: () {
-                          context.push('/transaction/debit');
+                          context.go('/transaction/debit');
                         },
                         child: Text("Débit",
                             textAlign: TextAlign.center,

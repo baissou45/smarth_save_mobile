@@ -8,6 +8,8 @@ import 'package:smarth_save/screen/pages/contact.dart';
 import 'package:smarth_save/screen/pages/monComptePage.dart';
 import 'package:smarth_save/screen/pages/notificationPage.dart';
 import 'package:smarth_save/screen/pages/portfeuillesPage.dart';
+import 'package:smarth_save/screen/pages/profil/detail_compte.dart';
+import 'package:smarth_save/screen/pages/projet/creatProjet_page.dart';
 import 'package:smarth_save/screen/pages/projetPage.dart';
 import 'package:smarth_save/screen/pages/transationPage.dart';
 import 'package:smarth_save/screen/pages/transations/transationScreen.dart';
@@ -25,14 +27,13 @@ final GoRouter router = GoRouter(
       path: '/',
       builder: (context, state) => RedirectPage(),
     ),
+    
     // Route indépendante avec BottomNavigationBar
     GoRoute(
-<<<<<<< HEAD
       path: '/login',
       builder: (context, state) => LoginPage(),
     ),
     GoRoute(
-=======
       path: '/transaction/:type',
       builder: (context, state) {
         final type = state.pathParameters['type']!;
@@ -150,7 +151,11 @@ final GoRouter router = GoRouter(
       builder: (context, state) => LoginPage(),
     ),
     GoRoute(
->>>>>>> 80f5de002482f7e203be9d9b1f2397b24c752dcd
+      path: '/creatProjet',
+      builder: (context, state) => const CreatprojetPage(),
+    ),
+    GoRoute(
+
       path: '/onboarding',
       builder: (context, state) => OnbordingPage(onComplete: () async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -203,11 +208,10 @@ final GoRouter router = GoRouter(
           routes: [
             GoRoute(
               path: '/moncompte',
-              builder: (context, state) => const MonComptePage(),
+              builder: (context, state) => const DetailCompte(),
             ),
           ],
         ),
-<<<<<<< HEAD
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -216,7 +220,6 @@ final GoRouter router = GoRouter(
             ),
           ],
         ),
-=======
         // StatefulShellBranch(
         //   routes: [
         //     GoRoute(
@@ -225,7 +228,6 @@ final GoRouter router = GoRouter(
         //     ),
         //   ],
         // ),
->>>>>>> 80f5de002482f7e203be9d9b1f2397b24c752dcd
       ],
     ),
   ],

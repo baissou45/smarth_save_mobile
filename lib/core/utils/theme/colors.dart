@@ -10,6 +10,7 @@ const Color kPrimaryColor1 = Color(0xFF009292);
 const Color kBackgroundColor = Color(0xff131557);
 const Color kSecondColor = Color.fromARGB(255, 196, 208, 235);
 const Color kSecondColor2 = Color(0xffF5F5F5);
+const Color kSecondColor3 = Color(0xFFEBEBEB);
 const Color foregroundColor = Color.fromARGB(255, 255, 212, 206);
 
 const Color linkedInBackgroundColor = Color(0xff0a66c2);
