@@ -27,6 +27,7 @@ final GoRouter router = GoRouter(
       path: '/',
       builder: (context, state) => RedirectPage(),
     ),
+    
     // Route indépendante avec BottomNavigationBar
     GoRoute(
       path: '/login',
