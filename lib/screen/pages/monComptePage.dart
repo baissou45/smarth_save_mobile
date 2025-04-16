@@ -30,12 +30,12 @@ class _MonComptePageState extends State<MonComptePage> {
 
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: longeur / 30.0),
+        padding: EdgeInsets.only(top: longeur / 25.0),
         child: Column(
           children: [
             Center(
               child: SizedBox(
-                height: longeur / 2,
+                height: longeur / 2.4,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -79,8 +79,7 @@ class _MonComptePageState extends State<MonComptePage> {
                 ),
               ),
             ),
-            SizedBox(
-              height: longeur / 2.5,
+            Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
