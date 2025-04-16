@@ -35,7 +35,7 @@ class SigUpPage extends StatelessWidget {
           children: [
             Container(
               padding: EdgeInsets.symmetric(
-                  vertical: longeur / 10.0, horizontal: largeur / 30.0),
+                  vertical: longeur / 10.0, horizontal: largeur / 30.0,),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -46,7 +46,7 @@ class SigUpPage extends StatelessWidget {
                         style: GoogleFonts.poppins(
                             fontSize: 43,
                             fontWeight: FontWeight.w800,
-                            color: Colors.white),
+                            color: Colors.white,),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -101,13 +101,13 @@ class SigUpPage extends StatelessWidget {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                       content: Text(
-                                          'Les mots de passe ne correspondent pas')));
+                                          'Les mots de passe ne correspondent pas',),),);
                             }
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content: Text(
-                                        'Veuillez remplir tous les champs')));
+                                        'Veuillez remplir tous les champs',),),);
                           }
 
                           // navigationTonextPage(context, const PlaidLogin());
@@ -115,19 +115,19 @@ class SigUpPage extends StatelessWidget {
                         
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all(
-                              const Color.fromARGB(255, 15, 45, 179)),
+                              const Color.fromARGB(255, 15, 45, 179),),
                           shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10))),
+                              borderRadius: BorderRadius.circular(10),),),
                           padding: WidgetStateProperty.all(
-                              const EdgeInsets.symmetric(horizontal: 30)),
+                              const EdgeInsets.symmetric(horizontal: 30),),
                         ),
-                        child: const Text("Inscrivez-vous",
+                        child: const Text('Inscrivez-vous',
                             style: TextStyle(
                               fontSize: 15,
                               color: Colors.white,
-                            )),
+                            ),),
                       ),
-                    ])
+                    ],),
                   ],
                 ),
               ),
@@ -137,7 +137,7 @@ class SigUpPage extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 11,
-                  )),
+                  ),),
               TextButton(
                 onPressed: () {
                   navigationTonextPage(context, LoginPage());
@@ -146,20 +146,20 @@ class SigUpPage extends StatelessWidget {
                     style: GoogleFonts.poppins(
                         color: Colors.white,
                         fontSize: 13,
-                        fontWeight: FontWeight.w600)),
-              )
-            ]),
+                        fontWeight: FontWeight.w600,),),
+              ),
+            ],),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               SizedBox(
                   width: 100,
                   height: 3,
                   child: Container(
                     color: Colors.white,
-                  )),
+                  ),),
               const SizedBox(width: 20),
               const SizedBox(
-                child: Text("ou",
-                    style: TextStyle(fontSize: 20, color: Colors.white)),
+                child: Text('ou',
+                    style: TextStyle(fontSize: 20, color: Colors.white),),
               ),
               const SizedBox(width: 20),
               SizedBox(
@@ -167,15 +167,15 @@ class SigUpPage extends StatelessWidget {
                   height: 3,
                   child: Container(
                     color: Colors.white,
-                  )),
-            ]),
+                  ),),
+            ],),
             const SizedBox(height: 15),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Container(
                 width: 55,
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(100)),
+                    borderRadius: BorderRadius.circular(100),),
                 child: TextButton(
                   onPressed: () {
                     navigationTonextPage(context, const PlaidLogin());
@@ -183,16 +183,16 @@ class SigUpPage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
-                  )),
-                  child: Image.asset("assets/images/googleBtn.png",
-                      width: 40, height: 40),
+                  ),),
+                  child: Image.asset('assets/images/googleBtn.png',
+                      width: 40, height: 40,),
                 ),
               ),
-            ]),
+            ],),
             const SizedBox(height: 15),
           ],
         ),
       ),
-    )));
+    ),),);
   }
 }

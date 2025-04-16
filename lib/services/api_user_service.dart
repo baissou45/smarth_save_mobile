@@ -20,7 +20,7 @@ class ApiUserService {
         'Accept': 'application/json',
       },
     );
-    print("il est connecter ${response.body}");
+    print('il est connecter ${response.body}');
 
 
     // Vérification du statut de la réponse
@@ -35,8 +35,8 @@ class ApiUserService {
   Future<dynamic> login(String email, String password) async {
     String url = api.baseURL + loginRoute;
     var body = jsonEncode({
-      "email": email,
-      "password": password,
+      'email': email,
+      'password': password,
     });
 
     try {
@@ -53,11 +53,11 @@ class ApiUserService {
       // Vérification du statut de la réponse
 
       if (response.statusCode == 200) {
-        print("Response: ${jsonDecode(response.body)}");
+        print('Response: ${jsonDecode(response.body)}');
 
         return jsonDecode(response.body);
       } else {
-        print("Response: ${jsonDecode(response.body)}");
+        print('Response: ${jsonDecode(response.body)}');
 
         return jsonDecode(response.body);
       }
@@ -70,15 +70,15 @@ class ApiUserService {
     // Construction de l'URL
     String url = api.baseURL + modifmotdepassefRoute;
     var body = jsonEncode({
-      "email": email,
+      'email': email,
     });
     // Envoi de la requête POST à l'API
     final response = await http.post(Uri.parse(url), body: body, headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-    });
+    },);
     
-    print("Response: ${jsonDecode(response.body)}");
+    print('Response: ${jsonDecode(response.body)}');
 
 
     // Vérification du statut de la réponse

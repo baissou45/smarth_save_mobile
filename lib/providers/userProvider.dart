@@ -17,7 +17,7 @@ class UserProvider extends ChangeNotifier {
   String? get message => _message;
   String? get error => _error;
 
-  get response => null;
+  Null get response => null;
 
   Future<bool> register(UserModel user) async {
     _isLoading = true; // Début du chargement
@@ -39,7 +39,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners(); // Notifier les écouteurs que l'état a changé
     try {
       var response = await ApiUserService().login(email, password);
-      _message = response["message"];
+      _message = response['message'];
       _token = response['token'];
       await _saveToken(_token!);
       _user = UserModel.fromMap(response['data']);
@@ -58,9 +58,9 @@ class UserProvider extends ChangeNotifier {
       var response = await ApiUserService().modifmotdepasse(email);
       print("la reponse ${response["erreur"]}");
       if (response.containsKey('erreur')) {
-        _error = response["erreur"];
+        _error = response['erreur'];
       } else {
-        _message = response["message"];
+        _message = response['message'];
       }
       notifyListeners();
     } catch (e) {

@@ -14,7 +14,7 @@ class Wellcommepage extends StatefulWidget {
 }
 
 class _WellcommepageState extends State<Wellcommepage> {
-  var montant = "1095,02";
+  var montant = '1095,02';
   @override
   Widget build(BuildContext context) {
     double largeur = MediaQuery.of(context).size.width;
@@ -29,11 +29,11 @@ class _WellcommepageState extends State<Wellcommepage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Bienvenue",
+              'Bienvenue',
               style: TextStyle(
                   fontSize: largeur / 30,
                   color: Colors.white,
-                  fontWeight: FontWeight.normal),
+                  fontWeight: FontWeight.normal,),
             ),
             Text(
               "${UserModel.sessionUser?.prenom ?? ""} ${UserModel.sessionUser?.nom ?? ""}",
@@ -63,9 +63,9 @@ class _WellcommepageState extends State<Wellcommepage> {
                   backgroundColor: Colors.white,
                   radius: 30, // Ajuste la taille
                   child: Icon(Icons
-                      .notifications_active_outlined), // Utilisation directe du widget SVG ou icône
+                      .notifications_active_outlined,), // Utilisation directe du widget SVG ou icône
                 ),
-              )),
+              ),),
           // IconButton(
           //   onPressed: ()   {
           //     Scaffold.of(context).openDrawer(); // Ouvrir le drawer
@@ -101,11 +101,11 @@ class _WellcommepageState extends State<Wellcommepage> {
                     ),
                     SizedBox(height: hauteur / 60),
                     Text(
-                      "Solde",
+                      'Solde',
                       style: TextStyle(
                           fontSize: largeur / 20,
                           color: Colors.white,
-                          fontWeight: FontWeight.w600),
+                          fontWeight: FontWeight.w600,),
                     ),
                   ],
                 ),
@@ -198,7 +198,7 @@ class _WellcommepageState extends State<Wellcommepage> {
               ),
             ],
           ),
-        ]),
+        ],),
       ),
     );
   }

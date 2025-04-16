@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:smarth_save/screen/app/bottom_navbar.dart';
 
 class HomeApp extends StatelessWidget {
-  const HomeApp({super.key, required this.navigationShell});
+  const HomeApp({required this.navigationShell, super.key});
   final StatefulNavigationShell navigationShell;
 
   @override
@@ -35,7 +35,7 @@ class HomeApp extends StatelessWidget {
   bool isRouteWithoutBottomNavBar(String location) {
     // Ajoutez les routes où vous ne voulez pas afficher la BottomNavigationBar
     List<String> routesWithoutBottomNavBar = [
-      '/transactions','/moncompte' // Exemple de route spécifique
+      '/transactions','/moncompte', // Exemple de route spécifique
     ];
     return routesWithoutBottomNavBar.contains(location);
   }

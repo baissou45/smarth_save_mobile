@@ -10,14 +10,14 @@ Widget onboard(
     child: Center(
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
          Image(
-          image: AssetImage("assets/images/$image"),
+          image: AssetImage('assets/images/$image'),
         ),
         const SizedBox(
           height: 60,
         ),
         Text(title,
             style: GoogleFonts.poppins(
-                fontSize: 16, fontWeight: FontWeight.w900)),
+                fontSize: 16, fontWeight: FontWeight.w900,),),
         const SizedBox(
           height: 40,
         ),
@@ -27,9 +27,9 @@ Widget onboard(
               description,
               textAlign: TextAlign.center,
               style: GoogleFonts.poppins(
-                  fontSize: 16, fontWeight: FontWeight.w500)),
+                  fontSize: 16, fontWeight: FontWeight.w500,),),
         ),
-      ]),
+      ],),
     ),
   );
 }

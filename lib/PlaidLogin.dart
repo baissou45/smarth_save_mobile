@@ -60,13 +60,13 @@ class _ExState extends State<PlaidLogin> {
   void _onEvent(LinkEvent event) {
     final name = event.name;
     final metadata = event.metadata.description();
-    print("onEvent: $name, metadata: $metadata");
+    print('onEvent: $name, metadata: $metadata');
   }
 
   void _onSuccess(LinkSuccess event) {
     final token = event.publicToken;
     final metadata = event.metadata.description();
-    print("onSuccess: $token, metadata: $metadata");
+    print('onSuccess: $token, metadata: $metadata');
     setState(() => successObject = event);
     navigationTonextPage(context, const Dashboard());
   }
@@ -74,7 +74,7 @@ class _ExState extends State<PlaidLogin> {
   void _onExit(LinkExit event) {
     final metadata = event.metadata.description();
     final error = event.error?.description();
-    print("onExit metadata: $metadata, error: $error");
+    print('onExit metadata: $metadata, error: $error');
   }
 
   @override
@@ -94,19 +94,19 @@ class _ExState extends State<PlaidLogin> {
                   child: IntrinsicHeight(
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                          vertical: longeur / 15.0, horizontal: longeur / 50.0),
+                          vertical: longeur / 15.0, horizontal: longeur / 50.0,),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const CircularProgressIndicator(),
                           SizedBox(height: longeur / 50.0),
-                          const Text("Authentification avce votre banque"),
+                          const Text('Authentification avce votre banque'),
                         ],
                       ),
                     ),
                   ),
                 ),
               )
-            : null);
+            : null,);
   }
 }

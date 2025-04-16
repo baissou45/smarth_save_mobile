@@ -6,11 +6,11 @@ import 'package:smarth_save/utile/widgets/commonWidgets.dart';
 
 //errorToast ______________________________
 errorToast(BuildContext context, error){
-  return GFToast.showToast("$error", context, toastDuration: 4, backgroundColor: Colors.red.shade700, textStyle: normalFont(Colors.white, 14), toastPosition: GFToastPosition.BOTTOM,);
+  return GFToast.showToast('$error', context, toastDuration: 4, backgroundColor: Colors.red.shade700, textStyle: normalFont(Colors.white, 14), toastPosition: GFToastPosition.BOTTOM,);
 }
 //errorToast ______________________________
 successToast(BuildContext context, error){
-  return GFToast.showToast("$error", context, toastDuration: 4, backgroundColor:  Colors.green, textStyle: normalFont(Colors.white, 14), toastPosition: GFToastPosition.BOTTOM,);
+  return GFToast.showToast('$error', context, toastDuration: 4, backgroundColor:  Colors.green, textStyle: normalFont(Colors.white, 14), toastPosition: GFToastPosition.BOTTOM,);
 }
 
 
@@ -32,8 +32,8 @@ void showSimpleSnack(String value, IconData icon, Color iconColor,context){
           icon,
           color: iconColor,
           size: 26,
-        )
+        ),
       ],
     ),
-  ));
+  ),);
 }

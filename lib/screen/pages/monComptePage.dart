@@ -16,7 +16,7 @@ class _MonComptePageState extends State<MonComptePage> {
     double largeur = MediaQuery.of(context).size.width;
 
     rounded_icon(IconData icon, Color bg_color, Color icon_color,
-        {double size = 9, double icon_size = 25}) {
+        {double size = 9, double icon_size = 25,}) {
       return Container(
         width: largeur / size,
         height: largeur / size,
@@ -43,7 +43,7 @@ class _MonComptePageState extends State<MonComptePage> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: largeur / 12,
-                            fontWeight: FontWeight.w900)),
+                            fontWeight: FontWeight.w900,),),
                     Stack(
                       children: [
                         CircleAvatar(
@@ -55,7 +55,7 @@ class _MonComptePageState extends State<MonComptePage> {
                           bottom: 0,
                           right: largeur / 50,
                           child: rounded_icon(
-                              Icons.edit, Colors.teal, Colors.white),
+                              Icons.edit, Colors.teal, Colors.white,),
                         ),
                       ],
                     ),
@@ -65,16 +65,16 @@ class _MonComptePageState extends State<MonComptePage> {
                           "${UserModel.sessionUser?.prenom ?? ""} ${UserModel.sessionUser?.nom ?? ""}",
                           style: TextStyle(
                               fontSize: largeur / 20,
-                              fontWeight: FontWeight.w900),
+                              fontWeight: FontWeight.w900,),
                         ),
                         Text("${UserModel.sessionUser?.email ?? ""}",
                             style: TextStyle(
                                 decoration: TextDecoration.underline,
                                 fontStyle: FontStyle.italic,
                                 fontSize: largeur / 30,
-                                fontWeight: FontWeight.w900)),
+                                fontWeight: FontWeight.w900,),),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),

@@ -28,7 +28,7 @@ class _TransationPageDebitState extends State<TransationPageDebit> {
   List<TransactionModel> allTransactions = []; // Liste des transactions
   List<TransactionModel> filteredTransactions = []; // Liste filtrée
 
-  String selectedFilter = ""; // 📌 Par défaut, filtre par mois
+  String selectedFilter = ''; // 📌 Par défaut, filtre par mois
   @override
   void initState() {
     // TODO: implement initState
@@ -38,7 +38,7 @@ class _TransationPageDebitState extends State<TransationPageDebit> {
 
 // Fonction pour appeler le controller et récupérer les transactions
   Future<void> _loadTransactions() async {
-    print("avent");
+    print('avent');
     final transactionsFromController =
         await transationControllers.getTransaction(context);
     setState(() {
@@ -57,7 +57,7 @@ class _TransationPageDebitState extends State<TransationPageDebit> {
       DateTime now = DateTime.now();
 
       transactions = transactions.where((transaction) {
-        var dateValidation = transaction.toJson()["dateValidation"];
+        var dateValidation = transaction.toJson()['dateValidation'];
 
         if (dateValidation is String) {
           // Convertir la date String en DateTime
@@ -67,18 +67,18 @@ class _TransationPageDebitState extends State<TransationPageDebit> {
         if (dateValidation is! DateTime) return false; // Éviter les erreurs
 
         // Filtrage en fonction de la période
-        if (filterType == "Jour") {
+        if (filterType == 'Jour') {
           return dateValidation.year == now.year &&
               dateValidation.month == now.month &&
               dateValidation.day == now.day;
-        } else if (filterType == "Semaine") {
-          DateTime weekAgo = now.subtract(Duration(days: 7));
+        } else if (filterType == 'Semaine') {
+          DateTime weekAgo = now.subtract(const Duration(days: 7));
           return dateValidation.isAfter(weekAgo) &&
               dateValidation.isBefore(now);
-        } else if (filterType == "Mois") {
+        } else if (filterType == 'Mois') {
           return dateValidation.year == now.year &&
               dateValidation.month == now.month;
-        } else if (filterType == "Année") {
+        } else if (filterType == 'Année') {
           return dateValidation.year == now.year;
         }
 
@@ -91,7 +91,7 @@ class _TransationPageDebitState extends State<TransationPageDebit> {
   Widget build(BuildContext context) {
     double largeur = MediaQuery.of(context).size.width;
     double longeur = MediaQuery.of(context).size.height; // Correction ici
-    print("la taille ${transactions.length}");
+    print('la taille ${transactions.length}');
     return Scaffold(
       drawer: Navebar(),
       body: Column(
@@ -165,14 +165,14 @@ class _TransationPageDebitState extends State<TransationPageDebit> {
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w800,
-                            color: errorToastColor),
+                            color: errorToastColor,),
                       ),
                       Text(
                         '2 834,00 €',
                         style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w900,
-                            color: errorToastColor),
+                            color: errorToastColor,),
                       ),
                     ],
                   ),
@@ -204,7 +204,7 @@ class _TransationPageDebitState extends State<TransationPageDebit> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "Sorties",
+                    'Sorties',
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
                   ),
                   const SizedBox(height: 10),
@@ -215,23 +215,23 @@ class _TransationPageDebitState extends State<TransationPageDebit> {
                         var transaction = transactions[index];
                         var transactionJson = transaction.toJson();
 
-                        if (transactionJson.containsKey("categorie") &&
-                            transactionJson["categorie"]
-                                .containsKey("libelle")) {
-                          if (transactionJson["categorie"]["libelle"].trim() !=
-                              "Crédit") {
+                        if (transactionJson.containsKey('categorie') &&
+                            transactionJson['categorie']
+                                .containsKey('libelle')) {
+                          if (transactionJson['categorie']['libelle'].trim() !=
+                              'Crédit') {
                             return SizedBox(
                               child: TransactionCard(
                                 logo: 'assets/images/image_two.png',
-                                label: transactionJson["institution"]
-                                    ["libelle"],
-                                date: transactionJson["dateValidation"] != null
+                                label: transactionJson['institution']
+                                    ['libelle'],
+                                date: transactionJson['dateValidation'] != null
                                     ? DateFormat('dd/MM/yyyy').format(
                                         DateTime.parse(
-                                            transactionJson["dateValidation"]))
-                                    : "Date inconnue",
-                                montant: transactionJson["montant"],
-                                type: transactionJson["categorie"]["libelle"],
+                                            transactionJson['dateValidation'],),)
+                                    : 'Date inconnue',
+                                montant: transactionJson['montant'],
+                                type: transactionJson['categorie']['libelle'],
                               ),
                             );
                           }
@@ -274,7 +274,7 @@ class _TransationPageDebitState extends State<TransationPageDebit> {
                 onPressed: () {
                   action();
                 },
-                icon: icon), // Utilisation directe du widget SVG ou icône
+                icon: icon,), // Utilisation directe du widget SVG ou icône
           ),
         ),
         Text(

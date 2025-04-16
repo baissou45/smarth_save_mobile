@@ -55,22 +55,22 @@ final GoRouter router = GoRouter(
                 '/portfeuilles',
                 '/projets',
                 '/transactions',
-                '/moncompte'
-              ][index]);
+                '/moncompte',
+              ][index],);
             },
             items: [
               BottomNavigationBarItem(
                 icon: Column(
                   children: [
-                    SvgPicture.asset("assets/svg/home.svg", height: 22),
+                    SvgPicture.asset('assets/svg/home.svg', height: 22),
                     SizedBox(
-                        height: 4), // ✅ Ajouté pour forcer l'affichage du texte
+                        height: 4,), // ✅ Ajouté pour forcer l'affichage du texte
                   ],
                 ),
                 activeIcon: Column(
                   children: [
-                    SvgPicture.asset("assets/svg/home.svg",
-                        height: 24, color: kPrimaryColor1),
+                    SvgPicture.asset('assets/svg/home.svg',
+                        height: 24, color: kPrimaryColor1,),
                     SizedBox(height: 4), // ✅ Ajouté
                   ],
                 ),
@@ -79,14 +79,14 @@ final GoRouter router = GoRouter(
               BottomNavigationBarItem(
                 icon: Column(
                   children: [
-                    SvgPicture.asset("assets/svg/portefeuille.svg", height: 22),
+                    SvgPicture.asset('assets/svg/portefeuille.svg', height: 22),
                     SizedBox(height: 4),
                   ],
                 ),
                 activeIcon: Column(
                   children: [
-                    SvgPicture.asset("assets/svg/portefeuille.svg",
-                        height: 24, color: kPrimaryColor1),
+                    SvgPicture.asset('assets/svg/portefeuille.svg',
+                        height: 24, color: kPrimaryColor1,),
                     SizedBox(height: 4),
                   ],
                 ),
@@ -95,14 +95,14 @@ final GoRouter router = GoRouter(
               BottomNavigationBarItem(
                 icon: Column(
                   children: [
-                    SvgPicture.asset("assets/svg/projects.svg", height: 22),
+                    SvgPicture.asset('assets/svg/projects.svg', height: 22),
                     SizedBox(height: 4),
                   ],
                 ),
                 activeIcon: Column(
                   children: [
-                    SvgPicture.asset("assets/svg/projects.svg",
-                        height: 24, color: kPrimaryColor1),
+                    SvgPicture.asset('assets/svg/projects.svg',
+                        height: 24, color: kPrimaryColor1,),
                     SizedBox(height: 4),
                   ],
                 ),
@@ -111,14 +111,14 @@ final GoRouter router = GoRouter(
               BottomNavigationBarItem(
                 icon: Column(
                   children: [
-                    SvgPicture.asset("assets/svg/transaction.svg", height: 22),
+                    SvgPicture.asset('assets/svg/transaction.svg', height: 22),
                     SizedBox(height: 4),
                   ],
                 ),
                 activeIcon: Column(
                   children: [
-                    SvgPicture.asset("assets/svg/transaction.svg",
-                        height: 24, color: kPrimaryColor1),
+                    SvgPicture.asset('assets/svg/transaction.svg',
+                        height: 24, color: kPrimaryColor1,),
                     SizedBox(height: 4),
                   ],
                 ),
@@ -127,14 +127,14 @@ final GoRouter router = GoRouter(
               BottomNavigationBarItem(
                 icon: Column(
                   children: [
-                    SvgPicture.asset("assets/svg/profil.svg", height: 22),
+                    SvgPicture.asset('assets/svg/profil.svg', height: 22),
                     SizedBox(height: 4),
                   ],
                 ),
                 activeIcon: Column(
                   children: [
-                    SvgPicture.asset("assets/svg/profil.svg",
-                        height: 24, color: kPrimaryColor1),
+                    SvgPicture.asset('assets/svg/profil.svg',
+                        height: 24, color: kPrimaryColor1,),
                     SizedBox(height: 4),
                   ],
                 ),
@@ -161,7 +161,7 @@ final GoRouter router = GoRouter(
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setBool('hasSeenOnboarding', true);
         context.go('/accueil');
-      }),
+      },),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {

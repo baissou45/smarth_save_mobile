@@ -28,11 +28,11 @@ UserModel.fromMap(Map<String, dynamic> json) {
 
 // Méthode pour convertir UserModel en Map (pour l'enregistrer)
 Map<String, dynamic> toMap() => {
-  "nom": nom,
-  "prenom": prenom,
-  "email": email,
-  "password": password,
-  "token": token,
+  'nom': nom,
+  'prenom': prenom,
+  'email': email,
+  'password': password,
+  'token': token,
 };
 
 
@@ -40,24 +40,19 @@ Map<String, dynamic> toMap() => {
  static Future<void> saveUser(UserModel user) async {
 SharedPreferences pref = await SharedPreferences.getInstance();
 String data = json.encode(user.toMap());  // Convertir l'utilisateur en JSON
-await pref.setString("user", data);  // Sauvegarde
+await pref.setString('user', data);  // Sauvegarde
 }
 
 // Méthode asynchrone pour récupérer un utilisateur
-static  getUser() async {
+static  Future<UserModel?>? getUser() async {
 SharedPreferences pref = await SharedPreferences.getInstance();
-String? data = pref.getString("user");  // Récupération de la chaîne JSON
+String? data = pref.getString('user');  // Récupération de la chaîne JSON
 
-if (data != null) {
-  // Si les données existent, on les décode et les assigne à sessionUser
-  Map<String, dynamic> decodedData = json.decode(data);
-  sessionUser = UserModel.fromMap(decodedData);
-  print("Utilisateur récupéré : ${sessionUser!.nom}");
-  return sessionUser;
-} else {
-  print("Aucun utilisateur trouvé.");
-  return null;
-}
+// Si les données existent, on les décode et les assigne à sessionUser
+Map<String, dynamic> decodedData = json.decode(data);
+sessionUser = UserModel.fromMap(decodedData);
+print("Utilisateur récupéré : ${sessionUser!.nom}");
+return sessionUser;
 }
 
 

@@ -48,7 +48,7 @@ class _SVTextFieldState extends State<SVTextField> {
         ),
         prefixIcon: widget.prefix,
         labelText: widget.label,
-        hintText: widget.hint ?? "",
+        hintText: widget.hint ?? '',
         filled: true, // Active le remplissage
         fillColor: Colors.white, // Couleur de fond du champ
         suffixIcon: widget.isPassword

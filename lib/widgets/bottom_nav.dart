@@ -20,7 +20,7 @@ class BottomNav extends StatelessWidget {
             onPressed: () {
               UserModel.sessionUser = null;
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginPage()));
+                  MaterialPageRoute(builder: (context) => LoginPage()),);
             },
             icon: const Icon(Icons.logout, color: Colors.white),
             label: const Text(
@@ -38,7 +38,7 @@ class BottomNav extends StatelessWidget {
               // TODO: Implement chatbot action
             },
             icon: const Icon(CupertinoIcons.chat_bubble_2_fill,
-                color: Colors.white),
+                color: Colors.white,),
             label: const Text(
               'ChatBot',
               style: TextStyle(color: Colors.white),

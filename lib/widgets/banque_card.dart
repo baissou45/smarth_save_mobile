@@ -5,9 +5,7 @@ class BanqueCard extends StatelessWidget {
   final String nom;
 
   const BanqueCard({
-    super.key,
-    required this.logo,
-    required this.nom,
+    required this.logo, required this.nom, super.key,
   });
 
   @override
@@ -49,7 +47,7 @@ class BanqueCard extends StatelessWidget {
                     
                     children: [
                       Text(
-                        nom.split(" ").first,
+                        nom.split(' ').first,
                         maxLines: 1, // Empêche le débordement vertical
                         overflow: TextOverflow
                             .ellipsis, // Coupe proprement si trop long
@@ -59,7 +57,7 @@ class BanqueCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        nom.split(" ").skip(1).join(" "),
+                        nom.split(' ').skip(1).join(' '),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(

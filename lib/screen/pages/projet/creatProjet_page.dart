@@ -34,7 +34,7 @@ class _CreatprojetPageState extends State<CreatprojetPage> {
             onPressed: () {
               context.pop(); // Revient à l'écran précédent
             },
-          )),
+          ),),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
@@ -43,34 +43,34 @@ class _CreatprojetPageState extends State<CreatprojetPage> {
               height: longeur / 150,
             ),
             LabeledTextField(
-                label: "Nom du projet", hint: "", controller: nomController),
+                label: 'Nom du projet', hint: '', controller: nomController,),
             SizedBox(
               height: longeur / 150,
             ),
             SelectInput(
-              label: "Catégorie du projet *",
-              items: ["Option 1", "Option 2", "Option 3"],
+              label: 'Catégorie du projet *',
+              items: ['Option 1', 'Option 2', 'Option 3'],
               onChanged: (val) {
-                print("Sélection : $val");
+                print('Sélection : $val');
               },
             ),
             SizedBox(
             height: longeur / 150,
           ),
             SelectInput(
-              label: "Période du projet  *",
-              items: ["Option 1", "Option 2", "Option 3"],
+              label: 'Période du projet  *',
+              items: ['Option 1', 'Option 2', 'Option 3'],
               onChanged: (val) {
-                print("Sélection : $val");
+                print('Sélection : $val');
               },
             ),
             SizedBox(
               height: longeur / 150,
             ),
             LabeledTextField(
-                label: "Montant estimé ",
-                hint: "",
-                controller: montantController),
+                label: 'Montant estimé ',
+                hint: '',
+                controller: montantController,),
             SizedBox(
               height: longeur / 10,
             ),
@@ -81,17 +81,17 @@ class _CreatprojetPageState extends State<CreatprojetPage> {
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(kPrimaryColor1),
                 shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10))),
+                    borderRadius: BorderRadius.circular(10),),),
                 padding: WidgetStateProperty.all(
-                    const EdgeInsets.symmetric(horizontal: 100)),
+                    const EdgeInsets.symmetric(horizontal: 100),),
               ),
-              child: const Text("Enregistrer",
+              child: const Text('Enregistrer',
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.white,
-                  )),
+                  ),),
             ),
-          ]),
+          ],),
         ),
       ),
     );

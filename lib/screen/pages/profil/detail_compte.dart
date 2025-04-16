@@ -16,15 +16,15 @@ class DetailCompte extends StatefulWidget {
 class _DetailCompteState extends State<DetailCompte> {
   final _formKey = GlobalKey<FormState>();
   var nomController = TextEditingController(
-      text: "${UserModel.sessionUser?.prenom} ${UserModel.sessionUser?.nom}");
+      text: '${UserModel.sessionUser?.prenom} ${UserModel.sessionUser?.nom}',);
   var userController =
-      TextEditingController(text: "${UserModel.sessionUser?.nom}");
+      TextEditingController(text: '${UserModel.sessionUser?.nom}');
   var emailController =
-      TextEditingController(text: "${UserModel.sessionUser?.email}");
+      TextEditingController(text: '${UserModel.sessionUser?.email}');
   var phoneController =
-      TextEditingController(text: "${UserModel.sessionUser?.email}");
+      TextEditingController(text: '${UserModel.sessionUser?.email}');
   var passController =
-      TextEditingController(text: "${UserModel.sessionUser?.password}");
+      TextEditingController(text: '${UserModel.sessionUser?.password}');
   @override
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _DetailCompteState extends State<DetailCompte> {
             color: kPrimaryColor1,
           ), // Icône de retour
           onPressed: () {
-            context.go("/"); // Revient à l'écran précédent
+            context.go('/'); // Revient à l'écran précédent
           },
         ),
       ),
@@ -49,27 +49,27 @@ class _DetailCompteState extends State<DetailCompte> {
         child: SingleChildScrollView(
           child: Column(children: [
             LabeledTextField(
-                label: "Nom complet",
-                hint: "",
-                defaultValue: "Robert Fox",
-                controller: nomController),
+                label: 'Nom complet',
+                hint: '',
+                defaultValue: 'Robert Fox',
+                controller: nomController,),
             SizedBox(
               height: longeur / 150,
             ),
             LabeledTextField(
                 label: "Nom d'utilisateur",
-                hint: "",
-                controller: userController),
+                hint: '',
+                controller: userController,),
             SizedBox(
               height: longeur / 150,
             ),
             LabeledTextField(
-                label: "Email", hint: "", controller: emailController),
+                label: 'Email', hint: '', controller: emailController,),
             SizedBox(
               height: longeur / 150,
             ),
             LabeledTextField(
-                label: "Mot de passe", hint: "", controller: passController),
+                label: 'Mot de passe', hint: '', controller: passController,),
             Container(
               width: double.infinity,
               alignment: Alignment.centerRight,
@@ -77,11 +77,11 @@ class _DetailCompteState extends State<DetailCompte> {
                 onPressed: () async {
                   // navigationTonextPage(context, const PlaidLogin());
                 },
-                child: const Text("Modifier le mot de passe",
+                child: const Text('Modifier le mot de passe',
                     style: TextStyle(
                       fontSize: 15,
                       color: kPrimaryColor1,
-                    )),
+                    ),),
               ),
             ),
             SizedBox(
@@ -94,17 +94,17 @@ class _DetailCompteState extends State<DetailCompte> {
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(kPrimaryColor1),
                 shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10))),
+                    borderRadius: BorderRadius.circular(10),),),
                 padding: WidgetStateProperty.all(
-                    const EdgeInsets.symmetric(horizontal: 100)),
+                    const EdgeInsets.symmetric(horizontal: 100),),
               ),
-              child: const Text("Enregistrer",
+              child: const Text('Enregistrer',
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.white,
-                  )),
+                  ),),
             ),
-          ]),
+          ],),
         ),
       ),
     );

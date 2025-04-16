@@ -7,9 +7,7 @@ class SelectInput extends StatefulWidget {
   final Function(String?)? onChanged;
 
   const SelectInput({
-    Key? key,
-    required this.label,
-    required this.items,
+    required this.label, required this.items, Key? key,
     this.onChanged,
   }) : super(key: key);
 

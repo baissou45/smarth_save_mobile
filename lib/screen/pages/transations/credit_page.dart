@@ -28,7 +28,7 @@ class _TransationPageCrediState extends State<TransationPageCredi> {
   List<TransactionModel> allTransactions = []; // Liste des transactions
   List<TransactionModel> filteredTransactions = []; // Liste filtrée
 
-  String selectedFilter = ""; // 📌 Par défaut, filtre par mois
+  String selectedFilter = ''; // 📌 Par défaut, filtre par mois
   @override
   void initState() {
     // TODO: implement initState
@@ -38,7 +38,7 @@ class _TransationPageCrediState extends State<TransationPageCredi> {
 
   // Fonction pour appeler le controller et récupérer les transactions
   Future<void> _loadTransactions() async {
-    print("avent");
+    print('avent');
     final transactionsFromController =
         await transationControllers.getTransaction(context);
     setState(() {
@@ -57,7 +57,7 @@ class _TransationPageCrediState extends State<TransationPageCredi> {
       DateTime now = DateTime.now();
 
       transactions = transactions.where((transaction) {
-        var dateValidation = transaction.toJson()["dateValidation"];
+        var dateValidation = transaction.toJson()['dateValidation'];
 
         if (dateValidation is String) {
           // Convertir la date String en DateTime
@@ -67,18 +67,18 @@ class _TransationPageCrediState extends State<TransationPageCredi> {
         if (dateValidation is! DateTime) return false; // Éviter les erreurs
 
         // Filtrage en fonction de la période
-        if (filterType == "Jour") {
+        if (filterType == 'Jour') {
           return dateValidation.year == now.year &&
               dateValidation.month == now.month &&
               dateValidation.day == now.day;
-        } else if (filterType == "Semaine") {
-          DateTime weekAgo = now.subtract(Duration(days: 7));
+        } else if (filterType == 'Semaine') {
+          DateTime weekAgo = now.subtract(const Duration(days: 7));
           return dateValidation.isAfter(weekAgo) &&
               dateValidation.isBefore(now);
-        } else if (filterType == "Mois") {
+        } else if (filterType == 'Mois') {
           return dateValidation.year == now.year &&
               dateValidation.month == now.month;
-        } else if (filterType == "Année") {
+        } else if (filterType == 'Année') {
           return dateValidation.year == now.year;
         }
 
@@ -164,14 +164,14 @@ class _TransationPageCrediState extends State<TransationPageCredi> {
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w800,
-                            color: kPrimaryColor1),
+                            color: kPrimaryColor1,),
                       ),
                       Text(
                         '2 834,00 €',
                         style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w900,
-                            color: kPrimaryColor1),
+                            color: kPrimaryColor1,),
                       ),
                     ],
                   ),
@@ -203,7 +203,7 @@ class _TransationPageCrediState extends State<TransationPageCredi> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "Entrées",
+                    'Entrées',
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
                   ),
                   const SizedBox(height: 10),
@@ -214,23 +214,23 @@ class _TransationPageCrediState extends State<TransationPageCredi> {
                         var transaction = transactions[index];
                         var transactionJson = transaction.toJson();
 
-                        if (transactionJson.containsKey("categorie") &&
-                            transactionJson["categorie"]
-                                .containsKey("libelle")) {
-                          if (transactionJson["categorie"]["libelle"].trim() ==
-                              "Crédit") {
+                        if (transactionJson.containsKey('categorie') &&
+                            transactionJson['categorie']
+                                .containsKey('libelle')) {
+                          if (transactionJson['categorie']['libelle'].trim() ==
+                              'Crédit') {
                             return SizedBox(
                               child: TransactionCard(
                                 logo: 'assets/images/image_two.png',
-                                label: transactionJson["institution"]
-                                    ["libelle"],
-                                date: transactionJson["dateValidation"] != null
+                                label: transactionJson['institution']
+                                    ['libelle'],
+                                date: transactionJson['dateValidation'] != null
                                     ? DateFormat('dd/MM/yyyy').format(
                                         DateTime.parse(
-                                            transactionJson["dateValidation"]))
-                                    : "Date inconnue",
-                                montant: transactionJson["montant"],
-                                type: transactionJson["categorie"]["libelle"],
+                                            transactionJson['dateValidation'],),)
+                                    : 'Date inconnue',
+                                montant: transactionJson['montant'],
+                                type: transactionJson['categorie']['libelle'],
                               ),
                             );
                           }
@@ -273,7 +273,7 @@ class _TransationPageCrediState extends State<TransationPageCredi> {
                 onPressed: () {
                   action();
                 },
-                icon: icon), // Utilisation directe du widget SVG ou icône
+                icon: icon,), // Utilisation directe du widget SVG ou icône
           ),
         ),
         Text(

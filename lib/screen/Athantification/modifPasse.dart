@@ -33,7 +33,7 @@ class Modifpasse extends StatelessWidget {
           children: [
             Container(
               padding: EdgeInsets.symmetric(
-                  vertical: longeur / 10.0, horizontal: largeur / 25.0),
+                  vertical: longeur / 10.0, horizontal: largeur / 25.0,),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -44,7 +44,7 @@ class Modifpasse extends StatelessWidget {
                         style: GoogleFonts.poppins(
                             fontSize: 20,
                             fontWeight: FontWeight.w800,
-                            color: Colors.white),
+                            color: Colors.white,),
                       ),
                     ),
                     SizedBox(height: longeur / 15.0),
@@ -85,13 +85,13 @@ class Modifpasse extends StatelessWidget {
                             const EdgeInsets.symmetric(horizontal: 30),
                           ),
                         ),
-                        child: const Text("Envoyer",
+                        child: const Text('Envoyer',
                             style: TextStyle(
                               fontSize: 15,
                               color: Colors.white,
-                            )),
+                            ),),
                       ),
-                    ])
+                    ],),
                   ],
                 ),
               ),
@@ -99,6 +99,6 @@ class Modifpasse extends StatelessWidget {
           ],
         ),
       ),
-    )));
+    ),),);
   }
 }

@@ -10,6 +10,6 @@ Widget onbordingBtn({
       child: Text(
         label,
         style: GoogleFonts.poppins(
-            color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
-      ));
+            color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500,),
+      ),);
 }

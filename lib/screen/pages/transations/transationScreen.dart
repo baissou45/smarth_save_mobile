@@ -12,7 +12,7 @@ class TransactionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Déterminer le contenu selon le type
-    String title = (type == "credit") ? "Crédit" : "Débit";
+    String title = (type == 'credit') ? 'Crédit' : 'Débit';
 
     var content = [TransationPageCredi(), TransationPageDebit()];
     double largeur = MediaQuery.of(context).size.width;
@@ -33,7 +33,7 @@ class TransactionScreen extends StatelessWidget {
             color: Color.fromARGB(255, 126, 126, 126),
           ), // Icône de retour
           onPressed: () {
-            context.go("/transactions");
+            context.go('/transactions');
             ; // Revient à l'écran précédent
           },
         ),
@@ -67,16 +67,16 @@ class TransactionScreen extends StatelessWidget {
                         context.go('/transaction/credit');
                       },
                       child: Text(
-                        "Crédi",
+                        'Crédi',
                         style: TextStyle(
                             color:
-                                type == "credit" ? Colors.black : Colors.grey,
+                                type == 'credit' ? Colors.black : Colors.grey,
                             fontSize: 16,
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.bold,),
                       ),
                     ),
                   ),
-                  type == "credit"
+                  type == 'credit'
                       ? Container(
                           height: largeur / 120,
                           width: largeur / 2,
@@ -96,16 +96,16 @@ class TransactionScreen extends StatelessWidget {
                         onPressed: () {
                           context.go('/transaction/debit');
                         },
-                        child: Text("Débit",
+                        child: Text('Débit',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color: type == "debit"
+                                color: type == 'debit'
                                     ? Colors.black
                                     : Colors.grey,
                                 fontSize: 16,
-                                fontWeight: FontWeight.bold))),
+                                fontWeight: FontWeight.bold,),),),
                   ),
-                  type == "debit"
+                  type == 'debit'
                       ? Container(
                           height: largeur / 120,
                           width: largeur / 2,
@@ -120,10 +120,10 @@ class TransactionScreen extends StatelessWidget {
         SizedBox(height: 25),
         Expanded(
           child: SizedBox(
-            child: (type == "credit") ? content[0] : content[1],
+            child: (type == 'credit') ? content[0] : content[1],
           ),
-        )
-      ])),
+        ),
+      ],),),
     );
   }
 }

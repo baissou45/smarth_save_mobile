@@ -31,7 +31,7 @@ class _ProjetPageState extends State<ProjetPage> {
                       bottomLeft: Radius.circular(largeur / 7),
                     ),
                   ),
-                )),
+                ),),
             Expanded(
                 flex: 10,
                 child: Stack(
@@ -48,7 +48,7 @@ class _ProjetPageState extends State<ProjetPage> {
                       ),
                     ),
                   ],
-                )),
+                ),),
           ],
         ),
         SafeArea(
@@ -72,7 +72,7 @@ class _ProjetPageState extends State<ProjetPage> {
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
+                            horizontal: 16, vertical: 8,),
                         decoration: BoxDecoration(
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(20),
@@ -147,7 +147,7 @@ class _ProjetPageState extends State<ProjetPage> {
             ),
           ),
         ),
-      ]),
+      ],),
     );
   }
 

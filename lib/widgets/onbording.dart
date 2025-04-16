@@ -7,7 +7,7 @@ import 'package:smarth_save/widgets/onbordingBtn.dart';
 
 class OnbordingPage extends StatefulWidget {
   final VoidCallback onComplete;
-  const OnbordingPage({super.key, required this.onComplete});
+  const OnbordingPage({required this.onComplete, super.key});
 
   @override
   State<OnbordingPage> createState() => _OnbordingPageState();
@@ -19,20 +19,20 @@ class _OnbordingPageState extends State<OnbordingPage> {
 
   final List<OnboardingItem> onboardingItems = [
     OnboardingItem(
-      image: "image_one.png",
-      title: "Suivez facilement vos finances.",
+      image: 'image_one.png',
+      title: 'Suivez facilement vos finances.',
       description:
-          "Connectez vos comptes bancaires en toute sécurité et suivez vos revenus, dépenses et soldes en temps réel, tout-en-un seul endroit.",
+          'Connectez vos comptes bancaires en toute sécurité et suivez vos revenus, dépenses et soldes en temps réel, tout-en-un seul endroit.',
     ),
     OnboardingItem(
-      image: "image_two.png",
-      title: "Atteignez vos objectifs financiers.",
+      image: 'image_two.png',
+      title: 'Atteignez vos objectifs financiers.',
       description:
           "Définissez vos objectifs (achat, épargne, investissement) et laissez l'application vous guider avec des plans personnalisés pour les atteindre plus rapidement.",
     ),
     OnboardingItem(
-      image: "image_three.png",
-      title: "Recevez des conseils intelligents.",
+      image: 'image_three.png',
+      title: 'Recevez des conseils intelligents.',
       description:
           "L'application analyse vos habitudes financières et vous propose des recommandations pour économiser, mieux gérer votre budget et optimiser vos dépenses.",
     ),
@@ -64,7 +64,7 @@ class _OnbordingPageState extends State<OnbordingPage> {
           children: [
             if (startIndex > 0)
               onbordingBtn(
-                label: "Précédent",
+                label: 'Précédent',
                 onPressed: () {
                   _pageController.previousPage(
                     duration: const Duration(milliseconds: 300),
@@ -84,7 +84,7 @@ class _OnbordingPageState extends State<OnbordingPage> {
                     },
                   )
                 : onbordingBtn(
-                    label: "Suivant",
+                    label: 'Suivant',
                     onPressed: () {
                       _pageController.nextPage(
                         duration: const Duration(milliseconds: 300),

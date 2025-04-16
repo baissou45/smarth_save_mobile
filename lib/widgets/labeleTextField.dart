@@ -8,9 +8,7 @@ final String? defaultValue;
 final TextEditingController? controller;
 
 const LabeledTextField({
-  super.key,
-  required this.label,
-  required this.hint,
+  required this.label, required this.hint, super.key,
   this.defaultValue,
   this.controller,
 });

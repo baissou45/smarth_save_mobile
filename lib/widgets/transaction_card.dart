@@ -9,24 +9,19 @@ class TransactionCard extends StatelessWidget {
   final String? type;
 
   const TransactionCard({
-    super.key,
-    required this.logo,
-    required this.label,
-    required this.date,
-    required this.montant,
-    required this.type,
+    required this.logo, required this.label, required this.date, required this.montant, required this.type, super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     double largeur = MediaQuery.of(context).size.width;
-    var icon = type != "Crédit"
+    var icon = type != 'Crédit'
         ? SvgPicture.asset(
-            "assets/svg/debit.svg",
+            'assets/svg/debit.svg',
             color: Colors.red,
           )
         : SvgPicture.asset(
-            "assets/svg/credit.svg",
+            'assets/svg/credit.svg',
             color: Colors.green,
           );
     return Container(
@@ -86,7 +81,7 @@ class TransactionCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                ]),
+                ],),
               ),
               SizedBox(
                 width: largeur / 13,
@@ -112,16 +107,16 @@ class TransactionCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: type != "Crédit" ? Colors.red : Colors.green,
+                            color: type != 'Crédit' ? Colors.red : Colors.green,
                           ),
                         ),
                       ),
                       Text(
-                        "€",
+                        '€',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          color: type != "Crédit" ? Colors.red : Colors.green,
+                          color: type != 'Crédit' ? Colors.red : Colors.green,
                         ),
                       ),
                     ],

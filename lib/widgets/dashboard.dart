@@ -34,7 +34,7 @@ class _DashboardState extends State<Dashboard> {
             children: [
               Padding(
                 padding: EdgeInsets.only(
-                    top: longeur / 5, left: largeur / 20, right: largeur / 20),
+                    top: longeur / 5, left: largeur / 20, right: largeur / 20,),
                 child: Row(
                   children: [
                     CircleAvatar(
@@ -47,23 +47,23 @@ class _DashboardState extends State<Dashboard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${UserModel.sessionUser?.prenom} ${UserModel.sessionUser?.nom}",
+                          '${UserModel.sessionUser?.prenom} ${UserModel.sessionUser?.nom}',
                           style: TextStyle(
-                              fontSize: largeur / 20, color: Colors.white),
+                              fontSize: largeur / 20, color: Colors.white,),
                         ),
                         Text(
-                          "${UserModel.sessionUser?.email}",
+                          '${UserModel.sessionUser?.email}',
                           style: TextStyle(
-                              fontSize: largeur / 30, color: Colors.white),
+                              fontSize: largeur / 30, color: Colors.white,),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    top: longeur / 30.0, bottom: longeur / 30.0),
+                    top: longeur / 30.0, bottom: longeur / 30.0,),
                 child: SizedBox(
                   width: largeur / 1.5,
                   child: const Divider(
@@ -87,9 +87,9 @@ class _DashboardState extends State<Dashboard> {
                     ],
                   ),
                 ),
-              )
+              ),
             ],
-          )
+          ),
         ],
       ),
     );

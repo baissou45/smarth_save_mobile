@@ -34,7 +34,7 @@ class LoginPage extends StatelessWidget {
           children: [
             Container(
               padding: EdgeInsets.symmetric(
-                  vertical: longeur / 10.0, horizontal: largeur / 25.0),
+                  vertical: longeur / 10.0, horizontal: largeur / 25.0,),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -45,7 +45,7 @@ class LoginPage extends StatelessWidget {
                         style: GoogleFonts.poppins(
                             fontSize: 40,
                             fontWeight: FontWeight.w800,
-                            color: Colors.white),
+                            color: Colors.white,),
                       ),
                     ),
                     SizedBox(height: longeur / 15.0),
@@ -77,27 +77,27 @@ class LoginPage extends StatelessWidget {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content: Text(
-                                        'Veuillez remplir tous les champs')));
+                                        'Veuillez remplir tous les champs',),),);
                           }
 
                           // navigationTonextPage(context, const PlaidLogin());
                         },
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all(
-                              const Color.fromARGB(255, 15, 45, 179)),
+                              const Color.fromARGB(255, 15, 45, 179),),
                           shape: WidgetStateProperty.all(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10))),
+                              borderRadius: BorderRadius.circular(10),),),
                           padding: WidgetStateProperty.all(
-                              const EdgeInsets.symmetric(horizontal: 30)),
+                              const EdgeInsets.symmetric(horizontal: 30),),
                         ),
-                        child: const Text("Connexion",
+                        child: const Text('Connexion',
                             style: TextStyle(
                               fontSize: 15,
                               color: Colors.white,
-                            )),
+                            ),),
                       ),
                    
-                      ])
+                      ],),
                   ],
                 ),
               ),
@@ -108,7 +108,7 @@ class LoginPage extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 11,
-                  )),
+                  ),),
               TextButton(
                 onPressed: () {
                   navigationTonextPage(context, SigUpPage());
@@ -117,19 +117,19 @@ class LoginPage extends StatelessWidget {
                     style: GoogleFonts.poppins(
                         color: Colors.white,
                         fontSize: 13,
-                        fontWeight: FontWeight.w600)),
-              )
-            ]),
+                        fontWeight: FontWeight.w600,),),
+              ),
+            ],),
             TextButton(
               onPressed: () async {
                 navigationTonextPage(context, Modifpasse());
               },
               style: const ButtonStyle(),
-              child: const Text("Mot de passe oublier",
+              child: const Text('Mot de passe oublier',
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.white,
-                  )),
+                  ),),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               SizedBox(
@@ -137,11 +137,11 @@ class LoginPage extends StatelessWidget {
                   height: 3,
                   child: Container(
                     color: Colors.white,
-                  )),
+                  ),),
               const SizedBox(width: 20),
               const SizedBox(
-                child: Text("ou",
-                    style: TextStyle(fontSize: 20, color: Colors.white)),
+                child: Text('ou',
+                    style: TextStyle(fontSize: 20, color: Colors.white),),
               ),
               const SizedBox(width: 20),
               SizedBox(
@@ -149,15 +149,15 @@ class LoginPage extends StatelessWidget {
                   height: 3,
                   child: Container(
                     color: Colors.white,
-                  )),
-            ]),
+                  ),),
+            ],),
             const SizedBox(height: 15),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Container(
                 width: 55,
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(100)),
+                    borderRadius: BorderRadius.circular(100),),
                 child: TextButton(
                   onPressed: () {
                     print(userProvider.token);
@@ -165,16 +165,16 @@ class LoginPage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
-                  )),
-                  child: Image.asset("assets/images/googleBtn.png",
-                      width: 40, height: 40),
+                  ),),
+                  child: Image.asset('assets/images/googleBtn.png',
+                      width: 40, height: 40,),
                 ),
               ),
-            ]),
+            ],),
             SizedBox(height: longeur / 10.0),
           ],
         ),
       ),
-    )));
+    ),),);
   }
 }

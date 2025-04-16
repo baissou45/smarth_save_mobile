@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/utils/theme/colors.dart';
 
 class ScaffoldWithNavBar extends StatelessWidget {
-  const ScaffoldWithNavBar({super.key, required this.navigationShell});
+  const ScaffoldWithNavBar({required this.navigationShell, super.key});
   final StatefulNavigationShell navigationShell;
 
   @override
@@ -24,32 +24,32 @@ class ScaffoldWithNavBar extends StatelessWidget {
     },
     items: [
       BottomNavigationBarItem(
-        icon: SvgPicture.asset("assets/svg/home.svg", height: 22),
-        activeIcon: SvgPicture.asset("assets/svg/home.svg", height: 24, color: kPrimaryColor),
+        icon: SvgPicture.asset('assets/svg/home.svg', height: 22),
+        activeIcon: SvgPicture.asset('assets/svg/home.svg', height: 24, color: kPrimaryColor),
         label: 'Accueil',
       ),
        BottomNavigationBarItem(
-        icon:  SvgPicture.asset("assets/svg/portefeuille.svg", height: 22),
-        activeIcon: SvgPicture.asset("assets/svg/portefeuille.svg", height: 24
-        , color: kPrimaryColor),
+        icon:  SvgPicture.asset('assets/svg/portefeuille.svg', height: 22),
+        activeIcon: SvgPicture.asset('assets/svg/portefeuille.svg', height: 24
+        , color: kPrimaryColor,),
         label: 'Portfeuilles',
       ),
        BottomNavigationBarItem(
-        icon: SvgPicture.asset("assets/svg/projects.svg", height: 22),
-        activeIcon: SvgPicture.asset("assets/svg/projects.svg", height: 24, color:
-        kPrimaryColor),
+        icon: SvgPicture.asset('assets/svg/projects.svg', height: 22),
+        activeIcon: SvgPicture.asset('assets/svg/projects.svg', height: 24, color:
+        kPrimaryColor,),
         label: 'Projets',
       ),
        BottomNavigationBarItem(
-        icon:  SvgPicture.asset("assets/svg/transaction.svg", height: 22),
-        activeIcon: SvgPicture.asset("assets/svg/transaction.svg", height: 24
-        , color: kPrimaryColor),
+        icon:  SvgPicture.asset('assets/svg/transaction.svg', height: 22),
+        activeIcon: SvgPicture.asset('assets/svg/transaction.svg', height: 24
+        , color: kPrimaryColor,),
         label: 'Transactions',
       ),
        BottomNavigationBarItem(
-        icon: SvgPicture.asset("assets/svg/profil.svg", height: 22),
-        activeIcon: SvgPicture.asset("assets/svg/profil.svg", height: 24, color
-        : kPrimaryColor),
+        icon: SvgPicture.asset('assets/svg/profil.svg', height: 22),
+        activeIcon: SvgPicture.asset('assets/svg/profil.svg', height: 24, color
+        : kPrimaryColor,),
         label: 'Mon compte',
       ),
     ],
