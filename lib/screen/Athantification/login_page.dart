@@ -63,6 +63,7 @@ class LoginPage extends StatelessWidget {
                     ),
                     SizedBox(height: longeur / 15.0),
                     Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                      
                       TextButton(
                         onPressed: () async {
                           FocusScope.of(context).unfocus(); // Cacher le clavier
@@ -95,7 +96,8 @@ class LoginPage extends StatelessWidget {
                               color: Colors.white,
                             )),
                       ),
-                    ])
+                   
+                      ])
                   ],
                 ),
               ),
