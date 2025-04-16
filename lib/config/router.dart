@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/screen/Athantification/login_page.dart';
+import 'package:smarth_save/screen/pages/contact.dart';
 import 'package:smarth_save/screen/pages/monComptePage.dart';
+import 'package:smarth_save/screen/pages/notificationPage.dart';
 import 'package:smarth_save/screen/pages/portfeuillesPage.dart';
 import 'package:smarth_save/screen/pages/profil/detail_compte.dart';
 import 'package:smarth_save/screen/pages/projet/creatProjet_page.dart';
@@ -27,6 +29,12 @@ final GoRouter router = GoRouter(
     ),
     // Route indépendante avec BottomNavigationBar
     GoRoute(
+<<<<<<< HEAD
+      path: '/login',
+      builder: (context, state) => LoginPage(),
+    ),
+    GoRoute(
+=======
       path: '/transaction/:type',
       builder: (context, state) {
         final type = state.pathParameters['type']!;
@@ -144,10 +152,14 @@ final GoRouter router = GoRouter(
       builder: (context, state) => LoginPage(),
     ),
     GoRoute(
+<<<<<<< HEAD
       path: '/creatProjet',
       builder: (context, state) => const CreatprojetPage(),
     ),
     GoRoute(
+=======
+>>>>>>> 80f5de002482f7e203be9d9b1f2397b24c752dcd
+>>>>>>> 18b714387d73a761e1c5ffb88338c7bde0764cc2
       path: '/onboarding',
       builder: (context, state) => OnbordingPage(onComplete: () async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -165,6 +177,10 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: '/accueil',
               builder: (context, state) => const Wellcommepage(),
+            ),
+            GoRoute(
+              path: '/notification',
+              builder: (context, state) => const NotificationPage(),
             ),
           ],
         ),
@@ -200,6 +216,16 @@ final GoRouter router = GoRouter(
             ),
           ],
         ),
+<<<<<<< HEAD
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/contact',
+              builder: (context, state) => const ContactPage(),
+            ),
+          ],
+        ),
+=======
         // StatefulShellBranch(
         //   routes: [
         //     GoRoute(
@@ -208,6 +234,7 @@ final GoRouter router = GoRouter(
         //     ),
         //   ],
         // ),
+>>>>>>> 80f5de002482f7e203be9d9b1f2397b24c752dcd
       ],
     ),
   ],
