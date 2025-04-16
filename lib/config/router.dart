@@ -29,12 +29,10 @@ final GoRouter router = GoRouter(
     ),
     // Route indépendante avec BottomNavigationBar
     GoRoute(
-<<<<<<< HEAD
       path: '/login',
       builder: (context, state) => LoginPage(),
     ),
     GoRoute(
-=======
       path: '/transaction/:type',
       builder: (context, state) {
         final type = state.pathParameters['type']!;
@@ -152,14 +150,11 @@ final GoRouter router = GoRouter(
       builder: (context, state) => LoginPage(),
     ),
     GoRoute(
-<<<<<<< HEAD
       path: '/creatProjet',
       builder: (context, state) => const CreatprojetPage(),
     ),
     GoRoute(
-=======
->>>>>>> 80f5de002482f7e203be9d9b1f2397b24c752dcd
->>>>>>> 18b714387d73a761e1c5ffb88338c7bde0764cc2
+
       path: '/onboarding',
       builder: (context, state) => OnbordingPage(onComplete: () async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -216,7 +211,6 @@ final GoRouter router = GoRouter(
             ),
           ],
         ),
-<<<<<<< HEAD
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -225,7 +219,6 @@ final GoRouter router = GoRouter(
             ),
           ],
         ),
-=======
         // StatefulShellBranch(
         //   routes: [
         //     GoRoute(
@@ -234,7 +227,6 @@ final GoRouter router = GoRouter(
         //     ),
         //   ],
         // ),
->>>>>>> 80f5de002482f7e203be9d9b1f2397b24c752dcd
       ],
     ),
   ],
