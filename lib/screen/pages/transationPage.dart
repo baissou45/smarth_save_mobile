@@ -183,8 +183,7 @@ class _TransationPageState extends State<TransationPage> {
                                 "assets/svg/ajout.svg",
                               ),
                               'Ajouter',
-                              () => transationControllers
-                                  .getTransaction(context)),
+                              () => context.push("/creatProjet")),
                         ],
                       )
                     ],

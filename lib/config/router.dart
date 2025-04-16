@@ -8,6 +8,8 @@ import 'package:smarth_save/screen/pages/contact.dart';
 import 'package:smarth_save/screen/pages/monComptePage.dart';
 import 'package:smarth_save/screen/pages/notificationPage.dart';
 import 'package:smarth_save/screen/pages/portfeuillesPage.dart';
+import 'package:smarth_save/screen/pages/profil/detail_compte.dart';
+import 'package:smarth_save/screen/pages/projet/creatProjet_page.dart';
 import 'package:smarth_save/screen/pages/projetPage.dart';
 import 'package:smarth_save/screen/pages/transationPage.dart';
 import 'package:smarth_save/screen/pages/transations/transationScreen.dart';
@@ -25,6 +27,7 @@ final GoRouter router = GoRouter(
       path: '/',
       builder: (context, state) => RedirectPage(),
     ),
+
     // Route indépendante avec BottomNavigationBar
     GoRoute(
       path: '/login',
@@ -148,6 +151,10 @@ final GoRouter router = GoRouter(
       builder: (context, state) => LoginPage(),
     ),
     GoRoute(
+      path: '/creatProjet',
+      builder: (context, state) => const CreatprojetPage(),
+    ),
+    GoRoute(
       path: '/onboarding',
       builder: (context, state) => OnbordingPage(onComplete: () async {
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -200,7 +207,7 @@ final GoRouter router = GoRouter(
           routes: [
             GoRoute(
               path: '/moncompte',
-              builder: (context, state) => const MonComptePage(),
+              builder: (context, state) => const DetailCompte(),
             ),
           ],
         ),
