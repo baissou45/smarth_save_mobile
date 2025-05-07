@@ -127,74 +127,74 @@ class _WellcommepageState extends State<Wellcommepage> {
                 padding: EdgeInsets.all(10),
                 margin:
                     EdgeInsets.only(top: hauteur / 5 - 30, left: 10, right: 10),
-                // child: Container(
-                //   // padding: EdgeInsets.all(hauteur / 100),
-                //   height: hauteur / 6,
-                //   width: double.infinity,
-                //   child: Column(
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     mainAxisSize: MainAxisSize.min,
-                //     children: [
-                //       const SizedBox(
-                //         child: Text(
-                //           "Mes banques",
-                //           style: TextStyle(
-                //               fontSize: 15, fontWeight: FontWeight.w800),
-                //         ),
-                //       ),
-                //       SizedBox(
-                //         height: hauteur / 190,
-                //       ),
-                //       Container(
-                //         margin: EdgeInsets.only(left: largeur / 5),
-                //         child: SizedBox(
-                //           height: hauteur / 190,
-                //           width: largeur / 8,
-                //           child: Container(
-                //             color: kPrimaryColor1,
-                //           ),
-                //         ),
-                //       ),
-                //       SizedBox(
-                //         height: hauteur / 40,
-                //       ),
-                //       SingleChildScrollView(
-                //         scrollDirection: Axis.horizontal,
-                //         child: Row(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             SizedBox(
-                //               width: largeur / 2.5,
-                //               height: hauteur / 10.5,
-                //               child: const BanqueCard(
-                //                 logo: 'assets/images/image_two.png',
-                //                 nom: 'BNP Paris Bas',
-                //               ),
-                //             ),
-                //             SizedBox(width: largeur / 50),
-                //             SizedBox(
-                //               width: largeur / 2.5,
-                //               height: hauteur / 10.5,
-                //               child: const BanqueCard(
-                //                 logo: 'assets/images/image_two.png',
-                //                 nom: 'BNP Paris Bas',
-                //               ),
-                //             ),
-                //             SizedBox(width: largeur / 50),
-                //             SizedBox(
-                //               width: largeur / 2.5,
-                //               height: hauteur / 10.5,
-                //               child: const BanqueCard(
-                //                 logo: 'assets/images/image_two.png',
-                //                 nom: 'BNP Paris Bas',
-                //               ),
-                //             ),
-                //           ],
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
+                child: Container(
+                  // padding: EdgeInsets.all(hauteur / 100),
+                  height: hauteur / 6,
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(
+                        child: Text(
+                          "Mes banques",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w800),
+                        ),
+                      ),
+                      SizedBox(
+                        height: hauteur / 190,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: largeur / 5),
+                        child: SizedBox(
+                          height: hauteur / 190,
+                          width: largeur / 8,
+                          child: Container(
+                            color: kPrimaryColor1,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: hauteur / 40,
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: largeur / 2.5,
+                              height: hauteur / 10.5,
+                              child: const BanqueCard(
+                                logo: 'assets/images/image_two.png',
+                                nom: 'BNP Paris Bas',
+                              ),
+                            ),
+                            SizedBox(width: largeur / 50),
+                            SizedBox(
+                              width: largeur / 2.5,
+                              height: hauteur / 10.5,
+                              child: const BanqueCard(
+                                logo: 'assets/images/image_two.png',
+                                nom: 'BNP Paris Bas',
+                              ),
+                            ),
+                            SizedBox(width: largeur / 50),
+                            SizedBox(
+                              width: largeur / 2.5,
+                              height: hauteur / 10.5,
+                              child: const BanqueCard(
+                                logo: 'assets/images/image_two.png',
+                                nom: 'BNP Paris Bas',
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),

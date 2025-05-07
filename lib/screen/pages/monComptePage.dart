@@ -84,9 +84,8 @@ class _MonComptePageState extends State<MonComptePage> {
               ),
             ),
             SizedBox(
-              height: longeur / 2.2,
+              height: longeur / 2.5,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
                     child: ListView(
@@ -106,7 +105,7 @@ class _MonComptePageState extends State<MonComptePage> {
                       ]
                           .map(
                             (item) => Padding(
-                              padding: const EdgeInsets.only(bottom: 15.0),
+                              padding: const EdgeInsets.only(bottom: 4.0),
                               child: ListTile(
                                 onTap: () {
                                   if (item['title'] == 'Modifier le profil') {
@@ -140,7 +139,7 @@ class _MonComptePageState extends State<MonComptePage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
+                    padding: const EdgeInsets.only(bottom: 1.0),
                     child: ElevatedButton.icon(
                       onPressed: () {
                       UserModel.sessionUser?.logout();
