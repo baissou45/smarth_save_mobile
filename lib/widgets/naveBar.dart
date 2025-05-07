@@ -144,7 +144,8 @@ class _NavebarState extends State<Navebar> {
               children: [
                 TextButton.icon(
                   onPressed: () {
-                    UserModel.sessionUser = null;
+                    UserModel.sessionUser?.logout();
+
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => LoginPage()));
                   },

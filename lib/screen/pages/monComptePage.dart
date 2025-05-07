@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:smarth_save/models/user_model.dart';
 
 class MonComptePage extends StatefulWidget {
@@ -49,7 +50,7 @@ class _MonComptePageState extends State<MonComptePage> {
                         CircleAvatar(
                           radius: largeur / 5,
                           backgroundImage:
-                              AssetImage('assets/images/avatar.webp'),
+                              const AssetImage('assets/images/avatar.webp'),
                         ),
                         Positioned(
                           bottom: 0,
@@ -67,20 +68,23 @@ class _MonComptePageState extends State<MonComptePage> {
                               fontSize: largeur / 20,
                               fontWeight: FontWeight.w900),
                         ),
-                        Text("${UserModel.sessionUser?.email ?? ""}",
-                            style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                fontStyle: FontStyle.italic,
-                                fontSize: largeur / 30,
-                                fontWeight: FontWeight.w900)),
+                        Text(
+                          UserModel.sessionUser?.email ?? '',
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontStyle: FontStyle.italic,
+                            fontSize: largeur / 30,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
             ),
             SizedBox(
-              height: longeur / 2.5,
+              height: longeur / 2.2,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -104,7 +108,16 @@ class _MonComptePageState extends State<MonComptePage> {
                             (item) => Padding(
                               padding: const EdgeInsets.only(bottom: 15.0),
                               child: ListTile(
-                                onTap: () {},
+                                onTap: () {
+                                  if (item['title'] == 'Modifier le profil') {
+                                    context.go('/modifProfile');
+                                  } else if (item['title'] ==
+                                      'Modifier le mot de passe') {
+                                    context.go('/modifMotPass');
+                                  } else if (item['title'] == 'Messagerie') {
+                                    context.go('');
+                                  }
+                                },
                                 leading: rounded_icon(
                                   item['icon'] as IconData,
                                   Colors.teal,
@@ -127,9 +140,12 @@ class _MonComptePageState extends State<MonComptePage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
+                    padding: const EdgeInsets.only(bottom: 10.0),
                     child: ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                      UserModel.sessionUser?.logout();
+                        context.go('/login');
+                      },
                       icon: const Icon(
                         Icons.logout,
                         color: Colors.white,

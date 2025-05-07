@@ -28,11 +28,13 @@ class _DetailCompteState extends State<DetailCompte> {
   @override
   @override
   Widget build(BuildContext context) {
-    double largeur = MediaQuery.of(context).size.width;
-    double longeur = MediaQuery.of(context).size.height; // Correction ici
+    double longeur = MediaQuery.of(context).size.height;
+    double largeur = MediaQuery.of(context).size.width; // Correction ici
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Modifier le profil'),
+        title: Text('Modifier le profil',
+            style:
+                TextStyle(fontSize: largeur / 12, fontWeight: FontWeight.w900)),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
@@ -43,8 +45,7 @@ class _DetailCompteState extends State<DetailCompte> {
           },
         ),
       ),
-      body: 
-      Padding(
+      body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(children: [
