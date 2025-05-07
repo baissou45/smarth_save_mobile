@@ -57,7 +57,8 @@ class _ProjetPageState extends State<ProjetPage> {
         SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
-            child: Column(
+            child: 
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
@@ -157,7 +158,25 @@ class _ProjetPageState extends State<ProjetPage> {
   Widget _buildProjectCard(String title, IconData icon, String date) {
     return GestureDetector(
       onTap: () {
-        context.go("/detailleProjet");
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: Text(title),
+            content: SizedBox(
+              width: 20,
+              height: 40,
+              child: Column(
+                children: [Text("Date"), Text(date)],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
       },
       child: Container(
         decoration: BoxDecoration(
@@ -219,6 +238,34 @@ class _ProjetPageState extends State<ProjetPage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class DialogExample extends StatelessWidget {
+  const DialogExample({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('AlertDialog Title'),
+          content: const Text('AlertDialog description'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      ),
+      child: const Text('Show Dialog'),
     );
   }
 }

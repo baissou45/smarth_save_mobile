@@ -35,7 +35,7 @@ class HomeApp extends StatelessWidget {
   bool isRouteWithoutBottomNavBar(String location) {
     // Ajoutez les routes où vous ne voulez pas afficher la BottomNavigationBar
     List<String> routesWithoutBottomNavBar = [
-      '/transactions','/moncompte' // Exemple de route spécifique
+       // Exemple de route spécifique
     ];
     return routesWithoutBottomNavBar.contains(location);
   }
