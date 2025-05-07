@@ -7,7 +7,7 @@ class SVTextField extends StatefulWidget {
   final Widget? prefix;
   final String? label;
   final TextInputType? keyboardType;
-  final bool isPassword; // Nouveau paramètre pour indiquer si c'est un champ de mot de passe
+  final bool isPassword;
 
   const SVTextField({
     super.key,
@@ -16,7 +16,7 @@ class SVTextField extends StatefulWidget {
     this.keyboardType,
     this.label,
     this.prefix,
-    this.isPassword = false, // Par défaut, ce n'est pas un champ de mot de passe
+    this.isPassword = false,
   });
 
   @override
@@ -24,58 +24,76 @@ class SVTextField extends StatefulWidget {
 }
 
 class _SVTextFieldState extends State<SVTextField> {
-  bool _obscureText = true; // État pour gérer la visibilité du texte
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: widget.controller,
-      obscureText: widget.isPassword ? _obscureText : false, // Appliquer obscureText uniquement pour les mots de passe
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
+    return 
+    Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.label != null && widget.label!.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6.0),
+            child: Text(
+              widget.label!,
+              style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+          ),
+
+          
+        TextFormField(
+          controller: widget.controller,
+          obscureText: widget.isPassword ? _obscureText : false,
+          keyboardType: widget.keyboardType,
+          style: GoogleFonts.poppins(
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+          ),
+          decoration: InputDecoration(
+            hintText: widget.hint ?? "",
+            hintStyle: GoogleFonts.poppins(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: Colors.black.withOpacity(0.6),
+            ),
+            prefixIcon: widget.prefix,
+            filled: true,
+            fillColor: Colors.white,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none,
+            ),
+            suffixIcon: widget.isPassword
+                ? IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility_off : Icons.visibility,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  )
+                : null,
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Veuillez entrer ${widget.hint ?? 'une valeur'}';
+            }
+            return null;
+          },
         ),
-        labelStyle: GoogleFonts.poppins(
-          fontSize: 13,
-          fontWeight: FontWeight.w600,
-          color: Colors.black, // Couleur du texte du label
-        ),
-        hintStyle: GoogleFonts.poppins(
-          fontSize: 13,
-          fontWeight: FontWeight.w600,
-          color: Colors.black, // Couleur du texte de l'indice
-        ),
-        prefixIcon: widget.prefix,
-        labelText: widget.label,
-        hintText: widget.hint ?? "",
-        filled: true, // Active le remplissage
-        fillColor: Colors.white, // Couleur de fond du champ
-        suffixIcon: widget.isPassword
-            ? IconButton(
-                icon: Icon(
-                  _obscureText ? Icons.visibility_off : Icons.visibility,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _obscureText = !_obscureText; // Basculer la visibilité du texte
-                  });
-                },
-              )
-            : null, // Afficher l'icône uniquement pour les mots de passe
-      ),
-      keyboardType: widget.keyboardType,
-      style: GoogleFonts.poppins(
-        fontSize: 13,
-        fontWeight: FontWeight.w600,
-        color: Colors.black, // Couleur du texte de l'utilisateur
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Veuillez entrer ${widget.hint}';
-        }
-        return null;
-      },
+      
+      
+        ],
     );
-  }
+  
+    }
 }

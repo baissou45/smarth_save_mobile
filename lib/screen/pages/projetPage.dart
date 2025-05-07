@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ProjetPage extends StatefulWidget {
   const ProjetPage({super.key});
@@ -15,7 +16,9 @@ class _ProjetPageState extends State<ProjetPage> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          context.push('/creatProjet');
+        },
         backgroundColor: Colors.teal,
         child: const Icon(Icons.add, color: Colors.white),
       ),
@@ -107,8 +110,8 @@ class _ProjetPageState extends State<ProjetPage> {
                 Expanded(
                   child: GridView.count(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 15,
-                    mainAxisSpacing: 15,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 20,
                     children: [
                       _buildProjectCard(
                         'Noël au Sénégal',
@@ -163,7 +166,7 @@ class _ProjetPageState extends State<ProjetPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-              flex: 7,
+              flex:1,
               child: Icon(
                 icon,
                 color: Colors.teal,
@@ -171,7 +174,7 @@ class _ProjetPageState extends State<ProjetPage> {
               ),
             ),
             Expanded(
-              flex: 3,
+              // flex: 1,
               child: Container(
                 width: double.infinity,
                 decoration: const BoxDecoration(
