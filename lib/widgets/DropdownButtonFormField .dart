@@ -6,12 +6,14 @@ class SelectInput extends StatefulWidget {
   final String label;
   final List<String> items;
   final Function(String?)? onChanged;
+  final String? initialValue;
 
   const SelectInput({
     Key? key,
     required this.label,
     required this.items,
     this.onChanged,
+    this.initialValue,
   }) : super(key: key);
 
   @override
@@ -66,10 +68,15 @@ class _SelectInputState extends State<SelectInput> {
                 return null;
               },
               onChanged: (value) {
-                //Do something when selected item is changed.
+                setState(() {
+                  selectedValue = value; // ✅ Assignation correcte
+                });
+                if (widget.onChanged != null) {
+                  widget.onChanged!(value); // ✅ Appelle le callback
+                }
               },
               onSaved: (value) {
-                selectedValue = value.toString();
+                selectedValue = value;
               },
               buttonStyleData: const ButtonStyleData(
                 padding: EdgeInsets.only(right: 8),
