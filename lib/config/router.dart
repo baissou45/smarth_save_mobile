@@ -11,7 +11,8 @@ import 'package:smarth_save/screen/pages/portfeuillesPage.dart';
 import 'package:smarth_save/screen/pages/profil/detail_compte.dart';
 import 'package:smarth_save/screen/pages/profil/modifMotPass_page.dart';
 import 'package:smarth_save/screen/pages/projet/creatProjet_page.dart';
-import 'package:smarth_save/screen/pages/projetPage.dart';
+import 'package:smarth_save/screen/pages/projet/detailProjet_page.dart';
+import 'package:smarth_save/screen/pages/projet/projetPage.dart';
 import 'package:smarth_save/screen/pages/transationPage.dart';
 import 'package:smarth_save/screen/pages/transations/transationScreen.dart';
 import 'package:smarth_save/screen/pages/wellcommePage.dart';
@@ -32,6 +33,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/login',
       builder: (context, state) => LoginPage(),
+    ),
+    GoRoute(
+      path: '/detailleProjet',
+      builder: (context, state) => DetailprojetPage(),
     ),
     GoRoute(
       path: '/transaction/:type',

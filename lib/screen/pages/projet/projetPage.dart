@@ -80,7 +80,7 @@ class _ProjetPageState extends State<ProjetPage> {
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: Row(
+                        child: const Row(
                           children: [
                             Text(
                               '2025',
@@ -99,7 +99,7 @@ class _ProjetPageState extends State<ProjetPage> {
                 Padding(
                   padding:
                       EdgeInsets.only(top: longeur / 10, bottom: longeur / 80),
-                  child: Text(
+                  child: const Text(
                     'Mes projets',
                     style: TextStyle(
                       fontSize: 20,
@@ -155,63 +155,68 @@ class _ProjetPageState extends State<ProjetPage> {
   }
 
   Widget _buildProjectCard(String title, IconData icon, String date) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Card(
-        elevation: 8.0,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              flex:1,
-              child: Icon(
-                icon,
-                color: Colors.teal,
-                size: 35,
-              ),
-            ),
-            Expanded(
-              // flex: 1,
-              child: Container(
-                width: double.infinity,
-                decoration: const BoxDecoration(
+    return GestureDetector(
+      onTap: () {
+        context.go("/detailleProjet");
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Card(
+          elevation: 8.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 1,
+                child: Icon(
+                  icon,
                   color: Colors.teal,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(15),
-                    bottomRight: Radius.circular(15),
-                  ),
+                  size: 35,
                 ),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+              ),
+              Expanded(
+                // flex: 1,
+                child: Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Colors.teal,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15),
+                    ),
+                  ),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          title,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        date,
-                        style: const TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontSize: 12,
-                          color: Colors.white,
+                        Text(
+                          date,
+                          style: const TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontSize: 12,
+                            color: Colors.white,
+                          ),
+                          textAlign: TextAlign.start,
                         ),
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
