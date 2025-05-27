@@ -13,18 +13,12 @@ class ApiTransactionService {
   Future<dynamic> getTransaction() async {
     await userProvider.loadToken();
     final token = await userProvider.token;
-    print("le token $token");
+    print("le token api $token");
     String url = api.baseURL + transactionGet;
     final response = await http.post(
       Uri.parse(url),
       body: jsonEncode({
         "trie": "asc",
-        "type": "debit",
-        "categorie": 0,
-        "date": "2019-08-24T14:15:22Z",
-        "filter": "day",
-        "groupe_by": "categorie",
-        "limit": 0
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -33,7 +27,29 @@ class ApiTransactionService {
       },
     );
     print("les transaction ${response.body}");
+    return response.body;
   }
+  Future<dynamic> getTransactionByDate(String date) async {
+    await userProvider.loadToken();
+    final token = await userProvider.token;
+    print("le token api $token");
+    String url = api.baseURL + transactionGet;
+    final response = await http.post(
+      Uri.parse(url),
+      body: jsonEncode({
+        "trie": "asc",
+        "filter": date,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    print("les transaction ${response.body}");
+    return response.body;
+  }
+
 
   Future<dynamic> findTransaction(int transation) async {
     await userProvider.loadToken();

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/models/user_model.dart';
 import 'package:smarth_save/screen/Athantification/login_page.dart';
@@ -144,10 +145,8 @@ class _NavebarState extends State<Navebar> {
               children: [
                 TextButton.icon(
                   onPressed: () {
-                    UserModel.sessionUser?.logout();
-
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  UserModel.sessionUser?.logout();
+                  context.go('/login');
                   },
                   icon: const Icon(Icons.logout, color: Colors.white),
                   label: const Text(
