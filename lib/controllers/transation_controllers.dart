@@ -41,4 +41,5 @@ class TransationControllers {
     await transactionProvider.getTransactionByType(type);
     return transactionProvider.transactions;
   }
+
 }

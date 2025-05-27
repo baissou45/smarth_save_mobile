@@ -64,17 +64,17 @@ class _WellcommepageState extends State<Wellcommepage> {
                       .notifications_active_outlined), // Utilisation directe du widget SVG ou icône
                 ),
               )),
-          Builder(
-            builder: (context) => IconButton(
-              icon: const Icon(
-                Icons.menu,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            ),
-          ),
+         
+         
+              // IconButton(
+          //   onPressed: ()   {
+          //     Scaffold.of(context).openDrawer(); // Ouvrir le drawer
+          //   },
+          //   icon: CircleAvatar(
+          //     radius: largeur / 10,
+          //     backgroundImage: AssetImage('assets/images/image_one.png'),
+          //   ),
+          // )
         ],
       ),
       drawer: Navebar(),

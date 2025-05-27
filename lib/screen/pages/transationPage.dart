@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart'; // <--- important
+import 'package:provider/provider.dart'; // <--- important
 import 'package:smarth_save/controllers/transation_controllers.dart';
 import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/models/transation_model.dart';
@@ -19,11 +20,7 @@ class TransationPage extends StatefulWidget {
 }
 
 class _TransationPageState extends State<TransationPage> {
-<<<<<<< HEAD
-  final ApiTransactionService apiTransactionService = ApiTransactionService();
-=======
   final TransationControllers transationControllers = TransationControllers();
->>>>>>> 6c1714f (Correction de la logique de chargement des transactions dans les contrôleurs et mise à jour des méthodes pour récupérer les transactions par date et type. Ajout d'un cache pour les transactions de crédit et de débit. Amélioration de l'interface utilisateur avec des indicateurs de chargement et ajustements de mise en page dans les pages de transactions.)
   final TextEditingController searcheController = TextEditingController();
 
   List<TransactionModel> allTransactions = [];
@@ -206,20 +203,19 @@ class _TransationPageState extends State<TransationPage> {
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 margin:
-<<<<<<< HEAD
-                    EdgeInsets.only(top: longeur / 4.5, left: 10, right: 10),
+                    EdgeInsets.only(top: longeur / 3.4, left: 10, right: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-=======
-                    EdgeInsets.only(top: longeur / 3.4, left: 10, right: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
->>>>>>> 6c1714f (Correction de la logique de chargement des transactions dans les contrôleurs et mise à jour des méthodes pour récupérer les transactions par date et type. Ajout d'un cache pour les transactions de crédit et de débit. Amélioration de l'interface utilisateur avec des indicateurs de chargement et ajustements de mise en page dans les pages de transactions.)
                   children: [
-                    _buildFilterButton('Jour'),
-                    _buildFilterButton('Semaine'),
-                    _buildFilterButton('Mois'),
-                    _buildFilterButton('Année'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildFilterButton('Jour'),
+                        _buildFilterButton('Semaine'),
+                        _buildFilterButton('Mois'),
+                        _buildFilterButton('Année'),
+                      ],
+                    ),
                   ],
                 ),
               ),
