@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:smarth_save/models/user_model.dart';
 import 'package:smarth_save/screen/Athantification/login_page.dart';
 
@@ -35,7 +36,7 @@ class BottomNav extends StatelessWidget {
           ),
           TextButton.icon(
             onPressed: () {
-              // TODO: Implement chatbot action
+              GoRouter.of(context).go('/chatbot');
             },
             icon: const Icon(CupertinoIcons.chat_bubble_2_fill,
                 color: Colors.white),

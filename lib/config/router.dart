@@ -6,6 +6,7 @@ import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/screen/Athantification/login_page.dart';
 import 'package:smarth_save/screen/pages/contact.dart';
 import 'package:smarth_save/screen/pages/monComptePage.dart';
+import 'package:smarth_save/screen/pages/chat_bot_page.dart';
 import 'package:smarth_save/screen/pages/notificationPage.dart';
 import 'package:smarth_save/screen/pages/portfeuillesPage.dart';
 import 'package:smarth_save/screen/pages/profil/detail_compte.dart';
@@ -37,6 +38,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/detailleProjet',
       builder: (context, state) => DetailprojetPage(),
+    ),
+    GoRoute(
+      path: '/chatbot',
+      builder: (context, state) => const ChatBotPage(),
     ),
     GoRoute(
       path: '/transaction/:type',

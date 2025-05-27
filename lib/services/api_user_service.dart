@@ -53,13 +53,13 @@ class ApiUserService {
       // Vérification du statut de la réponse
 
       if (response.statusCode == 200) {
-        print("Response: ${jsonDecode(response.body)}");
+        print("Response: ${jsonDecode(utf8.decode(response.bodyBytes))}");
 
-        return jsonDecode(response.body);
+        return jsonDecode(utf8.decode(response.bodyBytes));
       } else {
-        print("Response: ${jsonDecode(response.body)}");
+        print("Response: ${jsonDecode(utf8.decode(response.bodyBytes))}");
 
-        return jsonDecode(response.body);
+        return jsonDecode(utf8.decode(response.bodyBytes));
       }
     } catch (e) {
       throw Exception('Failed to login user: $e');
@@ -78,14 +78,14 @@ class ApiUserService {
       'Accept': 'application/json',
     });
     
-    print("Response: ${jsonDecode(response.body)}");
+    print("Response: ${jsonDecode(utf8.decode(response.bodyBytes))}");
 
 
     // Vérification du statut de la réponse
     if (response.statusCode == 200) {
-    return jsonDecode(response.body);
+    return jsonDecode(utf8.decode(response.bodyBytes));
     } else {
-    return jsonDecode(response.body);
+    return jsonDecode(utf8.decode(response.bodyBytes));
     }
   }
 }

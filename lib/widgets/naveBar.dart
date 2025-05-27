@@ -5,6 +5,7 @@ import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/models/user_model.dart';
 import 'package:smarth_save/screen/Athantification/login_page.dart';
 import 'package:smarth_save/screen/pages/contact.dart';
+import 'package:go_router/go_router.dart';
 
 class Navebar extends StatefulWidget {
   const Navebar({super.key});
@@ -163,7 +164,7 @@ class _NavebarState extends State<Navebar> {
                 ),
                 TextButton.icon(
                   onPressed: () {
-                    // TODO: Implement chatbot action
+                    GoRouter.of(context).go('/chatbot');
                   },
                   icon: SvgPicture.asset(
                     'assets/svg/boot.svg',

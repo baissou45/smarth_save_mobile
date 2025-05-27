@@ -84,7 +84,7 @@ class _MonComptePageState extends State<MonComptePage> {
               ),
             ),
             SizedBox(
-              height: longeur / 2.2,
+              height: longeur / 2.7,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -143,7 +143,7 @@ class _MonComptePageState extends State<MonComptePage> {
                     padding: const EdgeInsets.only(bottom: 10.0),
                     child: ElevatedButton.icon(
                       onPressed: () {
-                      UserModel.sessionUser?.logout();
+                        UserModel.sessionUser?.logout();
                         context.go('/login');
                       },
                       icon: const Icon(
