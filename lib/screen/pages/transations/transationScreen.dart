@@ -73,7 +73,7 @@ class TransactionScreen extends StatelessWidget {
               const Text(
                 'Statistique',
                 style: TextStyle(
-                  color: kPrimaryColor2,
+                  color: kPrimaryColor3,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
