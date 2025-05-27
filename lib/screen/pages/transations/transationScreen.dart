@@ -105,7 +105,8 @@ class TransactionScreen extends StatelessWidget {
         Row(
           children: [
             SizedBox(
-              child: Column(
+              child: 
+              Column(
                 children: [
                   Container(
                     width: largeur / 2,
@@ -132,7 +133,8 @@ class TransactionScreen extends StatelessWidget {
                         )
                       : SizedBox(),
                 ],
-              ),
+              
+                ),
             ),
             SizedBox(
               child: Column(

@@ -36,6 +36,8 @@ class HomeApp extends StatelessWidget {
     // Ajoutez les routes où vous ne voulez pas afficher la BottomNavigationBar
     List<String> routesWithoutBottomNavBar = [
        // Exemple de route spécifique
+      "/login",
+      "/register",
     ];
     return routesWithoutBottomNavBar.contains(location);
   }

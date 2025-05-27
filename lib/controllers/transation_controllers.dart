@@ -23,10 +23,22 @@ class TransationControllers {
   //     debugPrint("Erreur lors de l'inscription : $response");
   //   }
   // }
-  Future<dynamic> getTransaction(BuildContext context) async {
-    final transactionProvider =
-        Provider.of<Transactionprovider>(context, listen: false);
-    await transactionProvider.loadTransactions();
+  Future <dynamic> getTransaction(BuildContext context) async {
+    print("je suis dans le controller");
+    final transactionProvider = Provider.of<Transactionprovider>(context, listen: false);
+    await transactionProvider.getTransactions();
+    print("controller ${transactionProvider.transactions}");
+
+    return transactionProvider.transactions;
+  }
+  Future<dynamic> getTransactionByDate(BuildContext context, String date) async {
+    final transactionProvider = Provider.of<Transactionprovider>(context, listen: false);
+    await transactionProvider.getTransactionByDate(date);
+    return transactionProvider.transactions;
+  }
+  Future<dynamic> getTransactionByType(BuildContext context, String type) async {
+    final transactionProvider = Provider.of<Transactionprovider>(context, listen: false);
+    await transactionProvider.getTransactionByType(type);
     return transactionProvider.transactions;
   }
 }
