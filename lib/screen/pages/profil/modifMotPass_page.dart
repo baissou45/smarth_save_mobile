@@ -34,7 +34,7 @@ class _ModifmotpassPageState extends State<ModifmotpassPage> {
             color: kPrimaryColor1,
           ), // Icône de retour
           onPressed: () {
-            context.go("/"); // Revient à l'écran précédent
+            context.go("/moncompte"); // Revient à l'écran précédent
           },
         ),
       ),

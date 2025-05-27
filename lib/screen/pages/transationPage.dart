@@ -20,7 +20,6 @@ class TransationPage extends StatefulWidget {
 
 class _TransationPageState extends State<TransationPage> {
   final ApiTransactionService apiTransactionService = ApiTransactionService();
-  final _formKey = GlobalKey<FormState>();
   final TextEditingController searcheController = TextEditingController();
   TransationControllers transationControllers = TransationControllers();
   Transactionprovider transactionprovider = Transactionprovider();
@@ -31,14 +30,11 @@ class _TransationPageState extends State<TransationPage> {
   String selectedFilter = ""; // 📌 Par défaut, filtre par mois
   @override
   void initState() {
-    // TODO: implement initState
     _loadTransactions();
     super.initState();
   }
 
-  // Fonction pour appeler le controller et récupérer les transactions
   Future<void> _loadTransactions() async {
-    print("avent");
     final transactionsFromController =
         await transationControllers.getTransaction(context);
     setState(() {
@@ -131,8 +127,6 @@ class _TransationPageState extends State<TransationPage> {
           ),
         ],
       ),
-     
-     
       drawer: Navebar(),
       body: Column(
         children: [
@@ -140,12 +134,12 @@ class _TransationPageState extends State<TransationPage> {
             children: [
               Container(
                 alignment: Alignment.center,
-                height: longeur / 3,
+                height: longeur / 4,
                 decoration: const BoxDecoration(
                   color: kPrimaryColor1,
                   borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
                   ),
                 ),
                 child: Padding(
@@ -205,7 +199,7 @@ class _TransationPageState extends State<TransationPage> {
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 margin:
-                    EdgeInsets.only(top: longeur / 3.4, left: 10, right: 10),
+                    EdgeInsets.only(top: longeur / 4.5, left: 10, right: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

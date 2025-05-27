@@ -10,16 +10,13 @@ class ApiFineTuneService {
   Future<String?> getFineTuneSentence() async {
     await userProvider.loadToken();
     final token = await userProvider.token;
-    // String url = api.baseURL + "/fine_turn_sentence";
-    String url = "http://192.168.1.28:8000/api/fine_turn_sentence";
+    String url = api.baseURL + "/fine_turn_sentence";
     final response = await http.get(
       Uri.parse(url),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        // 'Authorization': 'Bearer $token',
-        'Authorization':
-            'Bearer 6|8iUVhOXhyW6OiIQWst2lvwSv7Q3ifXSaAfUJx2v1a3a30131',
+        'Authorization': 'Bearer $token',
       },
     );
     if (response.statusCode == 200) {

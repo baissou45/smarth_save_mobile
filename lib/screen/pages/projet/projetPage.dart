@@ -117,26 +117,31 @@ class _ProjetPageState extends State<ProjetPage> {
                         'Noël au Sénégal',
                         Icons.travel_explore,
                         'Décembre 2025',
+                        color: Colors.teal,
                       ),
                       _buildProjectCard(
                         'Nouvelle voiture',
                         Icons.directions_car,
                         'Août 2025',
+                        color: Colors.teal,
                       ),
                       _buildProjectCard(
                         'Visite Caraïbe',
                         Icons.travel_explore,
                         'Juillet 2025',
+                        color: Colors.teal,
                       ),
                       _buildProjectCard(
                         'Randonnée Sicile',
                         Icons.nordic_walking_rounded,
                         'Août 2025',
+                        color: Colors.teal,
                       ),
                       _buildProjectCard(
                         'Projet startup',
                         Icons.add_business_outlined,
                         'Novembre 2025',
+                        color: Colors.teal,
                       ),
                       _buildProjectCard(
                         'Projet design',
@@ -154,10 +159,29 @@ class _ProjetPageState extends State<ProjetPage> {
     );
   }
 
-  Widget _buildProjectCard(String title, IconData icon, String date) {
+  Widget _buildProjectCard(String title, IconData icon, String date,
+      {Color color = Colors.teal}) {
     return GestureDetector(
       onTap: () {
-        context.go("/detailleProjet");
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: Text(title),
+            content: SizedBox(
+              width: 20,
+              height: 40,
+              child: Column(
+                children: [Text("Date"), Text(date)],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
       },
       child: Container(
         decoration: BoxDecoration(
@@ -173,7 +197,7 @@ class _ProjetPageState extends State<ProjetPage> {
                 flex: 1,
                 child: Icon(
                   icon,
-                  color: Colors.teal,
+                  color: color,
                   size: 35,
                 ),
               ),
@@ -219,6 +243,34 @@ class _ProjetPageState extends State<ProjetPage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class DialogExample extends StatelessWidget {
+  const DialogExample({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('AlertDialog Title'),
+          content: const Text('AlertDialog description'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      ),
+      child: const Text('Show Dialog'),
     );
   }
 }

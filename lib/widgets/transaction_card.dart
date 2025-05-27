@@ -34,7 +34,7 @@ class TransactionCard extends StatelessWidget {
         color: Colors.transparent,
         elevation: 0,
         child: Padding(
-          padding: EdgeInsets.all(1),
+          padding: EdgeInsets.only(left: 12, right: 12, bottom: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -89,7 +89,7 @@ class TransactionCard extends StatelessWidget {
                 ]),
               ),
               SizedBox(
-                width: largeur / 13,
+                width: largeur / 6,
               ),
               Flexible(
                 child: Container(

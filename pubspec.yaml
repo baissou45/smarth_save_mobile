@@ -48,7 +48,7 @@ dependencies:
   flutter_svg: ^2.0.17
   intl: ^0.18.1
   dropdown_button2: ^2.3.9
-  flutter_markdown_plus: ^1.0.3
+  flutter_markdown: ^0.7.7+1
 flutter_native_splash:
   android: true
   ios: true

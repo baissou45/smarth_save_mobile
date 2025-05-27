@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:smarth_save/models/open_ia_bot.dart';
 import 'package:smarth_save/models/message_history.dart';
 import 'package:smarth_save/services/api_fine_tune_service.dart';
@@ -15,6 +15,7 @@ class _ChatBotPageState extends State<ChatBotPage> {
   final TextEditingController _controller = TextEditingController();
   final List<_ChatMessage> _messages = [];
   bool _isLoading = false;
+  bool _fullLoading = false;
   late OpenIABot _bot;
 
   @override
@@ -27,12 +28,13 @@ class _ChatBotPageState extends State<ChatBotPage> {
   Future<void> _loadHistory() async {
     final history = await MessageHistory.loadMessages();
     _messages.clear();
-    for (final msg in history) {
+    for (int i = 1; i < history.length; i++) {
       _messages.add(_ChatMessage(
-        text: msg['content'] ?? '',
-        isBot: (msg['role'] ?? '') != 'user',
+        text: history[i]['content'] ?? '',
+        isBot: (history[i]['role'] ?? '') != 'user',
       ));
     }
+
     // Si l'historique est vide, on récupère la fine-tune AVANT le setState
     if (_messages.isEmpty) {
       final fineTuneService = ApiFineTuneService();
@@ -115,12 +117,12 @@ class _ChatBotPageState extends State<ChatBotPage> {
             tooltip: 'Supprimer l\'historique',
             onPressed: () async {
               setState(() {
-                _isLoading = true;
+                _fullLoading = true;
               });
               await MessageHistory.clearHistory();
               await _loadHistory();
               setState(() {
-                _isLoading = false;
+                _fullLoading = false;
               });
               if (mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -139,124 +141,139 @@ class _ChatBotPageState extends State<ChatBotPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: _messages.isEmpty
-                ? const Center(
-                    child: Text(
-                      'Aucun message',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  )
-                : ListView.builder(
-                    reverse: false,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    itemCount: _messages.length + (_isLoading ? 1 : 0),
-                    itemBuilder: (context, index) {
-                      if (_isLoading && index == _messages.length) {
-                        return Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 6),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 12),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[350],
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(18),
-                                topRight: Radius.circular(18),
-                                bottomRight: Radius.circular(18),
-                              ),
-                            ),
-                            child: SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: Image.asset("assets/images/loading.gif"),
-                            ),
-                          ),
-                        );
-                      }
-                      final msg = _messages[index];
-                      return Align(
-                        alignment: msg.isBot
-                            ? Alignment.centerLeft
-                            : Alignment.centerRight,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(vertical: 6),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 12),
-                          constraints: BoxConstraints(
-                              maxWidth:
-                                  MediaQuery.of(context).size.width * 0.75),
-                          decoration: BoxDecoration(
-                            color: msg.isBot ? Colors.grey[350] : Colors.teal,
-                            borderRadius: BorderRadius.only(
-                              topLeft: const Radius.circular(18),
-                              topRight: const Radius.circular(18),
-                              bottomLeft: Radius.circular(msg.isBot ? 0 : 18),
-                              bottomRight: Radius.circular(msg.isBot ? 18 : 0),
-                            ),
-                          ),
-                          child: msg.isBot
-                              ? Markdown(data: msg.text)
-                              : Text(
-                                  msg.text,
-                                  style: TextStyle(
-                                    color: msg.isBot
-                                        ? Colors.black87
-                                        : Colors.white,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                        ),
-                      );
-                    },
-                  ),
-          ),
-          Container(
-            color: Colors.transparent,
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            child: Row(
+      body: _fullLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Column(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      hintText: 'Demande moi quelque chose.....',
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 0),
-                    ),
-                    onSubmitted: _handleSend,
-                  ),
+                  child: _messages.isEmpty
+                      ? const Center(
+                          child: Text(
+                            'Aucun message',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        )
+                      : ListView.builder(
+                          reverse: false,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 8),
+                          itemCount: _messages.length + (_isLoading ? 1 : 0),
+                          itemBuilder: (context, index) {
+                            if (_isLoading && index == _messages.length) {
+                              return Align(
+                                alignment: Alignment.centerLeft,
+                                child: Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 6),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[350],
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(18),
+                                      topRight: Radius.circular(18),
+                                      bottomRight: Radius.circular(18),
+                                    ),
+                                  ),
+                                  child: const SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.teal,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            final msg = _messages[index];
+                            return Align(
+                              alignment: msg.isBot
+                                  ? Alignment.centerLeft
+                                  : Alignment.centerRight,
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(vertical: 6),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 12),
+                                constraints: BoxConstraints(
+                                    maxWidth: msg.isBot
+                                        ? MediaQuery.of(context).size.width *
+                                            0.90
+                                        : MediaQuery.of(context).size.width *
+                                            0.75),
+                                decoration: BoxDecoration(
+                                  color: msg.isBot
+                                      ? Colors.grey[350]
+                                      : Colors.teal,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: const Radius.circular(18),
+                                    topRight: const Radius.circular(18),
+                                    bottomLeft:
+                                        Radius.circular(msg.isBot ? 0 : 18),
+                                    bottomRight:
+                                        Radius.circular(msg.isBot ? 18 : 0),
+                                  ),
+                                ),
+                                child: msg.isBot
+                                    ? MarkdownBody(data: msg.text)
+                                    : Text(
+                                        msg.text,
+                                        style: TextStyle(
+                                          color: msg.isBot
+                                              ? Colors.black87
+                                              : Colors.white,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                              ),
+                            );
+                          },
+                        ),
                 ),
-                const SizedBox(width: 8),
-                GestureDetector(
-                  onTap: () => _handleSend(_controller.text),
-                  child: Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: const BoxDecoration(
-                      color: Colors.teal,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(Icons.mic, color: Colors.white),
+                Container(
+                  color: Colors.transparent,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _controller,
+                          decoration: InputDecoration(
+                            hintText: 'Demande moi quelque chose.....',
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(24),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 0),
+                          ),
+                          onSubmitted: _handleSend,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      GestureDetector(
+                        onTap: () => _handleSend(_controller.text),
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: const BoxDecoration(
+                            color: Colors.teal,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.mic, color: Colors.white),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }

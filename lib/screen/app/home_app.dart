@@ -34,7 +34,9 @@ class HomeApp extends StatelessWidget {
   // // Fonction pour vérifier si la route actuelle doit masquer la BottomNavigationBar
   bool isRouteWithoutBottomNavBar(String location) {
     // Ajoutez les routes où vous ne voulez pas afficher la BottomNavigationBar
-    List<String> routesWithoutBottomNavBar = [];
+    List<String> routesWithoutBottomNavBar = [
+       // Exemple de route spécifique
+    ];
     return routesWithoutBottomNavBar.contains(location);
   }
 }
