@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ProjetPage extends StatefulWidget {
   const ProjetPage({super.key});
@@ -15,7 +16,9 @@ class _ProjetPageState extends State<ProjetPage> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          context.go('/creatProjet');
+        },
         backgroundColor: Colors.teal,
         child: const Icon(Icons.add, color: Colors.white),
       ),
@@ -77,7 +80,7 @@ class _ProjetPageState extends State<ProjetPage> {
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: Row(
+                        child: const Row(
                           children: [
                             Text(
                               '2025',
@@ -96,7 +99,7 @@ class _ProjetPageState extends State<ProjetPage> {
                 Padding(
                   padding:
                       EdgeInsets.only(top: longeur / 10, bottom: longeur / 80),
-                  child: Text(
+                  child: const Text(
                     'Mes projets',
                     style: TextStyle(
                       fontSize: 20,
@@ -171,7 +174,7 @@ class _ProjetPageState extends State<ProjetPage> {
               ),
             ),
             Expanded(
-              flex: 3,
+              flex: 4,
               child: Container(
                 width: double.infinity,
                 decoration: const BoxDecoration(

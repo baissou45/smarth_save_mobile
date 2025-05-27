@@ -207,6 +207,10 @@ final GoRouter router = GoRouter(
           routes: [
             GoRoute(
               path: '/moncompte',
+              builder: (context, state) => const MonComptePage(),
+            ),
+            GoRoute(
+              path: '/modifierCompte',
               builder: (context, state) => const DetailCompte(),
             ),
           ],

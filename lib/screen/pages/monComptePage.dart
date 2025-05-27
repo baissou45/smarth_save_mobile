@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:smarth_save/models/user_model.dart';
 
 class MonComptePage extends StatefulWidget {
@@ -89,21 +90,28 @@ class _MonComptePageState extends State<MonComptePage> {
                         {
                           'icon': Icons.person,
                           'title': 'Modifier le profil',
+                          'route': '/modifierCompte',
                         },
                         {
                           'icon': Icons.lock,
                           'title': 'Modifier le mot de passe',
+                          'route': '/modifierCompte',
+                          // 'route': '/modifierMdp',
                         },
                         {
                           'icon': CupertinoIcons.chat_bubble_2_fill,
                           'title': 'Messagerie',
+                          'route': '/modifierCompte',
+                          // 'route': '/messagerie',
                         },
                       ]
                           .map(
                             (item) => Padding(
                               padding: const EdgeInsets.only(bottom: 15.0),
                               child: ListTile(
-                                onTap: () {},
+                                onTap: () {
+                                  context.go(item['route'] as String);
+                                },
                                 leading: rounded_icon(
                                   item['icon'] as IconData,
                                   Colors.teal,

@@ -43,8 +43,7 @@ class _DetailCompteState extends State<DetailCompte> {
           },
         ),
       ),
-      body: 
-      Padding(
+      body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(children: [
