@@ -64,9 +64,19 @@ class _WellcommepageState extends State<Wellcommepage> {
                       .notifications_active_outlined), // Utilisation directe du widget SVG ou icône
                 ),
               )),
-         
-         
-              // IconButton(
+          Builder(
+            builder: (context) => IconButton(
+              icon: const Icon(
+                Icons.menu,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            ),
+          ),
+
+          // IconButton(
           //   onPressed: ()   {
           //     Scaffold.of(context).openDrawer(); // Ouvrir le drawer
           //   },
@@ -92,7 +102,7 @@ class _WellcommepageState extends State<Wellcommepage> {
                   width: double.infinity,
                   child: Column(
                     children: [
-                      SizedBox(height: largeur / 20),
+                      SizedBox(height: largeur / 40),
                       Text(
                         "${montant.split("").join("")} €",
                         style: TextStyle(
@@ -101,7 +111,7 @@ class _WellcommepageState extends State<Wellcommepage> {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      SizedBox(height: hauteur / 60),
+                      SizedBox(height: hauteur / 100),
                       Text(
                         "Solde",
                         style: TextStyle(

@@ -137,7 +137,7 @@ class _PortfeuillesPageState extends State<PortfeuillesPage> {
                                   child: PortefeuilleWidget(
                                     title: "Épargne $index",
                                     amount: 1000,
-                                    actuelAmount: index * 70,
+                                    actuelAmount: (index+1) * 200,
                                   ),
                                 );
                               },

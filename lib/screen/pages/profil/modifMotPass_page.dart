@@ -25,7 +25,6 @@ class _ModifmotpassPageState extends State<ModifmotpassPage> {
       appBar: AppBar(
         title: Text('Changer de mot de passe',
         style: TextStyle(
-        fontSize: largeur / 12,
         fontWeight: FontWeight.w900)
         ),
         leading: IconButton(

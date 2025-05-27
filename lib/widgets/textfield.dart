@@ -2,23 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SVTextField extends StatefulWidget {
-  final TextEditingController? controller;
-  final String? hint;
-  final Widget? prefix;
-  final String? label;
-  final TextInputType? keyboardType;
-  final bool isPassword;
+final TextEditingController? controller;
+final String? hint;
+final Widget? prefix;
+final String? label;
+final TextInputType? keyboardType;
+final bool isPassword;
+final bool enabled; // 🔹 Nouvelle variable
 
-  const SVTextField({
-    super.key,
-    this.controller,
-    this.hint,
-    this.keyboardType,
-    this.label,
-    this.prefix,
-    this.isPassword = false,
-  });
-
+const SVTextField({
+  super.key,
+  this.controller,
+  this.hint,
+  this.keyboardType,
+  this.label,
+  this.prefix,
+  this.isPassword = false,
+  this.enabled = true, // 🔹 Valeur par défaut : activé
+});
   @override
   _SVTextFieldState createState() => _SVTextFieldState();
 }
@@ -50,6 +51,7 @@ class _SVTextFieldState extends State<SVTextField> {
           controller: widget.controller,
           obscureText: widget.isPassword ? _obscureText : false,
           keyboardType: widget.keyboardType,
+          enabled: widget.enabled, 
           style: GoogleFonts.poppins(
             fontSize: 13,
             fontWeight: FontWeight.w600,

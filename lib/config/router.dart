@@ -56,6 +56,10 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const DetailCompte(),
     ),
     GoRoute(
+    path: '/chatbot',
+    builder: (context, state) => const ChatBotPage(),
+  ),
+    GoRoute(
       path: '/modifMotPass',
       builder: (context, state) => const ModifmotpassPage(),
     ),

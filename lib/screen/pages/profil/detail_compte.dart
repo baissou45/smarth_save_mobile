@@ -23,8 +23,7 @@ class _DetailCompteState extends State<DetailCompte> {
       TextEditingController(text: "${UserModel.sessionUser?.email}");
   var phoneController =
       TextEditingController(text: "${UserModel.sessionUser?.email}");
-  var passController =
-      TextEditingController(text: "${UserModel.sessionUser?.password}");
+  var passController = TextEditingController(text: '');
   @override
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class _DetailCompteState extends State<DetailCompte> {
       appBar: AppBar(
         title: Text('Modifier le profil',
             style:
-                TextStyle(fontSize: largeur / 12, fontWeight: FontWeight.w900)),
+                TextStyle( fontWeight: FontWeight.w900)),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
@@ -69,14 +68,20 @@ class _DetailCompteState extends State<DetailCompte> {
             SizedBox(
               height: longeur / 150,
             ),
-            LabeledTextField(
-                label: "Mot de passe", hint: "", controller: passController),
+            SVTextField(
+              controller: passController,
+              label: 'Mot de passe',
+              keyboardType: TextInputType.name,
+              hint: "*****",
+              enabled: false,
+              isPassword: true,
+            ),
             Container(
               width: double.infinity,
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () async {
-                  // navigationTonextPage(context, const PlaidLogin());
+                  context.go("/modifMotPass");
                 },
                 child: const Text("Modifier le mot de passe",
                     style: TextStyle(
