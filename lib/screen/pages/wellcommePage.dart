@@ -66,7 +66,9 @@ class _WellcommepageState extends State<Wellcommepage> {
                       .notifications_active_outlined), // Utilisation directe du widget SVG ou icône
                 ),
               )),
-          // IconButton(
+         
+         
+              // IconButton(
           //   onPressed: ()   {
           //     Scaffold.of(context).openDrawer(); // Ouvrir le drawer
           //   },

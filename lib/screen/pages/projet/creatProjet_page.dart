@@ -56,12 +56,11 @@ class _CreatprojetPageState extends State<CreatprojetPage> {
             SizedBox(
             height: longeur / 150,
           ),
-            SelectInput(
+            LabeledTextField(
+              isDate: true,
               label: "Période du projet  *",
-              items: ["Option 1", "Option 2", "Option 3"],
-              onChanged: (val) {
-                print("Sélection : $val");
-              },
+              hint: "",
+              controller: periodreController,
             ),
             SizedBox(
               height: longeur / 150,
@@ -93,7 +92,8 @@ class _CreatprojetPageState extends State<CreatprojetPage> {
           ]),
         ),
       ),
-    );
+    
+      );
   }
 
 

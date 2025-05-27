@@ -96,92 +96,99 @@ class _TransationPageDebitState extends State<TransationPageDebit> {
       drawer: Navebar(),
       body: Column(
         children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                alignment: Alignment.center,
-                height: longeur / 3,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
+          Container(
+            constraints: BoxConstraints(
+              maxHeight: longeur / 2.4,
+              minHeight: longeur / 2.5,
+            ),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  height: longeur / 3,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: const Padding(
+                    padding: const EdgeInsets.all(8.0),
                   ),
                 ),
-                child: const Padding(
-                  padding: const EdgeInsets.all(8.0),
-                ),
-              ),
-              Positioned(
-                top: 30,
-                left: largeur / 2.9,
-                child: CircleAvatar(
-                  radius: largeur / 4,
-                  backgroundColor: kSecondColor,
-                ),
-              ),
-              Positioned(
-                top: 5,
-                child: CircleAvatar(
-                  radius: largeur / 4,
-                  backgroundColor: errorToastColor,
-                ),
-              ),
-              Positioned(
-                top: 20,
-                right: largeur / 3,
-                child: CircleAvatar(
-                  radius: largeur / 4,
-                  backgroundColor: errorToastColor,
-                ),
-              ),
-              Positioned(
-                top: 40,
-                right: largeur / 5.5,
-                child: CircleAvatar(
-                  radius: largeur / 3.7,
-                  backgroundColor: const Color.fromARGB(255, 177, 181, 189),
-                ),
-              ),
-              Positioned(
-                top: 45,
-                right: largeur / 3.5,
-                child: CircleAvatar(
-                  radius: largeur / 3.8,
-                  backgroundColor: const Color.fromARGB(255, 177, 181, 189),
-                ),
-              ),
-              Positioned(
-                top: 20,
-                right: largeur / 4.5,
-                child: CircleAvatar(
-                  radius: largeur / 3.6,
-                  backgroundColor: primaryButtonTextColor,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Total entrées',
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w800,
-                            color: errorToastColor),
-                      ),
-                      Text(
-                        '2 834,00 €',
-                        style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w900,
-                            color: errorToastColor),
-                      ),
-                    ],
+                Positioned(
+                  top: longeur / 30,
+                  left: largeur / 2.9,
+                  child: CircleAvatar(
+                    radius: largeur / 4,
+                    backgroundColor: kSecondColor,
                   ),
                 ),
-              ),
-            ],
+                Positioned(
+                  top: longeur / 150,
+                  child: CircleAvatar(
+                    radius: largeur / 4,
+                    backgroundColor: errorToastColor,
+                  ),
+                ),
+                Positioned(
+                  top: longeur / 45,
+                  right: largeur / 3,
+                  child: CircleAvatar(
+                    radius: largeur / 4,
+                    backgroundColor: errorToastColor,
+                  ),
+                ),
+                Positioned(
+                  top: longeur / 19,
+                  right: largeur / 5.5,
+                  child: CircleAvatar(
+                    radius: largeur / 3.7,
+                    backgroundColor: const Color.fromARGB(255, 177, 181, 189),
+                  ),
+                ),
+                Positioned(
+                  top: longeur / 15,
+                  right: largeur / 3.5,
+                  child: CircleAvatar(
+                    radius: largeur / 3.8,
+                    backgroundColor: const Color.fromARGB(255, 177, 181, 189),
+                  ),
+                ),
+                Positioned(
+                  top: longeur / 30,
+                  right: largeur / 4.5,
+                  child: CircleAvatar(
+                    radius: largeur / 3.6,
+                    backgroundColor: primaryButtonTextColor,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Total entrées',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w800,
+                              color: errorToastColor),
+                        ),
+                        Text(
+                          '2 834,00 €',
+                          style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.w900,
+                              color: errorToastColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
           Expanded(
             child: Container(
+              
               width: double.infinity,
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -199,7 +206,7 @@ class _TransationPageDebitState extends State<TransationPageDebit> {
                 ],
               ),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-              margin: EdgeInsets.only(top: longeur / 25, left: 10, right: 10),
+              margin: EdgeInsets.only(left: 10, right: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -207,7 +214,6 @@ class _TransationPageDebitState extends State<TransationPageDebit> {
                     "Sorties",
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
                   ),
-                  const SizedBox(height: 10),
                   Expanded(
                     child: ListView.builder(
                       itemCount: transactions.length,
