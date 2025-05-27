@@ -19,40 +19,88 @@ class TransactionScreen extends StatelessWidget {
     double longeur = MediaQuery.of(context).size.height; // Correction ici
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: false,
-        title: const Text(
-          'Statistique',
-          style: TextStyle(color: Color.fromARGB(255, 197, 197, 197)),
-        ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Color.fromARGB(255, 126, 126, 126),
-          ), // Icône de retour
-          onPressed: () {
-            context.go("/transactions");
-            ; // Revient à l'écran précédent
-          },
-        ),
-        actions: [
-          Builder(
-            builder: (context) => IconButton(
-              icon: const Icon(
-                Icons.menu,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            ),
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   backgroundColor: Colors.transparent,
+      //   automaticallyImplyLeading: false,
+      //   title: const Text(
+      //     'Statistique',
+      //     style: TextStyle(color:Colors.black),
+      //   ),
+      // leading: IconButton(
+      //   icon: const Icon(
+      //     Icons.arrow_back_ios,
+      //     color: Color.fromARGB(255, 126, 126, 126),
+      //   ), // Icône de retour
+      //   onPressed: () {
+      //     context.go("/transactions");
+      //     ; // Revient à l'écran précédent
+      //   },
+      // ),
+      //   actions: [
+      //     Builder(
+      //       builder: (context) => IconButton(
+      //         icon: const Icon(
+      //           Icons.menu,
+      //           color: Colors.white,
+      //         ),
+      //         onPressed: () {
+      //           Scaffold.of(context).openDrawer();
+      //         },
+      //       ),
+      //     ),
+      //   ],
+      // ),
+
       body: Container(
           child: Column(children: [
+        Padding(
+          // padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          padding:  EdgeInsets.only(top:longeur/30.0, left: 10, right: 25),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Color.fromARGB(255, 126, 126, 126),
+                ), // Icône de retour
+                onPressed: () {
+                  context.go("/transactions");
+                  ; // Revient à l'écran précédent
+                },
+              ),
+              const Text(
+                'Statistique',
+                style: TextStyle(
+                  color: kPrimaryColor2,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const Row(
+                  children: [
+                    Text(
+                      '2025',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Icon(Icons.arrow_drop_down),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
         SizedBox(height: 10),
         Row(
           children: [
@@ -60,8 +108,8 @@ class TransactionScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
-                    width: largeur/2,
-                  alignment: Alignment.center,
+                    width: largeur / 2,
+                    alignment: Alignment.center,
                     child: TextButton(
                       onPressed: () {
                         context.go('/transaction/credit');
@@ -90,9 +138,9 @@ class TransactionScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
-                    width: largeur/2,
+                    width: largeur / 2,
                     alignment: Alignment.center,
-                  child: TextButton(
+                    child: TextButton(
                         onPressed: () {
                           context.go('/transaction/debit');
                         },

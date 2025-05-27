@@ -106,26 +106,44 @@ class _TransationPageState extends State<TransationPage> {
           },
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.notifications_none_outlined),
-            onPressed: () {},
-            style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(Colors.white),
-              shape: WidgetStateProperty.all(const CircleBorder()),
-            ),
-          ),
-          Builder(
-            builder: (context) => IconButton(
-              icon: const Icon(
-                Icons.menu,
-                color: Colors.white,
+        IconButton(
+        onPressed: () {
+          GoRouter.of(context).push('/notification');
+        },
+        icon: Container(
+          width: 45,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26, // Couleur de l'ombre
+                blurRadius: 10, // Flou de l'ombre
+                spreadRadius: 2, // Expansion de l'ombre
+                offset: Offset(4, 4), // Décalage de l'ombre
               ),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            ),
+            ],
           ),
-        ],
+          child: const CircleAvatar(
+            backgroundColor: Colors.white,
+            radius: 30, // Ajuste la taille
+            child: Icon(Icons
+                .notifications_active_outlined), // Utilisation directe du widget SVG ou icône
+          ),
+        )),
+   
+          // Builder(
+          //   builder: (context) => IconButton(
+          //     icon: const Icon(
+          //       Icons.menu,
+          //       color: Colors.white,
+          //     ),
+          //     onPressed: () {
+          //       Scaffold.of(context).openDrawer();
+          //     },
+          //   ),
+          // ),
+        
+          ],
       ),
       drawer: Navebar(),
       body: Column(
@@ -177,7 +195,7 @@ class _TransationPageState extends State<TransationPage> {
                                 "assets/svg/ajout.svg",
                               ),
                               'Ajouter',
-                              () => context.push("/creatProjet")),
+                              () => context.push("/creatTransaction")),
                         ],
                       )
                     ],
@@ -237,7 +255,8 @@ class _TransationPageState extends State<TransationPage> {
               ),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               margin: EdgeInsets.only(top: longeur / 25, left: 10, right: 10),
-              child: Column(
+              child: 
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
@@ -276,9 +295,11 @@ class _TransationPageState extends State<TransationPage> {
                   ),
                 ],
               ),
-            ),
+            
+              ),
           ),
-        ],
+        
+          ],
       ),
     );
   }
