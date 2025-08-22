@@ -50,7 +50,7 @@ class _MonComptePageState extends State<MonComptePage> {
                         CircleAvatar(
                           radius: largeur / 5,
                           backgroundImage:
-                              AssetImage('assets/images/avatar.webp'),
+                              const AssetImage('assets/images/avatar.webp'),
                         ),
                         Positioned(
                           bottom: 0,
@@ -68,21 +68,24 @@ class _MonComptePageState extends State<MonComptePage> {
                               fontSize: largeur / 20,
                               fontWeight: FontWeight.w900),
                         ),
-                        Text("${UserModel.sessionUser?.email ?? ""}",
-                            style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                fontStyle: FontStyle.italic,
-                                fontSize: largeur / 30,
-                                fontWeight: FontWeight.w900)),
+                        Text(
+                          UserModel.sessionUser?.email ?? '',
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontStyle: FontStyle.italic,
+                            fontSize: largeur / 30,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
             ),
-            Expanded(
+            SizedBox(
+              height: longeur / 2.7,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
                     child: ListView(
@@ -107,10 +110,17 @@ class _MonComptePageState extends State<MonComptePage> {
                       ]
                           .map(
                             (item) => Padding(
-                              padding: const EdgeInsets.only(bottom: 15.0),
+                              padding: const EdgeInsets.only(bottom: 4.0),
                               child: ListTile(
                                 onTap: () {
-                                  context.go(item['route'] as String);
+                                  if (item['title'] == 'Modifier le profil') {
+                                    context.go('/modifProfile');
+                                  } else if (item['title'] ==
+                                      'Modifier le mot de passe') {
+                                    context.go('/modifMotPass');
+                                  } else if (item['title'] == 'Messagerie') {
+                                    context.go('');
+                                  }
                                 },
                                 leading: rounded_icon(
                                   item['icon'] as IconData,
@@ -134,9 +144,12 @@ class _MonComptePageState extends State<MonComptePage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
+                    padding: const EdgeInsets.only(bottom: 1.0),
                     child: ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        UserModel.sessionUser?.logout();
+                        context.go('/login');
+                      },
                       icon: const Icon(
                         Icons.logout,
                         color: Colors.white,

@@ -6,11 +6,14 @@ import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/screen/Athantification/login_page.dart';
 import 'package:smarth_save/screen/pages/contact.dart';
 import 'package:smarth_save/screen/pages/monComptePage.dart';
+import 'package:smarth_save/screen/pages/chat_bot_page.dart';
 import 'package:smarth_save/screen/pages/notificationPage.dart';
 import 'package:smarth_save/screen/pages/portfeuillesPage.dart';
 import 'package:smarth_save/screen/pages/profil/detail_compte.dart';
+import 'package:smarth_save/screen/pages/profil/modifMotPass_page.dart';
 import 'package:smarth_save/screen/pages/projet/creatProjet_page.dart';
-import 'package:smarth_save/screen/pages/projetPage.dart';
+import 'package:smarth_save/screen/pages/projet/detailProjet_page.dart';
+import 'package:smarth_save/screen/pages/projet/projetPage.dart';
 import 'package:smarth_save/screen/pages/transationPage.dart';
 import 'package:smarth_save/screen/pages/transations/transationScreen.dart';
 import 'package:smarth_save/screen/pages/wellcommePage.dart';
@@ -27,11 +30,18 @@ final GoRouter router = GoRouter(
       path: '/',
       builder: (context, state) => RedirectPage(),
     ),
-
     // Route indépendante avec BottomNavigationBar
     GoRoute(
       path: '/login',
       builder: (context, state) => LoginPage(),
+    ),
+    GoRoute(
+      path: '/detailleProjet',
+      builder: (context, state) => DetailprojetPage(),
+    ),
+    GoRoute(
+      path: '/chatbot',
+      builder: (context, state) => const ChatBotPage(),
     ),
     GoRoute(
       path: '/transaction/:type',
@@ -147,12 +157,16 @@ final GoRouter router = GoRouter(
     ),
 
     GoRoute(
-      path: '/login',
-      builder: (context, state) => LoginPage(),
-    ),
-    GoRoute(
       path: '/creatProjet',
       builder: (context, state) => const CreatprojetPage(),
+    ),
+    GoRoute(
+      path: '/modifProfile',
+      builder: (context, state) => const DetailCompte(),
+    ),
+    GoRoute(
+      path: '/modifMotPass',
+      builder: (context, state) => const ModifmotpassPage(),
     ),
     GoRoute(
       path: '/onboarding',
@@ -208,10 +222,6 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: '/moncompte',
               builder: (context, state) => const MonComptePage(),
-            ),
-            GoRoute(
-              path: '/modifierCompte',
-              builder: (context, state) => const DetailCompte(),
             ),
           ],
         ),

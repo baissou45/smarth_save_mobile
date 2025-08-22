@@ -17,7 +17,7 @@ class _ProjetPageState extends State<ProjetPage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.go('/creatProjet');
+          context.push('/creatProjet');
         },
         backgroundColor: Colors.teal,
         child: const Icon(Icons.add, color: Colors.white),
@@ -110,33 +110,38 @@ class _ProjetPageState extends State<ProjetPage> {
                 Expanded(
                   child: GridView.count(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 15,
-                    mainAxisSpacing: 15,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 20,
                     children: [
                       _buildProjectCard(
                         'Noël au Sénégal',
                         Icons.travel_explore,
                         'Décembre 2025',
+                        color: Colors.teal,
                       ),
                       _buildProjectCard(
                         'Nouvelle voiture',
                         Icons.directions_car,
                         'Août 2025',
+                        color: Colors.teal,
                       ),
                       _buildProjectCard(
                         'Visite Caraïbe',
                         Icons.travel_explore,
                         'Juillet 2025',
+                        color: Colors.teal,
                       ),
                       _buildProjectCard(
                         'Randonnée Sicile',
                         Icons.nordic_walking_rounded,
                         'Août 2025',
+                        color: Colors.teal,
                       ),
                       _buildProjectCard(
                         'Projet startup',
                         Icons.add_business_outlined,
                         'Novembre 2025',
+                        color: Colors.teal,
                       ),
                       _buildProjectCard(
                         'Projet design',
@@ -154,66 +159,118 @@ class _ProjetPageState extends State<ProjetPage> {
     );
   }
 
-  Widget _buildProjectCard(String title, IconData icon, String date) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Card(
-        elevation: 8.0,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              flex: 7,
-              child: Icon(
-                icon,
-                color: Colors.teal,
-                size: 35,
+  Widget _buildProjectCard(String title, IconData icon, String date,
+      {Color color = Colors.teal}) {
+    return GestureDetector(
+      onTap: () {
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: Text(title),
+            content: SizedBox(
+              width: 20,
+              height: 40,
+              child: Column(
+                children: [Text("Date"), Text(date)],
               ),
             ),
-            Expanded(
-              flex: 4,
-              child: Container(
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Colors.teal,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(15),
-                    bottomRight: Radius.circular(15),
-                  ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Card(
+          elevation: 8.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 1,
+                child: Icon(
+                  icon,
+                  color: color,
+                  size: 35,
                 ),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+              ),
+              Expanded(
+                // flex: 1,
+                child: Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Colors.teal,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15),
+                    ),
+                  ),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          title,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                      Text(
-                        date,
-                        style: const TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontSize: 12,
-                          color: Colors.white,
+                        Text(
+                          date,
+                          style: const TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontSize: 12,
+                            color: Colors.white,
+                          ),
+                          textAlign: TextAlign.start,
                         ),
-                        textAlign: TextAlign.start,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class DialogExample extends StatelessWidget {
+  const DialogExample({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('AlertDialog Title'),
+          content: const Text('AlertDialog description'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
             ),
           ],
         ),
       ),
+      child: const Text('Show Dialog'),
     );
   }
 }

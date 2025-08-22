@@ -18,13 +18,7 @@ class ApiTransactionService {
     final response = await http.post(
       Uri.parse(url),
       body: jsonEncode({
-        "trie": "asc",
-        "type": "debit",
-        "categorie": 0,
-        "date": "2019-08-24T14:15:22Z",
-        "filter": "day",
-        "groupe_by": "categorie",
-        "limit": 0
+        "trie": "desc",
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -32,7 +26,7 @@ class ApiTransactionService {
         'Authorization': 'Bearer $token',
       },
     );
-    print("les transaction ${response.body}");
+    return response.body;
   }
 
   Future<dynamic> findTransaction(int transation) async {

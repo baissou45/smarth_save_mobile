@@ -69,21 +69,3 @@ Widget build(BuildContext context) {
   );
 }
 }
-
-
-
-
-// TextFormField(
-// controller: controller,
-// decoration: InputDecoration(
-//   fillColor: kSecondColor3,
-//   filled: true,
-//   hintText: hint,
-  // border: const OutlineInputBorder(
-  // borderRadius: BorderRadius.all(Radius.circular(8.0)),
-  // borderSide: BorderSide.none,
-
-// ),
-//   contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-// ),
-// ),

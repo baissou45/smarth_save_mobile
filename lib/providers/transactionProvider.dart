@@ -5,7 +5,6 @@ import 'package:flutter/services.dart'; // Pour charger les fichiers depuis les 
 
 class Transactionprovider extends ChangeNotifier {
   List<TransactionModel> _transactions = [];
-  
 
   List<TransactionModel> get transactions => _transactions;
 
@@ -21,7 +20,7 @@ class Transactionprovider extends ChangeNotifier {
           .toList();
       notifyListeners(); // Notify listeners that data has been updated
       // _transactions.forEach((transactions) {
-        
+
       // });
     } catch (e) {
       print("Erreur lors du chargement des transactions: $e");

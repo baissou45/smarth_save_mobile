@@ -60,6 +60,12 @@ if (data != null) {
 }
 }
 
+Future<void> logout() async {
+final prefs = await SharedPreferences.getInstance();
+await prefs.remove('auth_token');
+await prefs.remove('user');
+}
+
 
 // Fonction utilitaire pour convertir une valeur en booléen
 // bool? _parseBool(dynamic value) {
