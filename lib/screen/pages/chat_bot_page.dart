@@ -28,7 +28,7 @@ class _ChatBotPageState extends State<ChatBotPage> {
   Future<void> _loadHistory() async {
     final history = await MessageHistory.loadMessages();
     _messages.clear();
-    for (int i = 1; i < history.length; i++) {
+    for (int i = 0; i < history.length; i++) {
       _messages.add(_ChatMessage(
         text: history[i]['content'] ?? '',
         isBot: (history[i]['role'] ?? '') != 'user',
@@ -162,7 +162,7 @@ class _ChatBotPageState extends State<ChatBotPage> {
                           reverse: false,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 8),
-                          itemCount: _messages.length + (_isLoading ? 1 : 0),
+                          itemCount: _messages.length - (_isLoading ? 1 : 0),
                           itemBuilder: (context, index) {
                             if (_isLoading && index == _messages.length) {
                               return Align(

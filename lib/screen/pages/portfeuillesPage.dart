@@ -124,16 +124,16 @@ class _PortfeuillesPageState extends State<PortfeuillesPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 PortefeuilleWidget(
-                                  title: "Compte courant",
-                                  progress: 0,
+                                  title: "Restauration",
+                                  progress: 0.5,
                                   color: Colors.teal,
-                                  amount: "50",
+                                  amount: "100",
                                 ),
                                 PortefeuilleWidget(
-                                  title: "Compte cheque",
-                                  progress: 0,
-                                  color: Colors.indigo,
-                                  amount: "250",
+                                  title: "Transport",
+                                  progress: 0.25,
+                                  color: Colors.teal,
+                                  amount: "100",
                                 ),
                               ],
                             ),
@@ -142,17 +142,47 @@ class _PortfeuillesPageState extends State<PortfeuillesPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 PortefeuilleWidget(
-                                  title: "Épargne vacances",
-                                  progress: 0.85,
-                                  color: Colors.purple,
-                                  amount: "1300",
+                                  title: "Alimentation",
+                                  progress: 0.65,
+                                  color: Colors.orange,
+                                  amount: "300",
                                 ),
                                 PortefeuilleWidget(
-                                  title: "Épargne maison",
+                                  title: "Habitation",
                                   progress: 0.45,
-                                  color: Colors.orange,
+                                  color: Colors.teal,
                                   amount: "800",
                                 ),
+                              ],
+                            ),
+                            SizedBox(height: longeur / 40),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                PortefeuilleWidget(
+                                  title: "Sante",
+                                  progress: 0.10,
+                                  color: Colors.teal,
+                                  amount: "200",
+                                ),
+                                PortefeuilleWidget(
+                                  title: "Loisirs",
+                                  progress: 0.85,
+                                  color: Colors.red,
+                                  amount: "400",
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: longeur / 40),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                PortefeuilleWidget(
+                                  title: "Education",
+                                  progress: 0.8,
+                                  color: Colors.red,
+                                  amount: "200",
+                                )
                               ],
                             ),
                           ],

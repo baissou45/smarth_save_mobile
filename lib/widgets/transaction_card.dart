@@ -89,7 +89,7 @@ class TransactionCard extends StatelessWidget {
                 ]),
               ),
               SizedBox(
-                width: largeur / 6,
+                width: largeur / 8,
               ),
               Flexible(
                 child: Container(
