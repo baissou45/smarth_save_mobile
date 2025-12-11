@@ -18,7 +18,6 @@ class _CreatprojetPageState extends State<CreatprojetPage> {
   var montantController = TextEditingController();
   var _formKey = GlobalKey<FormState>();
   @override
-  
   Widget build(BuildContext context) {
     double largeur = MediaQuery.of(context).size.width;
     double longeur = MediaQuery.of(context).size.height; // Correction ici
@@ -31,7 +30,7 @@ class _CreatprojetPageState extends State<CreatprojetPage> {
               color: kPrimaryColor1,
             ), // Icône de retour
             onPressed: () {
-              context.pop(); // Revient à l'écran précédent
+              context.push('/'); // Revient à l'écran précédent
             },
           )),
       body: Padding(
@@ -54,13 +53,20 @@ class _CreatprojetPageState extends State<CreatprojetPage> {
               },
             ),
             SizedBox(
-            height: longeur / 150,
-          ),
+              height: longeur / 150,
+            ),
             LabeledTextField(
-              isDate: true,
-              label: "Période du projet  *",
+              label: "Date de début *",
               hint: "",
+              isDate: true,
               controller: periodreController,
+            ),
+            SelectInput(
+              label: "Période du projet  *",
+              items: ["Option 1", "Option 2", "Option 3"],
+              onChanged: (val) {
+                print("Sélection : $val");
+              },
             ),
             SizedBox(
               height: longeur / 150,
@@ -92,9 +98,6 @@ class _CreatprojetPageState extends State<CreatprojetPage> {
           ]),
         ),
       ),
-    
-      );
+    );
   }
-
-
-  }
+}

@@ -9,7 +9,7 @@ class PortefeuilleWidget extends StatelessWidget {
     Key? key,
     required this.title,
     required this.amount,
-    required this.actuelAmount,
+    required this.actuelAmount, required double progress, required MaterialColor color,
   }) : super(key: key);
 
   @override

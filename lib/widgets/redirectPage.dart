@@ -26,13 +26,15 @@ class _RedirectPageState extends State<RedirectPage> {
     bool hasSeenOnboarding = prefs.getBool('hasSeenOnboarding') ?? false;
 
     // Déterminez la route en fonction de l'état de l'onboarding et de l'authentification
-    String targetRoute = _getTargetRoute(hasSeenOnboarding, userProvider.isLoggedIn);
+    String targetRoute =
+        _getTargetRoute(hasSeenOnboarding, userProvider.isLoggedIn);
 
     // Utilisez GoRouter pour naviguer vers la route cible
     context.go(targetRoute);
   }
 
   String _getTargetRoute(bool hasSeenOnboarding, bool isLoggedIn) {
+    // hasSeenOnboarding = false;
     if (hasSeenOnboarding) {
       return isLoggedIn ? '/accueil' : '/login';
     } else {
@@ -43,7 +45,9 @@ class _RedirectPageState extends State<RedirectPage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: CircularProgressIndicator()), // Affiche un indicateur de chargement pendant la redirection
+      body: Center(
+          child:
+              CircularProgressIndicator()), // Affiche un indicateur de chargement pendant la redirection
     );
   }
 }

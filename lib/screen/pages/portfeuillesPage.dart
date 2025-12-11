@@ -62,23 +62,90 @@ class _PortfeuillesPageState extends State<PortfeuillesPage> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Row(
+                        SizedBox(
+                          height: largeur / 40,
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Column(
                             children: [
-                              Text(
-                                '2025',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                              const SizedBox(width: 20),
+                              const Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  PortefeuilleWidget(
+                                    title: "Restauration",
+                                    progress: 0.5,
+                                    color: Colors.teal,
+                                    amount: 100,
+                                    actuelAmount: 30,
+                                  ),
+                                  PortefeuilleWidget(
+                                    title: "Transport",
+                                    progress: 0.25,
+                                    color: Colors.teal,
+                                    amount: 100,
+                                    actuelAmount: 20,
+                                  ),
+                                ],
                               ),
-                              Icon(Icons.arrow_drop_down),
+                              SizedBox(height: longeur / 40),
+                              const Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  PortefeuilleWidget(
+                                    title: "Alimentation",
+                                    progress: 0.65,
+                                    color: Colors.orange,
+                                    amount: 300,
+                                    actuelAmount: 150,
+                                  ),
+                                  PortefeuilleWidget(
+                                    title: "Habitation",
+                                    progress: 0.45,
+                                    color: Colors.teal,
+                                    amount: 800,
+                                    actuelAmount: 200,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: longeur / 40),
+                              const Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  PortefeuilleWidget(
+                                    title: "Sante",
+                                    progress: 0.10,
+                                    color: Colors.teal,
+                                    amount: 200,
+                                    actuelAmount: 30,
+                                  ),
+                                  PortefeuilleWidget(
+                                    title: "Loisirs",
+                                    progress: 0.85,
+                                    color: Colors.red,
+                                    amount: 400,
+                                    actuelAmount: 50,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: longeur / 40),
+                              const Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  PortefeuilleWidget(
+                                    title: "Education",
+                                    progress: 0.8,
+                                    color: Colors.red,
+                                    amount: 200,
+                                    actuelAmount: 100,
+                                  )
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -98,7 +165,6 @@ class _PortfeuillesPageState extends State<PortfeuillesPage> {
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20),
                         ),
-                       
                       ),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 12),
@@ -137,7 +203,9 @@ class _PortfeuillesPageState extends State<PortfeuillesPage> {
                                   child: PortefeuilleWidget(
                                     title: "Épargne $index",
                                     amount: 1000,
-                                    actuelAmount: (index+1) * 200,
+                                    actuelAmount: (index + 1) * 200,
+                                    progress: 58,
+                                    color: Colors.teal,
                                   ),
                                 );
                               },

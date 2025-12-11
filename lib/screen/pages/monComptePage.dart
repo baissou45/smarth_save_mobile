@@ -31,12 +31,12 @@ class _MonComptePageState extends State<MonComptePage> {
 
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: longeur / 30.0),
+        padding: EdgeInsets.only(top: longeur / 25.0),
         child: Column(
           children: [
             Center(
               child: SizedBox(
-                height: longeur / 2,
+                height: longeur / 2.4,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -93,14 +93,19 @@ class _MonComptePageState extends State<MonComptePage> {
                         {
                           'icon': Icons.person,
                           'title': 'Modifier le profil',
+                          'route': '/modifierCompte',
                         },
                         {
                           'icon': Icons.lock,
                           'title': 'Modifier le mot de passe',
+                          'route': '/modifierCompte',
+                          // 'route': '/modifierMdp',
                         },
                         {
                           'icon': CupertinoIcons.chat_bubble_2_fill,
                           'title': 'Messagerie',
+                          'route': '/modifierCompte',
+                          // 'route': '/messagerie',
                         },
                       ]
                           .map(
