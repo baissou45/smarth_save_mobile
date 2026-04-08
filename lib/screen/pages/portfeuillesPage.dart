@@ -123,7 +123,7 @@ class _PortfeuillesPageState extends State<PortfeuillesPage>
                     ),
                 ],
               ),
-            ),
+            ],
           ),
         ),
       ),

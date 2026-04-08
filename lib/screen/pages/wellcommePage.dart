@@ -594,16 +594,7 @@ class _BankCard extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
               ),
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: gradient.first.withOpacity(0.22),
-                  blurRadius: 6,
-                  offset: const Offset(2, 4),
-                ),
-              ],
-            ),
-            child: Icon(icon, color: Colors.white, size: 28),
+            ],
           ),
         ],
       ),
