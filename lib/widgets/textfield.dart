@@ -66,7 +66,7 @@ class _SVTextFieldState extends State<SVTextField> {
             ),
             prefixIcon: widget.prefix,
             filled: true,
-            fillColor: Colors.white,
+            fillColor: const Color.fromARGB(31, 165, 165, 165),
             contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),

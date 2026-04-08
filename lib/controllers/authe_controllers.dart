@@ -12,6 +12,7 @@ class AutheControllers {
       String prenom, String email, String password) async {
     final user =
         UserModel(nom: nom, prenom: prenom, email: email, password: password);
+    print("le user est ${user.toMap()}");
     final response = await userProvider.register(user);
     print("la reponse est ${response}");
     if (response) {
