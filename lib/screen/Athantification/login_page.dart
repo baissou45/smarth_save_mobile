@@ -4,8 +4,8 @@ import 'package:smarth_save/controllers/authe_controllers.dart';
 import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/outils/navigation.dart';
 import 'package:smarth_save/screen/Athantification/modifPasse.dart';
-import 'package:smarth_save/screen/Athantification/sig_up.dart';
 import 'package:smarth_save/widgets/textfield.dart';
+import 'package:smarth_save/screen/Athantification/sig_up.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

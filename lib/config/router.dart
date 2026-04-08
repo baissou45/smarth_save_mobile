@@ -56,9 +56,9 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const DetailCompte(),
     ),
     GoRoute(
-    path: '/chatbot',
-    builder: (context, state) => const ChatBotPage(),
-  ),
+      path: '/chatbot',
+      builder: (context, state) => const ChatBotPage(),
+    ),
     GoRoute(
       path: '/modifMotPass',
       builder: (context, state) => const ModifmotpassPage(),
@@ -66,9 +66,8 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/onboarding',
       builder: (context, state) => OnbordingPage(onComplete: () async {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('hasSeenOnboarding', true);
-        context.go('/accueil');
+        // Redirection centralisee via RedirectPage: respecte isLoggedIn.
+        context.go('/');
       }),
     ),
     StatefulShellRoute.indexedStack(
