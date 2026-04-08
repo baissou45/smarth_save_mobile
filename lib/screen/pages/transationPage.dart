@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart'; // <--- important
+import 'package:provider/provider.dart'; // <--- important
 import 'package:smarth_save/controllers/transation_controllers.dart';
 import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/models/transation_model.dart';
 import 'package:smarth_save/providers/transactionProvider.dart';
-import 'package:smarth_save/services/api_transaction_service.dart';
 import 'package:smarth_save/widgets/naveBar.dart';
 import 'package:smarth_save/widgets/textfield.dart';
 import 'package:smarth_save/widgets/transaction_card.dart';
@@ -19,50 +20,54 @@ class TransationPage extends StatefulWidget {
 }
 
 class _TransationPageState extends State<TransationPage> {
-  final ApiTransactionService apiTransactionService = ApiTransactionService();
+  final TransationControllers transationControllers = TransationControllers();
   final TextEditingController searcheController = TextEditingController();
-  TransationControllers transationControllers = TransationControllers();
-  Transactionprovider transactionprovider = Transactionprovider();
-  List<TransactionModel> transactions = []; // Liste des transactions
-  List<TransactionModel> allTransactions = []; // Liste des transactions
-  List<TransactionModel> filteredTransactions = []; // Liste filtrée
 
-  String selectedFilter = ""; // 📌 Par défaut, filtre par mois
+  List<TransactionModel> allTransactions = [];
+  List<TransactionModel> filteredTransactions = [];
+
+  String selectedFilter = "";
+
   @override
   void initState() {
-    _loadTransactions();
     super.initState();
-  }
-
-  Future<void> _loadTransactions() async {
-    final transactionsFromController =
-        await transationControllers.getTransaction(context);
-    setState(() {
-      transactions = transactionsFromController;
-      allTransactions = transactionsFromController;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadTransactions();
     });
   }
 
-  // 📌 Fonction pour filtrer les transactions en fonction de la période sélectionnée
+  Future<void> _loadTransactions() async {
+    final transactionProvider = context.read<Transactionprovider>();
+    transactionProvider.setLoading(true);
+
+    final transactionsFromController =
+        await transationControllers.getTransaction(context);
+
+    // Update provider et listes locales
+    if (!mounted) return;
+    setState(() {
+      allTransactions = transactionsFromController;
+      filteredTransactions = transactionsFromController;
+    });
+
+    transactionProvider.setLoading(false);
+  }
+
   void _applyFilter(String filterType) {
     setState(() {
-      // Réinitialiser la liste des transactions à toutes les transactions disponibles
-      transactions =
-          allTransactions; // assuming `allTransactions` contains all transactions without any filter.
+      selectedFilter = filterType;
 
       DateTime now = DateTime.now();
 
-      transactions = transactions.where((transaction) {
+      filteredTransactions = allTransactions.where((transaction) {
         var dateValidation = transaction.toJson()["dateValidation"];
-
+      
         if (dateValidation is String) {
-          // Convertir la date String en DateTime
           dateValidation = DateTime.parse(dateValidation);
         }
 
-        if (dateValidation is! DateTime) return false; // Éviter les erreurs
+        if (dateValidation == null) return false;
 
-        // Filtrage en fonction de la période
         if (filterType == "Jour") {
           return dateValidation.year == now.year &&
               dateValidation.month == now.month &&
@@ -85,9 +90,10 @@ class _TransationPageState extends State<TransationPage> {
 
   @override
   Widget build(BuildContext context) {
-    double largeur = MediaQuery.of(context).size.width;
-    double longeur = MediaQuery.of(context).size.height; // Correction ici
-    print("la taille ${transactions.length}");
+    final transactionProvider = context.watch<Transactionprovider>();
+    final largeur = MediaQuery.of(context).size.width;
+    final longeur = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor1,
@@ -100,29 +106,30 @@ class _TransationPageState extends State<TransationPage> {
           icon: const Icon(
             Icons.arrow_back_ios,
             color: Colors.white,
-          ), // Icône de retour
-          onPressed: () {
-            context.go("/accueil"); // Revient à l'écran précédent
-          },
+          ),
+          onPressed: () => context.go("/accueil"),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications_none_outlined),
-            onPressed: () {},
-            style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(Colors.white),
-              shape: WidgetStateProperty.all(const CircleBorder()),
-            ),
-          ),
-          Builder(
-            builder: (context) => IconButton(
-              icon: const Icon(
-                Icons.menu,
-                color: Colors.white,
+            onPressed: () => context.push('/notification'),
+            icon: Container(
+              width: 45,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                    offset: Offset(4, 4),
+                  ),
+                ],
               ),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
+              child: const CircleAvatar(
+                backgroundColor: Colors.white,
+                radius: 30,
+                child: Icon(Icons.notifications_active_outlined),
+              ),
             ),
           ),
         ],
@@ -161,25 +168,22 @@ class _TransationPageState extends State<TransationPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           _buildIconText(
-                              SvgPicture.asset(
-                                "assets/svg/credit.svg",
-                              ),
-                              'Crédit',
-                              () => context.push('/transaction/credit')),
+                            SvgPicture.asset("assets/svg/credit.svg"),
+                            'Crédit',
+                            () => context.push('/transaction/credit'),
+                          ),
                           _buildIconText(
-                              SvgPicture.asset(
-                                "assets/svg/debit.svg",
-                              ),
-                              'Débit',
-                              () => context.push('/transaction/debit')),
+                            SvgPicture.asset("assets/svg/debit.svg"),
+                            'Débit',
+                            () => context.push('/transaction/debit'),
+                          ),
                           _buildIconText(
-                              SvgPicture.asset(
-                                "assets/svg/ajout.svg",
-                              ),
-                              'Ajouter',
-                              () => context.push("/creatProjet")),
+                            SvgPicture.asset("assets/svg/ajout.svg"),
+                            'Ajouter',
+                            () => context.push("/creatTransaction"),
+                          ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -199,7 +203,7 @@ class _TransationPageState extends State<TransationPage> {
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 margin:
-                    EdgeInsets.only(top: longeur / 4.5, left: 10, right: 10),
+                    EdgeInsets.only(top: longeur / 3.4, left: 10, right: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -253,26 +257,33 @@ class _TransationPageState extends State<TransationPage> {
                   ),
                   const SizedBox(height: 10),
                   Expanded(
-                    child: ListView.builder(
-                      itemCount: transactions.length,
-                      itemBuilder: (context, index) {
-                        var transaction = transactions[index];
-                        var transactionJson = transaction.toJson();
-                        return SizedBox(
-                          child: TransactionCard(
-                            logo: 'assets/images/image_two.png',
-                            label: transactionJson["institution"]["libelle"],
-                            date: transactionJson["dateValidation"] != null
-                                ? DateFormat('dd/MM/yyyy').format(
-                                    DateTime.parse(
-                                        transactionJson["dateValidation"]))
-                                : "Date inconnue",
-                            montant: transactionJson["montant"],
-                            type: transactionJson["categorie"]["libelle"],
-                          ),
-                        );
-                      },
-                    ),
+                    child: transactionProvider.isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : filteredTransactions.isNotEmpty
+                            ? ListView.builder(
+                                itemCount: filteredTransactions.length,
+                                itemBuilder: (context, index) {
+                                  var transaction = filteredTransactions[index];
+                                  var transactionJson = transaction.toJson();
+                                  return TransactionCard(
+                                    logo: 'assets/images/image_two.png',
+                                    label: transactionJson["institution"]
+                                            ["libelle"] ??
+                                        "Inconnu",
+                                    date: transactionJson["dateValidation"] !=
+                                            null
+                                        ? DateFormat('dd/MM/yyyy').format(
+                                            DateTime.parse(transactionJson[
+                                                "dateValidation"]))
+                                        : "Date inconnue",
+                                    montant: transactionJson["montant"] ?? 0,
+                                    type: transactionJson["type"] ?? "",
+                                  );
+                                },
+                              )
+                            : const Center(
+                                child: Text("Aucune transaction trouvée"),
+                              ),
                   ),
                 ],
               ),
@@ -292,21 +303,20 @@ class _TransationPageState extends State<TransationPage> {
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: Colors.black26, // Couleur de l'ombre
-                blurRadius: 10, // Flou de l'ombre
-                spreadRadius: 2, // Expansion de l'ombre
-                offset: Offset(4, 4), // Décalage de l'ombre
+                color: Colors.black26,
+                blurRadius: 10,
+                spreadRadius: 2,
+                offset: Offset(4, 4),
               ),
             ],
           ),
           child: CircleAvatar(
             backgroundColor: kPrimaryColor1,
-            radius: 30, // Ajuste la taille
+            radius: 30,
             child: IconButton(
-                onPressed: () {
-                  action();
-                },
-                icon: icon), // Utilisation directe du widget SVG ou icône
+              onPressed: action,
+              icon: icon,
+            ),
           ),
         ),
         Text(
@@ -319,13 +329,7 @@ class _TransationPageState extends State<TransationPage> {
 
   Widget _buildFilterButton(String label) {
     return TextButton(
-      onPressed: () {
-        setState(() {
-          selectedFilter = label; // 📌 Mettre à jour le filtre sélectionné
-          print(selectedFilter);
-          _applyFilter(selectedFilter); // 📌 Appliquer le filtre
-        });
-      },
+      onPressed: () => _applyFilter(label),
       style: TextButton.styleFrom(
         backgroundColor:
             selectedFilter == label ? kPrimaryColor1 : Colors.white,
@@ -334,10 +338,4 @@ class _TransationPageState extends State<TransationPage> {
       child: Text(label),
     );
   }
-  // Widget _buildFilterButton(String label) {
-  //   return TextButton(
-  //     onPressed: () {},
-  //     child: Text(label),
-  //   );
-  // }
 }

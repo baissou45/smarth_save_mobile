@@ -55,6 +55,12 @@ class _CreatprojetPageState extends State<CreatprojetPage> {
             SizedBox(
               height: longeur / 150,
             ),
+            LabeledTextField(
+              label: "Date de début *",
+              hint: "",
+              isDate: true,
+              controller: periodreController,
+            ),
             SelectInput(
               label: "Période du projet  *",
               items: ["Option 1", "Option 2", "Option 3"],

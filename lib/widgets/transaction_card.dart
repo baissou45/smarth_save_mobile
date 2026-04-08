@@ -20,7 +20,7 @@ class TransactionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double largeur = MediaQuery.of(context).size.width;
-    var icon = type != "Crédit"
+    var icon = type != "credit"
         ? SvgPicture.asset(
             "assets/svg/debit.svg",
             color: Colors.red,
@@ -29,6 +29,8 @@ class TransactionCard extends StatelessWidget {
             "assets/svg/credit.svg",
             color: Colors.green,
           );
+          
+
     return Container(
       child: Card(
         color: Colors.transparent,
@@ -112,7 +114,7 @@ class TransactionCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: type != "Crédit" ? Colors.red : Colors.green,
+                            color: type != "credit" ? Colors.red : Colors.green,
                           ),
                         ),
                       ),
@@ -121,7 +123,7 @@ class TransactionCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          color: type != "Crédit" ? Colors.red : Colors.green,
+                          color: type != "credit" ? Colors.red : Colors.green,
                         ),
                       ),
                     ],

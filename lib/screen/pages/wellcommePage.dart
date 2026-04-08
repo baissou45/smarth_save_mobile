@@ -75,6 +75,16 @@ class _WellcommepageState extends State<Wellcommepage> {
               },
             ),
           ),
+
+          // IconButton(
+          //   onPressed: ()   {
+          //     Scaffold.of(context).openDrawer(); // Ouvrir le drawer
+          //   },
+          //   icon: CircleAvatar(
+          //     radius: largeur / 10,
+          //     backgroundImage: AssetImage('assets/images/image_one.png'),
+          //   ),
+          // )
         ],
       ),
       drawer: Navebar(),
@@ -92,7 +102,7 @@ class _WellcommepageState extends State<Wellcommepage> {
                   width: double.infinity,
                   child: Column(
                     children: [
-                      SizedBox(height: largeur / 20),
+                      SizedBox(height: largeur / 40),
                       Text(
                         "${montant.split("").join("")} €",
                         style: TextStyle(
@@ -101,7 +111,7 @@ class _WellcommepageState extends State<Wellcommepage> {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      SizedBox(height: hauteur / 60),
+                      SizedBox(height: hauteur / 100),
                       Text(
                         "Solde",
                         style: TextStyle(

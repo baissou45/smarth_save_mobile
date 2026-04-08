@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/models/user_model.dart';
 import 'package:smarth_save/screen/Athantification/login_page.dart';
@@ -133,49 +134,50 @@ class _NavebarState extends State<Navebar> {
           ),
         ),
 
-        // Barre de navigation du bas
-        Container(
-          padding: const EdgeInsets.all(6),
-          color: const Color(0xFF009688),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              TextButton.icon(
-                onPressed: () {
-                  UserModel.sessionUser = null;
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()));
-                },
-                icon: const Icon(Icons.logout, color: Colors.white),
-                label: const Text(
-                  'Déconnexion',
-                  style: TextStyle(color: Colors.white),
+          // Barre de navigation du bas
+          Container(
+            padding: const EdgeInsets.all(6),
+            color: const Color(0xFF009688),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton.icon(
+                  onPressed: () {
+                    UserModel.sessionUser?.logout();
+
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  },
+                  icon: const Icon(Icons.logout, color: Colors.white),
+                  label: const Text(
+                    'Déconnexion',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
-              Container(
-                width: 1,
-                height: 24,
-                color: Colors.white,
-                margin: const EdgeInsets.symmetric(vertical: 8),
-              ),
-              TextButton.icon(
-                onPressed: () {
-                  GoRouter.of(context).go('/chatbot');
-                },
-                icon: SvgPicture.asset(
-                  'assets/svg/boot.svg',
-                  colorFilter:
-                      const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                Container(
+                  width: 1,
                   height: 24,
+                  color: Colors.white,
+                  margin: const EdgeInsets.symmetric(vertical: 8),
                 ),
-                label: const Text(
-                  'ChatBot',
-                  style: TextStyle(color: Colors.white),
+                TextButton.icon(
+                  onPressed: () {
+                    GoRouter.of(context).go('/chatbot');
+                  },
+                  icon: SvgPicture.asset(
+                    'assets/svg/boot.svg',
+                    colorFilter:
+                        const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                    height: 24,
+                  ),
+                  label: const Text(
+                    'ChatBot',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
       ]),
     );
   }

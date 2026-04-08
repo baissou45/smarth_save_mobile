@@ -43,7 +43,7 @@ dependencies:
   getwidget: ^5.0.0
   shared_preferences: ^2.2.2
   flutter_native_splash: ^2.4.4
-  file_picker: ^6.1.1
+  file_picker: 8.0.3
   go_router: ^14.8.1
   flutter_svg: ^2.0.17
   intl: ^0.18.1
