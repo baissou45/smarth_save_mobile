@@ -11,6 +11,8 @@ class ApiUserService {
   Future<dynamic> register(UserModel user) async {
     // Construction de l'URL
     String url = api.baseURL + registerRoute;
+    print("le user estRegister ${user.toMap()}");
+
     // Envoi de la requête POST à l'API
     final response = await http.post(
       Uri.parse(url),
@@ -21,7 +23,6 @@ class ApiUserService {
       },
     );
     print("il est connecter ${response.body}");
-
 
     // Vérification du statut de la réponse
     if (response.statusCode == 200) {
@@ -34,6 +35,7 @@ class ApiUserService {
 
   Future<dynamic> login(String email, String password) async {
     String url = api.baseURL + loginRoute;
+    
     var body = jsonEncode({
       "email": email,
       "password": password,
@@ -49,6 +51,8 @@ class ApiUserService {
           'Accept': 'application/json',
         },
       );
+
+      print("Response: ${response.bodyBytes}");
 
       // Vérification du statut de la réponse
 
@@ -77,15 +81,14 @@ class ApiUserService {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
     });
-    
-    print("Response: ${jsonDecode(utf8.decode(response.bodyBytes))}");
 
+    print("Response: ${jsonDecode(utf8.decode(response.bodyBytes))}");
 
     // Vérification du statut de la réponse
     if (response.statusCode == 200) {
-    return jsonDecode(utf8.decode(response.bodyBytes));
+      return jsonDecode(utf8.decode(response.bodyBytes));
     } else {
-    return jsonDecode(utf8.decode(response.bodyBytes));
+      return jsonDecode(utf8.decode(response.bodyBytes));
     }
   }
 }

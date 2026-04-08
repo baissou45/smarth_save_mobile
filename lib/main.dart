@@ -7,7 +7,7 @@ import 'package:smarth_save/providers/transactionProvider.dart';
 import 'package:smarth_save/providers/userProvider.dart';
 
 void main() async {
-  await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: '.env');
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 

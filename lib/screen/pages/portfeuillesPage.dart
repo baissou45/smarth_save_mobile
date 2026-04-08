@@ -11,209 +11,140 @@ class PortfeuillesPage extends StatefulWidget {
 }
 
 class _PortfeuillesPageState extends State<PortfeuillesPage> {
+  final List<_BudgetCategory> _categories = const [
+    _BudgetCategory(title: 'Restauration', amount: 100, actuelAmount: 30),
+    _BudgetCategory(title: 'Transport', amount: 100, actuelAmount: 20),
+    _BudgetCategory(title: 'Alimentation', amount: 300, actuelAmount: 150),
+    _BudgetCategory(title: 'Habitation', amount: 800, actuelAmount: 200),
+    _BudgetCategory(title: 'Sante', amount: 200, actuelAmount: 30),
+    _BudgetCategory(title: 'Loisirs', amount: 400, actuelAmount: 340),
+    _BudgetCategory(title: 'Education', amount: 200, actuelAmount: 100),
+  ];
+
+  List<_BudgetCategory> get _savings => List.generate(
+        8,
+        (index) => _BudgetCategory(
+          title: 'Epargne ${index + 1}',
+          amount: 1000,
+          actuelAmount: (index + 1) * 110,
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
-    final double longeur = MediaQuery.of(context).size.height;
-    final double largeur = MediaQuery.of(context).size.width;
+    final size = MediaQuery.of(context).size;
+    final isWide = size.width >= 700;
+    final horizontalPadding = isWide ? 24.0 : 16.0;
+    final int crossCount = size.width >= 1100
+        ? 4
+        : size.width >= 780
+            ? 3
+            : 2;
 
     return Scaffold(
+      backgroundColor: const Color(0xFFF4F7FB),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.push('/creatProjet');
         },
-        backgroundColor: Colors.teal,
+        backgroundColor: kPrimaryColor1,
         child: const Icon(Icons.add, color: Colors.white),
       ),
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Container(
-                  color: kPrimaryColor1,
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.fromLTRB(
+                horizontalPadding,
+                16,
+                horizontalPadding,
+                22,
+              ),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [kPrimaryColor1, kPrimaryColor2],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.circular(26),
                 ),
               ),
-              Expanded(
-                flex: 10,
-                child: Container(
-                  color: Colors.grey[100],
+              child: SafeArea(
+                bottom: false,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Portefeuilles',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 28,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Suivez vos categories et vos objectifs d\'epargne.',
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    _SummaryCard(categories: _categories),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      height: 102,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: _categories.length,
+                        separatorBuilder: (_, __) => const SizedBox(width: 10),
+                        itemBuilder: (context, index) {
+                          final item = _categories[index];
+                          return _CategoryPill(item: item);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
+          SliverPadding(
+            padding: EdgeInsets.fromLTRB(
+                horizontalPadding, 16, horizontalPadding, 90),
+            sliver: SliverToBoxAdapter(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Titre et année
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Portefeuilles',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(
-                          height: largeur / 40,
-                        ),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: Column(
-                            children: [
-                              const SizedBox(width: 20),
-                              const Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  PortefeuilleWidget(
-                                    title: "Restauration",
-                                    progress: 0.5,
-                                    color: Colors.teal,
-                                    amount: 100,
-                                    actuelAmount: 30,
-                                  ),
-                                  PortefeuilleWidget(
-                                    title: "Transport",
-                                    progress: 0.25,
-                                    color: Colors.teal,
-                                    amount: 100,
-                                    actuelAmount: 20,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: longeur / 40),
-                              const Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  PortefeuilleWidget(
-                                    title: "Alimentation",
-                                    progress: 0.65,
-                                    color: Colors.orange,
-                                    amount: 300,
-                                    actuelAmount: 150,
-                                  ),
-                                  PortefeuilleWidget(
-                                    title: "Habitation",
-                                    progress: 0.45,
-                                    color: Colors.teal,
-                                    amount: 800,
-                                    actuelAmount: 200,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: longeur / 40),
-                              const Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  PortefeuilleWidget(
-                                    title: "Sante",
-                                    progress: 0.10,
-                                    color: Colors.teal,
-                                    amount: 200,
-                                    actuelAmount: 30,
-                                  ),
-                                  PortefeuilleWidget(
-                                    title: "Loisirs",
-                                    progress: 0.85,
-                                    color: Colors.red,
-                                    amount: 400,
-                                    actuelAmount: 50,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: longeur / 40),
-                              const Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  PortefeuilleWidget(
-                                    title: "Education",
-                                    progress: 0.8,
-                                    color: Colors.red,
-                                    amount: 200,
-                                    actuelAmount: 100,
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                  _SectionHeader(
+                    title: 'Mes portefeuilles',
+                    subtitle: 'Vue detaillee de vos enveloppes',
+                    actionLabel: 'Creer',
+                    onTap: () => context.push('/creatProjet'),
                   ),
-
-                  SizedBox(height: longeur / 25),
-
-                  // Conteneur blanc avec contenu
-                  Expanded(
-                    child: Container(
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
-                        ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 12),
-                      margin: EdgeInsets.only(
-                          top: longeur / 25, left: 10, right: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Mes portefeuilles",
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.w800),
-                          ),
-                          SizedBox(height: largeur / 40),
-                          Container(
-                            margin: EdgeInsets.only(left: largeur / 4),
-                            height: largeur / 190,
-                            width: largeur / 7,
-                            color: kPrimaryColor1,
-                          ),
-                          const SizedBox(height: 10),
-                          Expanded(
-                            child: GridView.builder(
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2, // 2 éléments par ligne
-                                crossAxisSpacing:
-                                    30, // espacement horizontal entre les éléments
-                                // mainAxisSpacing: 2,    // espacement vertical entre les éléments
-                                childAspectRatio: 4.5 /
-                                    2, // ratio largeur/hauteur de chaque cellule, adapte selon ton widget
-                              ),
-                              itemCount: 6,
-                              itemBuilder: (context, index) {
-                                return SizedBox(
-                                  child: PortefeuilleWidget(
-                                    title: "Épargne $index",
-                                    amount: 1000,
-                                    actuelAmount: (index + 1) * 200,
-                                    progress: 58,
-                                    color: Colors.teal,
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+                  const SizedBox(height: 12),
+                  GridView.builder(
+                    itemCount: _savings.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossCount,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: isWide ? 1.75 : 1.48,
                     ),
+                    itemBuilder: (context, index) {
+                      final item = _savings[index];
+                      return PortefeuilleWidget(
+                        title: item.title,
+                        amount: item.amount,
+                        actuelAmount: item.actuelAmount,
+                      );
+                    },
                   ),
                 ],
               ),
@@ -223,4 +154,189 @@ class _PortfeuillesPageState extends State<PortfeuillesPage> {
       ),
     );
   }
+}
+
+class _SectionHeader extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String actionLabel;
+  final VoidCallback onTap;
+
+  const _SectionHeader({
+    required this.title,
+    required this.subtitle,
+    required this.actionLabel,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                  color: Color(0xFF111827),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                subtitle,
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: Color(0xFF6B7280),
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+        TextButton.icon(
+          onPressed: onTap,
+          icon: const Icon(Icons.add_circle_outline),
+          label: Text(actionLabel),
+        ),
+      ],
+    );
+  }
+}
+
+class _SummaryCard extends StatelessWidget {
+  final List<_BudgetCategory> categories;
+
+  const _SummaryCard({required this.categories});
+
+  @override
+  Widget build(BuildContext context) {
+    final totalBudget =
+        categories.fold<int>(0, (sum, item) => sum + item.amount);
+    final totalSpent =
+        categories.fold<int>(0, (sum, item) => sum + item.actuelAmount);
+    final progress =
+        totalBudget == 0 ? 0.0 : (totalSpent / totalBudget).clamp(0.0, 1.0);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.14),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: Colors.white24),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Depenses globales',
+            style: TextStyle(
+              color: Colors.white70,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            '$totalSpent € / $totalBudget €',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 10),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(99),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 8,
+              backgroundColor: Colors.white24,
+              valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CategoryPill extends StatelessWidget {
+  final _BudgetCategory item;
+
+  const _CategoryPill({required this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    final progress = item.amount == 0
+        ? 0.0
+        : (item.actuelAmount / item.amount).clamp(0.0, 1.0);
+
+    return Container(
+      width: 156,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            item.title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
+          ),
+          const Spacer(),
+          Text(
+            '${item.actuelAmount}€ / ${item.amount}€',
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF4B5563),
+            ),
+          ),
+          const SizedBox(height: 6),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(99),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 6,
+              backgroundColor: const Color(0xFFE5E7EB),
+              valueColor: AlwaysStoppedAnimation<Color>(
+                progress >= 1
+                    ? Colors.red
+                    : progress >= 0.7
+                        ? Colors.orange
+                        : kPrimaryColor1,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BudgetCategory {
+  final String title;
+  final int amount;
+  final int actuelAmount;
+
+  const _BudgetCategory({
+    required this.title,
+    required this.amount,
+    required this.actuelAmount,
+  });
 }

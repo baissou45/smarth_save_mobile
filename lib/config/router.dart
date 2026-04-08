@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/screen/Athantification/login_page.dart';
 import 'package:smarth_save/screen/pages/contact.dart';
@@ -56,9 +55,9 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const DetailCompte(),
     ),
     GoRoute(
-    path: '/chatbot',
-    builder: (context, state) => const ChatBotPage(),
-  ),
+      path: '/chatbot',
+      builder: (context, state) => const ChatBotPage(),
+    ),
     GoRoute(
       path: '/modifMotPass',
       builder: (context, state) => const ModifmotpassPage(),
@@ -66,9 +65,8 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/onboarding',
       builder: (context, state) => OnbordingPage(onComplete: () async {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('hasSeenOnboarding', true);
-        context.go('/accueil');
+        // Redirection centralisee via RedirectPage: respecte isLoggedIn.
+        context.go('/');
       }),
     ),
     StatefulShellRoute.indexedStack(

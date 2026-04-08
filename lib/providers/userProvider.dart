@@ -12,7 +12,7 @@ class UserProvider extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
   String? get token => _token;
-  bool get isLoggedIn => _token != null;
+  bool get isLoggedIn => _token?.trim().isNotEmpty ?? false;
   UserModel? get user => _user;
   String? get message => _message;
   String? get error => _error;
@@ -24,7 +24,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners(); // Notifier les écouteurs que l'état a changé
 
     try {
-      await ApiUserService().register(user); // Appel à l'API
+       await ApiUserService().register(user); // Appel à l'API
       return true; // Retourner true en cas de succès
     } catch (e) {
       rethrow; // Relancer l'exception pour que le Controller puisse la gérer
@@ -46,6 +46,7 @@ class UserProvider extends ChangeNotifier {
       await UserModel.saveUser(_user!);
       notifyListeners();
     } catch (e) {
+      print("Erreur lors de la connexion : $e");
       rethrow;
     } finally {
       _isLoading = false;
