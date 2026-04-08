@@ -12,22 +12,21 @@ class MessageHistory {
 
     Directory? exportDir;
     if (Platform.isAndroid) {
-      // Dossier public Download sur Android
       exportDir = Directory('/storage/emulated/0/Download');
     } else {
-      // Dossier Documents sur iOS
       exportDir = await getApplicationDocumentsDirectory();
     }
     final exportFile = File(
-        '${exportDir.path}/chatbot_history_${DateTime.now().millisecondsSinceEpoch}.json');
+        '${exportDir.path}/chatbot_history_${DateTime.now().millisecondsSinceEpoch}.json',);
     await exportFile.writeAsString(contents, encoding: utf8);
-    print('Historique exporté : ${exportFile.path}');
   }
 
   /// Importe un historique depuis un fichier JSON choisi par l'utilisateur
   static Future<void> importHistory() async {
-    final result = await FilePicker.platform
-        .pickFiles(type: FileType.custom, allowedExtensions: ['json']);
+    final result = await FilePicker.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['json'],
+    );
     if (result != null && result.files.single.path != null) {
       final importFile = File(result.files.single.path!);
       final contents = await importFile.readAsString(encoding: utf8);
@@ -61,7 +60,7 @@ class MessageHistory {
       final List<dynamic> jsonResult = jsonDecode(contents);
       return List<Map<String, String>>.from(
         jsonResult.map((e) => Map<String, String>.from(e.map((key, value) =>
-            MapEntry(key.toString(), value?.toString() ?? "")))),
+            MapEntry(key.toString(), value?.toString() ?? ''),),),),
       );
     } catch (e) {
       return [];

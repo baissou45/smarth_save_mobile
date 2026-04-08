@@ -51,7 +51,7 @@ class _SelectInputState extends State<SelectInput> {
                 // Add more decoration..
               ),
               items: widget.items
-                  .map((item) => DropdownMenuItem<String>(
+                  .map((item) => DropdownItem<String>(
                         value: item,
                         child: Text(
                           item,
@@ -78,7 +78,7 @@ class _SelectInputState extends State<SelectInput> {
               onSaved: (value) {
                 selectedValue = value;
               },
-              buttonStyleData: const ButtonStyleData(
+              buttonStyleData: const FormFieldButtonStyleData(
                 padding: EdgeInsets.only(right: 8),
               ),
               iconStyleData: const IconStyleData(
