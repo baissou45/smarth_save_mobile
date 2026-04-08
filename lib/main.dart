@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:smarth_save/config/router.dart';
-import 'package:smarth_save/providers/transactionProvider.dart';
 import 'package:smarth_save/providers/userProvider.dart';
+import 'package:smarth_save/providers/transactionProvider.dart';
+import 'package:smarth_save/providers/categorie_provider.dart';
+import 'package:smarth_save/providers/projet_provider.dart';
+
+// Global instances
+final transactionProvider = Transactionprovider();
+final categorieProvider = CategorieProvider();
+final projetProvider = ProjetProvider();
 
 void main() async {
-  await dotenv.load(fileName: '.env');
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
@@ -18,7 +23,9 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: userProvider),
-        ChangeNotifierProvider.value(value: Transactionprovider()),
+        ChangeNotifierProvider.value(value: transactionProvider),
+        ChangeNotifierProvider.value(value: categorieProvider),
+        ChangeNotifierProvider.value(value: projetProvider),
       ],
       child: const MyApp(),
     ),

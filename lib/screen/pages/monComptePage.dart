@@ -1,176 +1,236 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/models/user_model.dart';
 
-class MonComptePage extends StatefulWidget {
+class MonComptePage extends StatelessWidget {
   const MonComptePage({super.key});
 
-  @override
-  State<MonComptePage> createState() => _MonComptePageState();
-}
+  static const _menuItems = [
+    _MenuItem(Icons.person_outline_rounded, 'Modifier le profil', '/modifProfile', kTeal),
+    _MenuItem(Icons.lock_outline_rounded, 'Mot de passe', '/modifMotPass', Color(0xFF7C3AED)),
+    _MenuItem(Icons.notifications_outlined, 'Notifications', '/notification', kOrange),
+    _MenuItem(Icons.smart_toy_outlined, 'SmartBot', '/chatbot', kNavyMid),
+    _MenuItem(Icons.help_outline_rounded, 'Aide & support', '/contact', Color(0xFF0EA5E9)),
+  ];
 
-class _MonComptePageState extends State<MonComptePage> {
   @override
   Widget build(BuildContext context) {
-    double longeur = MediaQuery.of(context).size.height;
-    double largeur = MediaQuery.of(context).size.width;
-
-    rounded_icon(IconData icon, Color bg_color, Color icon_color,
-        {double size = 9, double icon_size = 25}) {
-      return Container(
-        width: largeur / size,
-        height: largeur / size,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: bg_color,
-        ),
-        child: Icon(icon, color: icon_color, size: icon_size),
-      );
-    }
+    final user = UserModel.sessionUser;
+    final name  = '${user?.prenom ?? ''} ${user?.nom ?? ''}'.trim();
+    final email = user?.email ?? '';
+    final initials = _initials(name);
 
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(top: longeur / 25.0),
-        child: Column(
-          children: [
-            Center(
-              child: SizedBox(
-                height: longeur / 2.4,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text('Profil',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: largeur / 12,
-                            fontWeight: FontWeight.w900)),
-                    Stack(
-                      children: [
-                        CircleAvatar(
-                          radius: largeur / 5,
-                          backgroundImage:
-                              const AssetImage('assets/images/avatar.webp'),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: largeur / 50,
-                          child: rounded_icon(
-                              Icons.edit, Colors.teal, Colors.white),
-                        ),
-                      ],
+      backgroundColor: kBgPage,
+      body: CustomScrollView(
+        slivers: [
+          _buildHeader(initials, name, email),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildStatsRow(),
+                  const SizedBox(height: 24),
+                  const Text(
+                    'Compte',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: kTextSecondary,
+                      letterSpacing: 0.5,
                     ),
-                    Column(
-                      children: [
-                        Text(
-                          "${UserModel.sessionUser?.prenom ?? ""} ${UserModel.sessionUser?.nom ?? ""}",
-                          style: TextStyle(
-                              fontSize: largeur / 20,
-                              fontWeight: FontWeight.w900),
+                  ),
+                  const SizedBox(height: 8),
+                  _buildMenuCard(context),
+                  const SizedBox(height: 24),
+                  _buildLogout(context),
+                  const SizedBox(height: 32),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ─── Header ──────────────────────────────────────────────────────────────────
+
+  SliverToBoxAdapter _buildHeader(String initials, String name, String email) {
+    return SliverToBoxAdapter(
+      child: Container(
+        decoration: const BoxDecoration(
+          gradient: kHeaderGradient,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(32),
+            bottomRight: Radius.circular(32),
+          ),
+        ),
+        child: SafeArea(
+          bottom: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+            child: Column(
+              children: [
+                const Text(
+                  'Mon profil',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Stack(
+                  children: [
+                    Container(
+                      width: 88,
+                      height: 88,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [kTeal, kTealLight],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
-                        Text(
-                          UserModel.sessionUser?.email ?? '',
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            fontStyle: FontStyle.italic,
-                            fontSize: largeur / 30,
-                            fontWeight: FontWeight.w900,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.4),
+                          width: 3,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          initials,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w800,
                           ),
                         ),
-                      ],
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 2,
+                      right: 2,
+                      child: Container(
+                        width: 24,
+                        height: 24,
+                        decoration: BoxDecoration(
+                          color: kOrange,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2),
+                        ),
+                        child: const Icon(
+                          Icons.edit_rounded,
+                          color: Colors.white,
+                          size: 12,
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ),
-            SizedBox(
-              height: longeur / 2.7,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListView(
-                      children: [
-                        {
-                          'icon': Icons.person,
-                          'title': 'Modifier le profil',
-                          'route': '/modifierCompte',
-                        },
-                        {
-                          'icon': Icons.lock,
-                          'title': 'Modifier le mot de passe',
-                          'route': '/modifierCompte',
-                          // 'route': '/modifierMdp',
-                        },
-                        {
-                          'icon': CupertinoIcons.chat_bubble_2_fill,
-                          'title': 'Messagerie',
-                          'route': '/modifierCompte',
-                          // 'route': '/messagerie',
-                        },
-                      ]
-                          .map(
-                            (item) => Padding(
-                              padding: const EdgeInsets.only(bottom: 4.0),
-                              child: ListTile(
-                                onTap: () {
-                                  if (item['title'] == 'Modifier le profil') {
-                                    context.go('/modifProfile');
-                                  } else if (item['title'] ==
-                                      'Modifier le mot de passe') {
-                                    context.go('/modifMotPass');
-                                  } else if (item['title'] == 'Messagerie') {
-                                    context.go('');
-                                  }
-                                },
-                                leading: rounded_icon(
-                                  item['icon'] as IconData,
-                                  Colors.teal,
-                                  Colors.white,
-                                  size: 11,
-                                  icon_size: 16,
-                                ),
-                                title: Text(
-                                  item['title'] as String,
-                                  style: TextStyle(
-                                    fontSize: largeur / 25,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                trailing: Icon(Icons.arrow_forward_ios_rounded),
-                              ),
-                            ),
-                          )
-                          .toList(),
-                    ),
+                const SizedBox(height: 14),
+                Text(
+                  name.isEmpty ? 'Mon compte' : name,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 1.0),
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        UserModel.sessionUser?.logout();
-                        context.go('/login');
-                      },
-                      icon: const Icon(
-                        Icons.logout,
-                        color: Colors.white,
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.teal,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      label: Text(
-                        'Se deconnecter',
-                        style: TextStyle(
-                          fontSize: largeur / 20,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+                ),
+                if (email.isNotEmpty) ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    email,
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.65),
+                      fontSize: 13,
                     ),
                   ),
                 ],
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ─── Stats ────────────────────────────────────────────────────────────────────
+
+  Widget _buildStatsRow() {
+    return const Row(
+      children: [
+        _StatCard(value: '6', label: 'Projets', color: kTeal),
+        SizedBox(width: 10),
+        _StatCard(value: '147', label: 'Transactions', color: kOrange),
+        SizedBox(width: 10),
+        _StatCard(value: '3', label: 'Banques', color: Color(0xFF7C3AED)),
+      ],
+    );
+  }
+
+  // ─── Menu ─────────────────────────────────────────────────────────────────────
+
+  Widget _buildMenuCard(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: kBgCard,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: kNavyDark.withValues(alpha: 0.06),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: List.generate(_menuItems.length, (i) {
+          final item   = _menuItems[i];
+          final isLast = i == _menuItems.length - 1;
+          return Column(
+            children: [
+              _MenuRow(item: item, onTap: () => context.go(item.route)),
+              if (!isLast)
+                const Divider(height: 1, indent: 60, endIndent: 16, color: kBgPage),
+            ],
+          );
+        }),
+      ),
+    );
+  }
+
+  // ─── Logout ───────────────────────────────────────────────────────────────────
+
+  Widget _buildLogout(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        UserModel.sessionUser?.logout();
+        context.go('/login');
+      },
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        decoration: BoxDecoration(
+          color: kDanger.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: kDanger.withValues(alpha: 0.2)),
+        ),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.logout_rounded, color: kDanger, size: 20),
+            SizedBox(width: 10),
+            Text(
+              'Se déconnecter',
+              style: TextStyle(
+                color: kDanger,
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ],
@@ -178,4 +238,118 @@ class _MonComptePageState extends State<MonComptePage> {
       ),
     );
   }
+}
+
+// ─── Sub-widgets ──────────────────────────────────────────────────────────────
+
+class _StatCard extends StatelessWidget {
+  final String value;
+  final String label;
+  final Color color;
+
+  const _StatCard({required this.value, required this.label, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        decoration: BoxDecoration(
+          color: kBgCard,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: kNavyDark.withValues(alpha: 0.06),
+              blurRadius: 12,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w900,
+                color: color,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              style: const TextStyle(fontSize: 11, color: kTextSecondary),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MenuRow extends StatelessWidget {
+  final _MenuItem item;
+  final VoidCallback onTap;
+
+  const _MenuRow({required this.item, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        child: Row(
+          children: [
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                color: item.color.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(item.icon, color: item.color, size: 18),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Text(
+                item.label,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: kTextPrimary,
+                ),
+              ),
+            ),
+            const Icon(
+              Icons.chevron_right_rounded,
+              color: kTextHint,
+              size: 20,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+String _initials(String name) {
+  final parts = name.trim().split(' ').where((p) => p.isNotEmpty).toList();
+  if (parts.isEmpty) return '?';
+  if (parts.length == 1) return parts[0][0].toUpperCase();
+  return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+}
+
+// ─── Data model ───────────────────────────────────────────────────────────────
+
+class _MenuItem {
+  final IconData icon;
+  final String label;
+  final String route;
+  final Color color;
+
+  const _MenuItem(this.icon, this.label, this.route, this.color);
 }

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:smarth_save/core/utils/theme/colors.dart';
+import 'package:smarth_save/models/projet_model.dart';
+import 'package:smarth_save/providers/projet_provider.dart';
 
 class ProjetPage extends StatefulWidget {
   const ProjetPage({super.key});
@@ -10,233 +14,175 @@ class ProjetPage extends StatefulWidget {
 
 class _ProjetPageState extends State<ProjetPage> {
   @override
-  Widget build(BuildContext context) {
-    double longeur = MediaQuery.of(context).size.height;
-    double largeur = MediaQuery.of(context).size.width;
-
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.push('/creatProjet');
-        },
-        backgroundColor: Colors.teal,
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
-      body: Stack(children: [
-        Column(
-          children: [
-            Expanded(
-                flex: 2,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.teal,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(largeur / 7),
-                    ),
-                  ),
-                )),
-            Expanded(
-                flex: 10,
-                child: Stack(
-                  children: [
-                    Container(
-                      color: Colors.teal,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[100],
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(largeur / 7),
-                        ),
-                      ),
-                    ),
-                  ],
-                )),
-          ],
-        ),
-        SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Projets',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: const Row(
-                          children: [
-                            Text(
-                              '2025',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Icon(Icons.arrow_drop_down),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding:
-                      EdgeInsets.only(top: longeur / 10, bottom: longeur / 80),
-                  child: const Text(
-                    'Mes projets',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: GridView.count(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 20,
-                    children: [
-                      _buildProjectCard(
-                        'Noël au Sénégal',
-                        Icons.travel_explore,
-                        'Décembre 2025',
-                        color: Colors.teal,
-                      ),
-                      _buildProjectCard(
-                        'Nouvelle voiture',
-                        Icons.directions_car,
-                        'Août 2025',
-                        color: Colors.teal,
-                      ),
-                      _buildProjectCard(
-                        'Visite Caraïbe',
-                        Icons.travel_explore,
-                        'Juillet 2025',
-                        color: Colors.teal,
-                      ),
-                      _buildProjectCard(
-                        'Randonnée Sicile',
-                        Icons.nordic_walking_rounded,
-                        'Août 2025',
-                        color: Colors.teal,
-                      ),
-                      _buildProjectCard(
-                        'Projet startup',
-                        Icons.add_business_outlined,
-                        'Novembre 2025',
-                        color: Colors.teal,
-                      ),
-                      _buildProjectCard(
-                        'Projet design',
-                        Icons.design_services,
-                        'Septembre 2025',
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ]),
-    );
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      context.read<ProjetProvider>().loadProjets();
+    });
   }
 
-  Widget _buildProjectCard(String title, IconData icon, String date,
-      {Color color = Colors.teal}) {
-    return GestureDetector(
-      onTap: () {
-        showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            title: Text(title),
-            content: SizedBox(
-              width: 20,
-              height: 40,
-              child: Column(
-                children: [Text("Date"), Text(date)],
-              ),
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ProjetProvider>(
+      builder: (context, projetProvider, _) {
+        final projects = projetProvider.projets;
+        final total =
+            projects.fold<double>(0, (s, p) => s + p.montantPrev);
+        final reached =
+            projects.fold<double>(0, (s, p) => s + p.montant);
+
+        if (projetProvider.isLoading) {
+          return Scaffold(
+            backgroundColor: kBgPage,
+            body: const Center(
+              child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(kTeal)),
             ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Card(
-          elevation: 8.0,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                flex: 1,
-                child: Icon(
-                  icon,
-                  color: color,
-                  size: 35,
-                ),
-              ),
-              Expanded(
-                // flex: 1,
-                child: Container(
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: Colors.teal,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(15),
-                      bottomRight: Radius.circular(15),
-                    ),
-                  ),
+          );
+        }
+
+        return Scaffold(
+          backgroundColor: kBgPage,
+          body: CustomScrollView(
+            slivers: [
+              _buildHeader(total, reached),
+              if (projects.isEmpty)
+                SliverFillRemaining(
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        Icon(Icons.folder_open_outlined,
+                            size: 64, color: kTextHint),
+                        const SizedBox(height: 16),
                         Text(
-                          title,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                          'Aucun projet',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: kTextSecondary,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                        Text(
-                          date,
-                          style: const TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontSize: 12,
-                            color: Colors.white,
-                          ),
-                          textAlign: TextAlign.start,
                         ),
                       ],
                     ),
                   ),
+                )
+              else
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+                  sliver: SliverGrid(
+                    delegate: SliverChildBuilderDelegate(
+                      (ctx, i) => _ProjectCard(project: projects[i]),
+                      childCount: projects.length,
+                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 0.85,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () => context.push('/creatProjet'),
+            backgroundColor: kTeal,
+            icon: const Icon(Icons.add_rounded, color: Colors.white),
+            label: const Text(
+              'Nouveau projet',
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  SliverAppBar _buildHeader(double total, double reached) {
+    final globalProgress = total > 0 ? reached / total : 0.0;
+    return SliverAppBar(
+      expandedHeight: 180,
+      pinned: true,
+      automaticallyImplyLeading: false,
+      backgroundColor: kNavyDark,
+      flexibleSpace: FlexibleSpaceBar(
+        background: Container(
+          decoration: const BoxDecoration(gradient: kHeaderGradient),
+          padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Projets',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 26,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              const SizedBox(height: 14),
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.15)),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Épargne totale',
+                                style: TextStyle(
+                                  color:
+                                      Colors.white.withValues(alpha: 0.7),
+                                  fontSize: 12,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                '${reached.toStringAsFixed(0)} € / ${total.toStringAsFixed(0)} €',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          '${(globalProgress * 100).round()}%',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: LinearProgressIndicator(
+                        value: globalProgress.clamp(0.0, 1.0),
+                        minHeight: 6,
+                        backgroundColor:
+                            Colors.white.withValues(alpha: 0.2),
+                        valueColor:
+                            const AlwaysStoppedAnimation<Color>(kTealLight),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -247,30 +193,180 @@ class _ProjetPageState extends State<ProjetPage> {
   }
 }
 
-class DialogExample extends StatelessWidget {
-  const DialogExample({super.key});
+// ─── Project Card ─────────────────────────────────────────────────────────────
+
+class _ProjectCard extends StatelessWidget {
+  final ProjetModel project;
+  const _ProjectCard({required this.project});
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () => showDialog<String>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Text('AlertDialog Title'),
-          content: const Text('AlertDialog description'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'Cancel'),
-              child: const Text('Cancel'),
+    final progress = project.montant / project.montantPrev;
+    final color = project.color;
+    final isAlmost = progress >= 0.9;
+
+    return GestureDetector(
+      onTap: () => context.push('/detailProjet', extra: project),
+      child: Container(
+        decoration: BoxDecoration(
+          color: kBgCard,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: kNavyDark.withValues(alpha: 0.07),
+              blurRadius: 14,
+              offset: const Offset(0, 4),
             ),
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'OK'),
-              child: const Text('OK'),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Icon + progress ring header
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(14, 16, 14, 12),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.08),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: color.withValues(alpha: 0.15),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(Icons.folder_outlined,
+                        color: color, size: 20),
+                  ),
+                  const Spacer(),
+                  _CircularProgress(
+                    progress: progress,
+                    color: color,
+                    size: 38,
+                  ),
+                ],
+              ),
+            ),
+            // Info
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(14, 10, 14, 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      project.titre ?? 'Projet',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: kTextPrimary,
+                        height: 1.3,
+                      ),
+                    ),
+                    const Spacer(),
+                    if (project.dateVoulue != null)
+                      Row(
+                        children: [
+                          const Icon(Icons.calendar_today_outlined,
+                              size: 11, color: kTextSecondary),
+                          const SizedBox(width: 4),
+                          Text(
+                            project.dateVoulue.toString().split(' ')[0],
+                            style: const TextStyle(
+                                fontSize: 11, color: kTextSecondary),
+                          ),
+                        ],
+                      ),
+                    const SizedBox(height: 6),
+                    Text(
+                      '${project.montant.toStringAsFixed(0)} €',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                        color: color,
+                      ),
+                    ),
+                    Text(
+                      'sur ${project.montantPrev.toStringAsFixed(0)} €',
+                      style: const TextStyle(
+                          fontSize: 11, color: kTextSecondary),
+                    ),
+                    if (isAlmost) ...[
+                      const SizedBox(height: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: kSuccess.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: const Text(
+                          'Presque là ! 🎉',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            color: kSuccess,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
             ),
           ],
         ),
       ),
-      child: const Text('Show Dialog'),
+    );
+  }
+}
+
+// ─── Circular progress ring ───────────────────────────────────────────────────
+
+class _CircularProgress extends StatelessWidget {
+  final double progress;
+  final Color color;
+  final double size;
+
+  const _CircularProgress({
+    required this.progress,
+    required this.color,
+    required this.size,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          CircularProgressIndicator(
+            value: progress.clamp(0.0, 1.0),
+            strokeWidth: 3.5,
+            backgroundColor: color.withValues(alpha: 0.15),
+            valueColor: AlwaysStoppedAnimation<Color>(color),
+          ),
+          Text(
+            '${(progress * 100).round()}%',
+            style: TextStyle(
+              fontSize: 9,
+              fontWeight: FontWeight.w800,
+              color: color,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -39,8 +39,7 @@ class Transactionprovider extends ChangeNotifier {
     try {
       _isLoading = true;
       notifyListeners();
-      final response = await ApiTransactionService().getTransaction();
-      final data = json.decode(response);
+      final data = await ApiTransactionService().getTransaction();
       _transactions = (data['data'] as List)
           .map((transaction) => TransactionModel.fromJson(transaction))
           .toList();

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:smarth_save/core/utils/theme/colors.dart';
 
 class TransactionCard extends StatelessWidget {
   final String? logo;
   final String? label;
   final String? date;
-  final String? montant;
+  final dynamic montant;
   final String? type;
 
   const TransactionCard({
@@ -19,120 +19,62 @@ class TransactionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double largeur = MediaQuery.of(context).size.width;
-    var icon = type != "credit"
-        ? SvgPicture.asset(
-            "assets/svg/debit.svg",
-            color: Colors.red,
-          )
-        : SvgPicture.asset(
-            "assets/svg/credit.svg",
-            color: Colors.green,
-          );
-          
+    final isCredit   = type == 'credit';
+    final color      = isCredit ? kSuccess : kDanger;
+    final amountText = '${isCredit ? '+' : '-'}$montant €';
 
-    return Container(
-      child: Card(
-        color: Colors.transparent,
-        elevation: 0,
-        child: Padding(
-          padding: EdgeInsets.only(left: 12, right: 12, bottom: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  Container(
-                    height: largeur / 10,
-                    padding: const EdgeInsets.all(1),
-                    decoration: const BoxDecoration(
-                      color: Colors.black,
-                      shape: BoxShape.circle,
-                    ),
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage(logo!),
-                      // backgroundImage: NetworkImage(logo!),
-                      radius: largeur / 15,
-                      backgroundColor: Colors.white,
-                    ),
-                  ),
-                  SizedBox(width: largeur / 60),
-                  Flexible(
-                    child: Column(
-                      mainAxisSize:
-                          MainAxisSize.min, // Évite l'expansion excessive
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: largeur / 3.5,
-                          child: Text(
-                            label!,
-                            maxLines: 1, // Empêche le débordement vertical
-                            overflow: TextOverflow
-                                .ellipsis, // Coupe proprement si trop long
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          'Le $date',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ]),
-              ),
-              SizedBox(
-                width: largeur / 8,
-              ),
-              Flexible(
-                child: Container(
-                  width: double.infinity,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      icon,
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      SizedBox(
-                        width: 45,
-                        child: Text(
-                          "${montant!.split("").join("")}",
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: type != "credit" ? Colors.red : Colors.green,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "€",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: type != "credit" ? Colors.red : Colors.green,
-                        ),
-                      ),
-                    ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      child: Row(
+        children: [
+          // Icon container
+          Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(13),
+            ),
+            child: Icon(
+              isCredit ? Icons.arrow_downward_rounded : Icons.arrow_upward_rounded,
+              color: color,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 12),
+          // Label + date
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label ?? 'Transaction',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: kTextPrimary,
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 3),
+                Text(
+                  date != null ? 'Le $date' : '',
+                  style: const TextStyle(fontSize: 12, color: kTextSecondary),
+                ),
+              ],
+            ),
           ),
-        ),
+          // Amount
+          Text(
+            amountText,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              color: color,
+            ),
+          ),
+        ],
       ),
     );
   }

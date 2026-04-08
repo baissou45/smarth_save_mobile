@@ -25,9 +25,9 @@ class HomeApp extends StatelessWidget {
             shouldShowBottomNavBar
                 ?
             ScaffoldWithNavBar(
-          navigationShell: navigationShell,
-        )
-        : null,
+              navigationShell: navigationShell,
+            )
+            : null,
         );
   }
 

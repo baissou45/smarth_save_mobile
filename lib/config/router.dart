@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:smarth_save/core/utils/theme/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smarth_save/models/projet_model.dart';
 import 'package:smarth_save/screen/Athantification/login_page.dart';
 import 'package:smarth_save/screen/pages/contact.dart';
 import 'package:smarth_save/screen/pages/monComptePage.dart';
@@ -26,6 +26,7 @@ final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 final GoRouter router = GoRouter(
   navigatorKey: _rootNavigatorKey,
+  initialLocation: '/',
   routes: [
     GoRoute(
       path: '/',
@@ -37,8 +38,8 @@ final GoRouter router = GoRouter(
       builder: (context, state) => LoginPage(),
     ),
     GoRoute(
-      path: '/detailleProjet',
-      builder: (context, state) => DetailprojetPage(),
+      path: '/detailProjet',
+      builder: (context, state) => DetailprojetPage(project: state.extra as ProjetModel),
     ),
 
     GoRoute(
@@ -55,9 +56,9 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const DetailCompte(),
     ),
     GoRoute(
-      path: '/chatbot',
-      builder: (context, state) => const ChatBotPage(),
-    ),
+    path: '/chatbot',
+    builder: (context, state) => const ChatBotPage(),
+  ),
     GoRoute(
       path: '/modifMotPass',
       builder: (context, state) => const ModifmotpassPage(),
@@ -65,8 +66,9 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/onboarding',
       builder: (context, state) => OnbordingPage(onComplete: () async {
-        // Redirection centralisee via RedirectPage: respecte isLoggedIn.
-        context.go('/');
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('hasSeenOnboarding', true);
+        context.go('/accueil');
       }),
     ),
     StatefulShellRoute.indexedStack(

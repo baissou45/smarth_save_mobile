@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:smarth_save/services/api_fine_tune_service.dart';
+// import 'package:smarth_save/services/api_fine_tune_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class OpenIABot {
   final String apiKey;
-  final ApiFineTuneService _fineTuneService = ApiFineTuneService();
+  // final ApiFineTuneService _fineTuneService = ApiFineTuneService();
 
   OpenIABot() : apiKey = dotenv.env['OPENAI_API_KEY'] ?? '';
 

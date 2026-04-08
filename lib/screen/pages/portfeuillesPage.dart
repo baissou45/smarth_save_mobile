@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smarth_save/core/utils/theme/colors.dart';
-import 'package:smarth_save/widgets/portefeuilleWidget.dart';
+import 'package:smarth_save/models/categorie.dart';
+import 'package:smarth_save/services/api_categorie_service.dart';
 
 class PortfeuillesPage extends StatefulWidget {
   const PortfeuillesPage({super.key});
@@ -10,317 +11,361 @@ class PortfeuillesPage extends StatefulWidget {
   State<PortfeuillesPage> createState() => _PortfeuillesPageState();
 }
 
-class _PortfeuillesPageState extends State<PortfeuillesPage> {
-  final List<_BudgetCategory> _categories = const [
-    _BudgetCategory(title: 'Restauration', amount: 100, actuelAmount: 30),
-    _BudgetCategory(title: 'Transport', amount: 100, actuelAmount: 20),
-    _BudgetCategory(title: 'Alimentation', amount: 300, actuelAmount: 150),
-    _BudgetCategory(title: 'Habitation', amount: 800, actuelAmount: 200),
-    _BudgetCategory(title: 'Sante', amount: 200, actuelAmount: 30),
-    _BudgetCategory(title: 'Loisirs', amount: 400, actuelAmount: 340),
-    _BudgetCategory(title: 'Education', amount: 200, actuelAmount: 100),
-  ];
+class _PortfeuillesPageState extends State<PortfeuillesPage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
 
-  List<_BudgetCategory> get _savings => List.generate(
-        8,
-        (index) => _BudgetCategory(
-          title: 'Epargne ${index + 1}',
-          amount: 1000,
-          actuelAmount: (index + 1) * 110,
-        ),
-      );
+  List<Categorie> _categories = [];
+
+  // static const _categories = [
+  //   _CategoryBudget('Alimentation', Icons.restaurant_outlined, 0.78, 312, 400, Color(0xFFFF6B35)),
+  //   _CategoryBudget('Transport', Icons.directions_car_outlined, 0.52, 104, 200, Color(0xFF009688)),
+  //   _CategoryBudget('Loisirs', Icons.sports_soccer_outlined, 0.91, 182, 200, Color(0xFFEF4444)),
+  //   _CategoryBudget('Santé', Icons.favorite_outline, 0.18, 36, 200, Color(0xFF22C55E)),
+  //   _CategoryBudget('Habitation', Icons.home_outlined, 0.45, 360, 800, Color(0xFF7C3AED)),
+  //   _CategoryBudget('Éducation', Icons.school_outlined, 0.80, 160, 200, Color(0xFFEF4444)),
+  // ];
+
+  Future<void> getCategories() async {
+    final response = await ApiCategorieService().getMyCategories();
+    setState(() {
+      _categories = response;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    getCategories();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final isWide = size.width >= 700;
-    final horizontalPadding = isWide ? 24.0 : 16.0;
-    final int crossCount = size.width >= 1100
-        ? 4
-        : size.width >= 780
-            ? 3
-            : 2;
-
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F7FB),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.push('/creatProjet');
-        },
-        backgroundColor: kPrimaryColor1,
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.fromLTRB(
-                horizontalPadding,
-                16,
-                horizontalPadding,
-                22,
-              ),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [kPrimaryColor1, kPrimaryColor2],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: const BorderRadius.vertical(
-                  bottom: Radius.circular(26),
-                ),
-              ),
-              child: SafeArea(
-                bottom: false,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Portefeuilles',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Suivez vos categories et vos objectifs d\'epargne.',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    _SummaryCard(categories: _categories),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      height: 102,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: _categories.length,
-                        separatorBuilder: (_, __) => const SizedBox(width: 10),
-                        itemBuilder: (context, index) {
-                          final item = _categories[index];
-                          return _CategoryPill(item: item);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          SliverPadding(
-            padding: EdgeInsets.fromLTRB(
-                horizontalPadding, 16, horizontalPadding, 90),
-            sliver: SliverToBoxAdapter(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      backgroundColor: kBgPage,
+      body: NestedScrollView(
+        headerSliverBuilder: (_, __) => [_buildHeader()],
+        body: Column(
+          children: [
+            _buildTabBar(),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
                 children: [
-                  _SectionHeader(
-                    title: 'Mes portefeuilles',
-                    subtitle: 'Vue detaillee de vos enveloppes',
-                    actionLabel: 'Creer',
-                    onTap: () => context.push('/creatProjet'),
-                  ),
-                  const SizedBox(height: 12),
-                  GridView.builder(
-                    itemCount: _savings.length,
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: crossCount,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: isWide ? 1.75 : 1.48,
-                    ),
-                    itemBuilder: (context, index) {
-                      final item = _savings[index];
-                      return PortefeuilleWidget(
-                        title: item.title,
-                        amount: item.amount,
-                        actuelAmount: item.actuelAmount,
-                      );
-                    },
-                  ),
+                  _buildBudgetList(),
+                  _buildSummary(),
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => context.push('/addCategorie'),
+        backgroundColor: kTeal,
+        icon: const Icon(Icons.add, color: Colors.white),
+        label: const Text(
+          'Nouvelle catégorie',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+        ),
       ),
     );
   }
-}
 
-class _SectionHeader extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final String actionLabel;
-  final VoidCallback onTap;
+  // ─── Header ──────────────────────────────────────────────────────────────────
 
-  const _SectionHeader({
-    required this.title,
-    required this.subtitle,
-    required this.actionLabel,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
+  SliverAppBar _buildHeader() {
+    final overBudget = _categories.where((c) => (c.progress ?? 0.0) >= 0.9).length;
+    return SliverAppBar(
+      expandedHeight: 160,
+      pinned: true,
+      automaticallyImplyLeading: false,
+      backgroundColor: kNavyDark,
+      flexibleSpace: FlexibleSpaceBar(
+        background: Container(
+          decoration: const BoxDecoration(gradient: kHeaderGradient),
+          padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 20,
+              const Text(
+                'Budget',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 26,
                   fontWeight: FontWeight.w800,
-                  color: Color(0xFF111827),
                 ),
               ),
-              const SizedBox(height: 4),
-              Text(
-                subtitle,
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: Color(0xFF6B7280),
-                  fontWeight: FontWeight.w500,
-                ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  _StatPill(
+                    label: 'Catégories',
+                    value: '${_categories.length}',
+                    icon: Icons.grid_view_rounded,
+                    color: kTealLight,
+                  ),
+                  const SizedBox(width: 10),
+                  if (overBudget > 0)
+                    _StatPill(
+                      label: 'Dépassements',
+                      value: '$overBudget',
+                      icon: Icons.warning_amber_rounded,
+                      color: kDanger,
+                    ),
+                ],
               ),
             ],
           ),
         ),
-        TextButton.icon(
-          onPressed: onTap,
-          icon: const Icon(Icons.add_circle_outline),
-          label: Text(actionLabel),
+      ),
+    );
+  }
+
+  // ─── TabBar ───────────────────────────────────────────────────────────────────
+
+  Widget _buildTabBar() {
+    return Container(
+      color: kBgCard,
+      child: TabBar(
+        controller: _tabController,
+        labelColor: kTeal,
+        unselectedLabelColor: kTextSecondary,
+        indicatorColor: kTeal,
+        indicatorWeight: 3,
+        labelStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
+        tabs: const [
+          Tab(text: 'Catégories'),
+          Tab(text: 'Résumé'),
+        ],
+      ),
+    );
+  }
+
+  // ─── Budget list ──────────────────────────────────────────────────────────────
+
+  Widget _buildBudgetList() {
+    return ListView.separated(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+      itemCount: _categories.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 10),
+      itemBuilder: (_, i) => _BudgetCard(category: _categories[i]),
+    );
+  }
+
+  // ─── Summary ──────────────────────────────────────────────────────────────────
+
+  Widget _buildSummary() {
+    final totalBudget = _categories.fold<double>(0, (s, c) => s + (c.total ?? 0));
+    final totalSpent  = _categories.fold<double>(0, (s, c) => s + (c.spent ?? 0));
+    final remaining   = totalBudget - totalSpent;
+
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        _SummaryCard(
+          label: 'Budget total',
+          value: '$totalBudget €',
+          icon: Icons.account_balance_wallet_outlined,
+          color: kNavyMid,
         ),
+        const SizedBox(height: 10),
+        _SummaryCard(
+          label: 'Dépensé',
+          value: '$totalSpent €',
+          icon: Icons.arrow_upward_rounded,
+          color: kDanger,
+        ),
+        const SizedBox(height: 10),
+        _SummaryCard(
+          label: 'Restant',
+          value: '$remaining €',
+          icon: Icons.savings_outlined,
+          color: kSuccess,
+        ),
+        const SizedBox(height: 20),
+        const Text(
+          'Répartition',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            color: kTextPrimary,
+          ),
+        ),
+        const SizedBox(height: 12),
+        ..._categories.map((c) => Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Row(
+                children: [
+                  Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: c.color?.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Icon(c.icon, color: c.color, size: 18),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                c.label ?? '',
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  color: kTextPrimary,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              '${'${(c.progress ?? 0.0) * 100}'.replaceAll('.', ',')}%',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: budgetBarColor(c.progress ?? 0.0),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: LinearProgressIndicator(
+                            value: c.progress?.clamp(0.0, 1.0) ?? 0.0,
+                            minHeight: 5,
+                            backgroundColor: kBgPage,
+                            valueColor: AlwaysStoppedAnimation<Color>(budgetBarColor(c.progress ?? 0.0)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),),
       ],
     );
   }
 }
 
-class _SummaryCard extends StatelessWidget {
-  final List<_BudgetCategory> categories;
+// ─── Budget Card ──────────────────────────────────────────────────────────────
 
-  const _SummaryCard({required this.categories});
+class _BudgetCard extends StatelessWidget {
+  final Categorie category;
+  const _BudgetCard({required this.category});
 
   @override
   Widget build(BuildContext context) {
-    final totalBudget =
-        categories.fold<int>(0, (sum, item) => sum + item.amount);
-    final totalSpent =
-        categories.fold<int>(0, (sum, item) => sum + item.actuelAmount);
-    final progress =
-        totalBudget == 0 ? 0.0 : (totalSpent / totalBudget).clamp(0.0, 1.0);
+    final color     = budgetBarColor(category.progress ?? 0.0);
+    final isOverdue = (category.progress ?? 0.0) >= 0.9;
 
     return Container(
-      width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.14),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Colors.white24),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Depenses globales',
-            style: TextStyle(
-              color: Colors.white70,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            '$totalSpent € / $totalBudget €',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 22,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 10),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(99),
-            child: LinearProgressIndicator(
-              value: progress,
-              minHeight: 8,
-              backgroundColor: Colors.white24,
-              valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _CategoryPill extends StatelessWidget {
-  final _BudgetCategory item;
-
-  const _CategoryPill({required this.item});
-
-  @override
-  Widget build(BuildContext context) {
-    final progress = item.amount == 0
-        ? 0.0
-        : (item.actuelAmount / item.amount).clamp(0.0, 1.0);
-
-    return Container(
-      width: 156,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
+        color: kBgCard,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: kNavyDark.withValues(alpha: 0.06),
             blurRadius: 12,
-            offset: const Offset(0, 4),
+            offset: const Offset(0, 3),
           ),
         ],
+        border: isOverdue
+            ? Border.all(color: kDanger.withValues(alpha: 0.3))
+            : null,
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            item.title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
-          ),
-          const Spacer(),
-          Text(
-            '${item.actuelAmount}€ / ${item.amount}€',
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF4B5563),
-            ),
-          ),
-          const SizedBox(height: 6),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(99),
-            child: LinearProgressIndicator(
-              value: progress,
-              minHeight: 6,
-              backgroundColor: const Color(0xFFE5E7EB),
-              valueColor: AlwaysStoppedAnimation<Color>(
-                progress >= 1
-                    ? Colors.red
-                    : progress >= 0.7
-                        ? Colors.orange
-                        : kPrimaryColor1,
+          Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: category.color?.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(category.icon, color: category.color, size: 22),
               ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          category.label ?? '',
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: kTextPrimary,
+                          ),
+                        ),
+                        if (isOverdue) ...[
+                          const SizedBox(width: 6),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: kDanger.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: const Text(
+                              'Limite atteinte',
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                                color: kDanger,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      '${category.spent} € sur ${category.total} €',
+                      style: const TextStyle(fontSize: 12, color: kTextSecondary),
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                '${'${(category.progress ?? 0.0) * 100}'.replaceAll('.', ',')}%',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                  color: color,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: LinearProgressIndicator(
+              value: category.progress?.clamp(0.0, 1.0) ?? 0.0,
+              minHeight: 8,
+              backgroundColor: kBgPage,
+              valueColor: AlwaysStoppedAnimation<Color>(color),
             ),
           ),
         ],
@@ -329,14 +374,120 @@ class _CategoryPill extends StatelessWidget {
   }
 }
 
-class _BudgetCategory {
-  final String title;
-  final int amount;
-  final int actuelAmount;
+// ─── Summary Card ─────────────────────────────────────────────────────────────
 
-  const _BudgetCategory({
-    required this.title,
-    required this.amount,
-    required this.actuelAmount,
+class _SummaryCard extends StatelessWidget {
+  final String label;
+  final String value;
+  final IconData icon;
+  final Color color;
+  const _SummaryCard({
+    required this.label,
+    required this.value,
+    required this.icon,
+    required this.color,
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: kBgCard,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: kNavyDark.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: color, size: 22),
+          ),
+          const SizedBox(width: 14),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(label, style: const TextStyle(fontSize: 13, color: kTextSecondary)),
+              Text(
+                value,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: color),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }
+
+// ─── Stat Pill ────────────────────────────────────────────────────────────────
+
+class _StatPill extends StatelessWidget {
+  final String label;
+  final String value;
+  final IconData icon;
+  final Color color;
+  const _StatPill({
+    required this.label,
+    required this.value,
+    required this.icon,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: color, size: 14),
+          const SizedBox(width: 6),
+          Text(
+            '$value $label',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─── Data model ───────────────────────────────────────────────────────────────
+
+// class _CategoryBudget {
+//   final String label;
+//   final IconData icon;
+//   final double progress;
+//   final int spent;
+//   final int total;
+//   final Color color;
+
+//   const _CategoryBudget(
+//     this.label,
+//     this.icon,
+//     this.progress,
+//     this.spent,
+//     this.total,
+//     this.color,
+//   );
+// }

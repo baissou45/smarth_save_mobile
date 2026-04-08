@@ -1,310 +1,257 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smarth_save/controllers/authe_controllers.dart';
+import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/outils/navigation.dart';
-import 'package:smarth_save/providers/userProvider.dart';
 import 'package:smarth_save/screen/Athantification/modifPasse.dart';
-import 'package:smarth_save/widgets/textfield.dart';
 import 'package:smarth_save/screen/Athantification/sig_up.dart';
+import 'package:smarth_save/widgets/textfield.dart';
 
-// ignore: must_be_immutable
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  UserProvider userProvider = UserProvider();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: kDanger,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+    );
+  }
+
+  void _showSuccess(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: kSuccess,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+    );
+  }
+
+  Future<void> _handleLogin() async {
+    FocusScope.of(context).unfocus();
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
+    try {
+      await AutheControllers().loginController(
+        context,
+        emailController.text,
+        passwordController.text,
+      );
+    } catch (e) {
+      _showError('Erreur de connexion: ${e.toString()}');
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final largeur = constraints.maxWidth;
-            final longeur = constraints.maxHeight;
-            final isSmallScreen = largeur < 380;
-            final horizontalMargin = largeur < 600 ? 20.0 : 32.0;
-
-            return SingleChildScrollView(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              padding: EdgeInsets.fromLTRB(
-                horizontalMargin,
-                12,
-                horizontalMargin,
-                20 + MediaQuery.of(context).viewInsets.bottom,
-              ),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 560),
+      body: Container(
+        decoration: const BoxDecoration(color: kBgPage),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Header gradient avec logo
+              Container(
+                height: 200,
+                decoration: const BoxDecoration(
+                  gradient: kHeaderGradient,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
+                ),
+                child: Center(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFFFFFFF),
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          vertical: isSmallScreen ? 18 : 24,
-                          horizontal: isSmallScreen ? 14 : 18,
-                        ),
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            children: [
-                              Text(
-                                'Connexion',
-                                style: GoogleFonts.poppins(
-                                  fontSize: isSmallScreen ? 34 : 40,
-                                  fontWeight: FontWeight.w800,
-                                  color: const Color(0xFF009292),
-                                ),
-                              ),
-                              SizedBox(height: longeur * 0.03),
-                              Text(
-                                'Pour se connecter sur cette application, entrer son nom d’utilisateur et son mot de passe',
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.poppins(
-                                  fontSize: isSmallScreen ? 11 : 12,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                              SizedBox(height: longeur * 0.025),
-                              SVTextField(
-                                controller: emailController,
-                                hint: 'Nom d\'utilisateur',
-                                keyboardType: TextInputType.name,
-                              ),
-                              const SizedBox(height: 16),
-                              SVTextField(
-                                controller: passwordController,
-                                hint: 'Mot de passe',
-                                keyboardType: TextInputType.name,
-                                isPassword: true,
-                              ),
-                              const SizedBox(height: 10),
-                              TextButton(
-                                onPressed: () async {
-                                  navigationTonextPage(context, Modifpasse());
-                                },
-                                child: const Text(
-                                  'Mot de passe oublié ?',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Color(0xFF009292),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 6),
-                              SizedBox(
-                                width: double.infinity,
-                                child: TextButton(
-                                  onPressed: () async {
-                                    FocusScope.of(context).unfocus();
-                                    if (_formKey.currentState!.validate()) {
-                                      await AutheControllers().loginController(
-                                        context,
-                                        emailController.text,
-                                        passwordController.text,
-                                      );
-                                    } else {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                            'Veuillez remplir tous les champs',
-                                          ),
-                                        ),
-                                      );
-                                    }
-                                  },
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: const Color(0xFF009292),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 14,
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    'Connexion',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 18),
-                              const Row(
-                                children: [
-                                  Expanded(
-                                    child: Divider(
-                                      thickness: 1.5,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  SizedBox(width: 10),
-                                  Flexible(
-                                    child: Text(
-                                      'Vous n\'avez pas de compte ?',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(width: 10),
-                                  Expanded(
-                                    child: Divider(
-                                      thickness: 1.5,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 16),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: TextButton(
-                                      onPressed: () {
-                                       navigationTonextPage(context, SigUpPage());
-                                      },
-                                      style: TextButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 10,
-                                        ),
-                                        backgroundColor: const Color(0xFFF3F3F3),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Créer un compte',
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 12,
-                                              color: const Color(0xFF009292),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: TextButton(
-                                      onPressed: () {
-                                        // action Google login
-                                      },
-                                      style: TextButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 10,
-                                        ),
-                                        backgroundColor: const Color(0xFFF3F3F3),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Image.asset(
-                                            'assets/images/facebook.png',
-                                            width: 20,
-                                            height: 20,
-                                          ),
-                                          const SizedBox(width: 10),
-                                          Flexible(
-                                            child: Text(
-                                              'Connectez vous avec facebook',
-                                              textAlign: TextAlign.center,
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 12,
-                                                color: const Color(0x9E000000),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: TextButton(
-                                      onPressed: () {
-                                        // action Google login
-                                      },
-                                      style: TextButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 10,
-                                        ),
-                                        backgroundColor: const Color(0xFFF3F3F3),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Image.asset(
-                                            'assets/images/googleBtn.png',
-                                            width: 20,
-                                            height: 20,
-                                          ),
-                                          const SizedBox(width: 10),
-                                          Flexible(
-                                            child: Text(
-                                              'Connectez vous avec Google',
-                                              textAlign: TextAlign.center,
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 12,
-                                                color: const Color(0x9E000000),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                               
-                                  ],
-                              ),
-                            ],
-                          ),
+                      Text(
+                        'SmartSave',
+                        style: GoogleFonts.poppins(
+                          fontSize: 48,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white,
                         ),
                       ),
-                      const SizedBox(height: 14),
+                      const SizedBox(height: 8),
                       Text(
-                        'En cliquant sur «\u00a0Continuer\u00a0», je confirme avoir lu et accepté les conditions générales et la politique de confidentialité.',
-                        textAlign: TextAlign.center,
+                        'Gestion financière personnelle',
                         style: GoogleFonts.poppins(
-                          fontSize: 11,
-                          color: Colors.grey[600],
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: kTealLight,
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-            );
-          },
+
+              // Card form glassmorphism
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: kBgCard,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: kNavyDark.withOpacity(0.08),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(24),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Connexion',
+                          style: GoogleFonts.poppins(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            color: kTextPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+
+                        // Email field
+                        SVTextField(
+                          controller: emailController,
+                          label: 'Email',
+                          hint: 'votre@email.com',
+                          keyboardType: TextInputType.emailAddress,
+                          prefix: const Icon(Icons.email, color: kTeal),
+                        ),
+                        const SizedBox(height: 16),
+
+                        // Password field
+                        SVTextField(
+                          controller: passwordController,
+                          label: 'Mot de passe',
+                          hint: 'Entrez votre mot de passe',
+                          isPassword: true,
+                          prefix: const Icon(Icons.lock, color: kTeal),
+                        ),
+                        const SizedBox(height: 24),
+
+                        // Login button
+                        SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: _isLoading ? null : _handleLogin,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: kTeal,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              disabledBackgroundColor: kTeal.withOpacity(0.5),
+                            ),
+                            child: _isLoading
+                                ? const SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white,
+                                      ),
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : Text(
+                                    'Connexion',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+
+                        // Forgot password link
+                        Center(
+                          child: TextButton(
+                            onPressed: () {
+                              navigationTonextPage(context, Modifpasse());
+                            },
+                            child: Text(
+                              'Mot de passe oublié ?',
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: kTeal,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              // Sign up link
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Vous n\'avez pas de compte ? ',
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: kTextSecondary,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        navigationTonextPage(context, SigUpPage());
+                      },
+                      child: Text(
+                        'S\'inscrire',
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: kTeal,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
