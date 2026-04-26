@@ -3,7 +3,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:go_router/go_router.dart';
-import 'package:smarth_save/models/user_model.dart';
 import 'package:smarth_save/providers/userProvider.dart';
 
 class RedirectPage extends StatefulWidget {
@@ -21,9 +20,9 @@ class _RedirectPageState extends State<RedirectPage> {
   }
 
   Future<void> _redirectUser() async {
-    await UserModel.getUser();
-
     final userProvider = context.read<UserProvider>();
+
+    // Load token and user from storage
     await userProvider.loadToken();
 
     final prefs = await SharedPreferences.getInstance();

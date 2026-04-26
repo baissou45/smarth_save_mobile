@@ -24,6 +24,14 @@ class ApiUserService {
     return response;
   }
 
+  Future<dynamic> loginWithGoogle() async {
+    final response = await _dio.post(
+      googleLoginRoute,
+      data: {},
+    );
+    return response;
+  }
+
   Future<dynamic> modifmotdepasse(String email) async {
     final response = await _dio.post(
       modifmotdepassefRoute,

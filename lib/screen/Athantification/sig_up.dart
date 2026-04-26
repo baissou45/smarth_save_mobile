@@ -21,6 +21,8 @@ class _SigUpPageState extends State<SigUpPage> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   bool _isLoading = false;
+  bool _showPassword = false;
+  bool _showConfirmPassword = false;
 
   @override
   void dispose() {
@@ -38,7 +40,7 @@ class _SigUpPageState extends State<SigUpPage> {
         content: Text(message),
         backgroundColor: kDanger,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
@@ -56,205 +58,316 @@ class _SigUpPageState extends State<SigUpPage> {
     try {
       await AutheControllers().registerController(
         context,
-        '${nomController.text} ${prenomController.text}',
+        nomController.text,
+        prenomController.text,
         emailController.text,
-        passwordController.text,
         passwordController.text,
       );
     } catch (e) {
       _showError('Erreur d\'inscription: ${e.toString()}');
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _handleGoogleSignUp() async {
+    setState(() => _isLoading = true);
+    try {
+      await AutheControllers().loginWithGoogle(context);
+    } catch (e) {
+      _showError('Erreur Google: ${e.toString()}');
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(color: kBgPage),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Header gradient
-              Container(
-                height: 180,
-                decoration: const BoxDecoration(
-                  gradient: kHeaderGradient,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30),
-                  ),
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'S\'inscrire',
-                        style: GoogleFonts.poppins(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Créer votre compte SmartSave',
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: kTealLight,
-                        ),
-                      ),
-                    ],
-                  ),
+      backgroundColor: kBgPage,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Header gradient
+            Container(
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                gradient: kHeaderGradient,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(40),
+                  bottomRight: Radius.circular(40),
                 ),
               ),
-
-              // Card form
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: kBgCard,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: kNavyDark.withValues(alpha: 0.08),
-                        blurRadius: 20,
-                        offset: const Offset(0, 10),
-                      ),
-                    ],
+              padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.person_add_rounded,
+                      color: Colors.white,
+                      size: 32,
+                    ),
                   ),
-                  padding: const EdgeInsets.all(24),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  const SizedBox(height: 16),
+                  Text(
+                    'Inscription',
+                    style: GoogleFonts.poppins(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Rejoignez l\'aventure SmartSave',
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white.withValues(alpha: 0.8),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Form content
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Nom et Prénom en ligne
+                    Row(
                       children: [
-                        // Nom
-                        SVTextField(
-                          controller: nomController,
-                          label: 'Nom',
-                          hint: 'Votre nom',
-                          keyboardType: TextInputType.name,
-                          prefix: const Icon(Icons.person, color: kTeal),
+                        Expanded(
+                          child: SVTextField(
+                            controller: nomController,
+                            label: 'Nom',
+                            hint: 'Nom',
+                            keyboardType: TextInputType.name,
+                            prefix: const Icon(Icons.person_outline, color: kTeal, size: 20),
+                          ),
                         ),
-                        const SizedBox(height: 16),
-
-                        // Prenom
-                        SVTextField(
-                          controller: prenomController,
-                          label: 'Prénom',
-                          hint: 'Votre prénom',
-                          keyboardType: TextInputType.name,
-                          prefix: const Icon(Icons.person, color: kTeal),
-                        ),
-                        const SizedBox(height: 16),
-
-                        // Email
-                        SVTextField(
-                          controller: emailController,
-                          label: 'Email',
-                          hint: 'votre@email.com',
-                          keyboardType: TextInputType.emailAddress,
-                          prefix: const Icon(Icons.email, color: kTeal),
-                        ),
-                        const SizedBox(height: 16),
-
-                        // Password
-                        SVTextField(
-                          controller: passwordController,
-                          label: 'Mot de passe',
-                          hint: 'Entrez votre mot de passe',
-                          isPassword: true,
-                          prefix: const Icon(Icons.lock, color: kTeal),
-                        ),
-                        const SizedBox(height: 16),
-
-                        // Confirm Password
-                        SVTextField(
-                          controller: confirmPasswordController,
-                          label: 'Confirmer mot de passe',
-                          hint: 'Confirmez votre mot de passe',
-                          isPassword: true,
-                          prefix: const Icon(Icons.lock, color: kTeal),
-                        ),
-                        const SizedBox(height: 24),
-
-                        // Sign up button
-                        SizedBox(
-                          width: double.infinity,
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: _isLoading ? null : _handleSignUp,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: kTeal,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              disabledBackgroundColor: kTeal.withValues(alpha: 0.5),
-                            ),
-                            child: _isLoading
-                                ? const SizedBox(
-                                    height: 24,
-                                    width: 24,
-                                    child: CircularProgressIndicator(
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white,
-                                      ),
-                                      strokeWidth: 2,
-                                    ),
-                                  )
-                                : Text(
-                                    'Créer un compte',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: SVTextField(
+                            controller: prenomController,
+                            label: 'Prénom',
+                            hint: 'Prénom',
+                            keyboardType: TextInputType.name,
+                            prefix: const Icon(Icons.person_outline, color: kTeal, size: 20),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ),
-              ),
+                    const SizedBox(height: 20),
 
-              // Login link
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Vous avez un compte ? ',
-                      style: GoogleFonts.poppins(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: kTextSecondary,
+                    // Email
+                    SVTextField(
+                      controller: emailController,
+                      label: 'Email',
+                      hint: 'votre@email.com',
+                      keyboardType: TextInputType.emailAddress,
+                      prefix: const Icon(Icons.email_outlined, color: kTeal, size: 20),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Password
+                    SVTextField(
+                      controller: passwordController,
+                      label: 'Mot de passe',
+                      hint: 'Votre mot de passe',
+                      isPassword: !_showPassword,
+                      prefix: const Icon(Icons.lock_outline, color: kTeal, size: 20),
+                      suffix: IconButton(
+                        icon: Icon(
+                          _showPassword
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                          color: kTextSecondary,
+                          size: 20,
+                        ),
+                        onPressed: () {
+                          setState(() => _showPassword = !_showPassword);
+                        },
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        navigationTonextPage(context, const LoginPage());
-                      },
-                      child: Text(
-                        'Se connecter',
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: kTeal,
+                    const SizedBox(height: 20),
+
+                    // Confirm Password
+                    SVTextField(
+                      controller: confirmPasswordController,
+                      label: 'Confirmation',
+                      hint: 'Confirmez le mot de passe',
+                      isPassword: !_showConfirmPassword,
+                      prefix: const Icon(Icons.lock_outline, color: kTeal, size: 20),
+                      suffix: IconButton(
+                        icon: Icon(
+                          _showConfirmPassword
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                          color: kTextSecondary,
+                          size: 20,
+                        ),
+                        onPressed: () {
+                          setState(() =>
+                              _showConfirmPassword = !_showConfirmPassword);
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+
+                    // Sign up button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: ElevatedButton(
+                        onPressed: _isLoading ? null : _handleSignUp,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: kTeal,
+                          foregroundColor: Colors.white,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          disabledBackgroundColor: kTeal.withValues(alpha: 0.5),
+                        ),
+                        child: _isLoading
+                            ? const SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.white,
+                                  ),
+                                  strokeWidth: 2.5,
+                                ),
+                              )
+                            : Text(
+                                'Créer mon compte',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Divider
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            color: kTextSecondary.withValues(alpha: 0.2),
+                            thickness: 1,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            'ou',
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              color: kTextSecondary,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Divider(
+                            color: kTextSecondary.withValues(alpha: 0.2),
+                            thickness: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Google signup button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: OutlinedButton(
+                        onPressed: _isLoading ? null : _handleGoogleSignUp,
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          side: BorderSide(
+                            color: kTextSecondary.withValues(alpha: 0.2),
+                            width: 1.5,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/googleBtn.png',
+                              height: 24,
+                              width: 24,
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              'S\'inscrire avec Google',
+                              style: GoogleFonts.poppins(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: kTextPrimary,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+
+            // Login footer
+            Padding(
+              padding: const EdgeInsets.only(bottom: 40, top: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Vous avez déjà un compte ? ',
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: kTextSecondary,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      navigationTonextPage(context, const LoginPage());
+                    },
+                    child: Text(
+                      'Se connecter',
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: kTeal,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

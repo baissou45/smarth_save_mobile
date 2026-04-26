@@ -40,14 +40,13 @@ class Transactionprovider extends ChangeNotifier {
       _isLoading = true;
       notifyListeners();
       final data = await ApiTransactionService().getTransaction();
-      _transactions = (data['data'] as List)
-          .map((transaction) => TransactionModel.fromJson(transaction))
-          .toList();
-      print("transactions provider: ${_transactions}");
+      _transactions = data;
       _isLoading = false;
       notifyListeners();
     } catch (e) {
-      print("Erreur lors de la récupération des transactions: $e");
+      print("Erreur lors du chargement des transactions: $e");
+      _isLoading = false;
+      notifyListeners();
     }
   }
 

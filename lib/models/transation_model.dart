@@ -1,3 +1,27 @@
+class Account {
+  int? id;
+  String? name;
+  String? type;
+
+  Account({this.id, this.name, this.type});
+
+  factory Account.fromJson(Map<String, dynamic> json) {
+    return Account(
+      id: json['id'],
+      name: json['name'],
+      type: json['type'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'type': type,
+    };
+  }
+}
+
 class Categorie {
 int? id;
 String? libelle;
@@ -46,6 +70,7 @@ Map<String, dynamic> toJson() {
 class TransactionModel {
 String? trie;
 String? type;
+Account? account; // Le compte bancaire source
 Categorie? categorie; // On stocke l'objet complet de la catégorie
 DateTime? date;
 String? filter;
@@ -66,6 +91,7 @@ static TransactionModel? sessionTransaction;
 TransactionModel({
   this.trie,
   this.type,
+  this.account,
   this.categorie,
   this.date,
   this.filter,
@@ -86,6 +112,7 @@ Map<String, dynamic> toJson() {
   return {
     'trie': trie,
     'type': type,
+    'account': account?.toJson(), // ✅ Envoie l'objet complet du compte
     'categorie': categorie?.toJson(), // ✅ Envoie l'objet complet de la catégorie
     'date': date?.toIso8601String(),
     'filter': filter,
@@ -108,6 +135,9 @@ factory TransactionModel.fromJson(Map<String, dynamic> json) {
   return TransactionModel(
     trie: json['trie'],
     type: json['type'],
+    account: json['account'] != null
+        ? Account.fromJson(json['account']) // ✅ Récupère l'objet complet du compte
+        : null,
     categorie: json['categorie'] != null
         ? Categorie.fromJson(json['categorie']) // ✅ Récupère l'objet complet de la catégorie
         : null,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smarth_save/core/utils/theme/colors.dart';
-import 'package:smarth_save/models/user_model.dart';
+import 'package:smarth_save/providers/userProvider.dart';
 import 'package:smarth_save/widgets/naveBar.dart';
 
 class Dashboard extends StatefulWidget {
@@ -15,6 +16,7 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     double largeur = MediaQuery.of(context).size.width;
     double longeur = MediaQuery.of(context).size.width;
+    final userProvider = context.watch<UserProvider>();
 
     return Scaffold(
       drawer: Navebar(),
@@ -47,12 +49,12 @@ class _DashboardState extends State<Dashboard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${UserModel.sessionUser?.prenom} ${UserModel.sessionUser?.nom}",
+                          "${userProvider.user?.prenom} ${userProvider.user?.nom}",
                           style: TextStyle(
                               fontSize: largeur / 20, color: Colors.white),
                         ),
                         Text(
-                          "${UserModel.sessionUser?.email}",
+                          "${userProvider.user?.email}",
                           style: TextStyle(
                               fontSize: largeur / 30, color: Colors.white),
                         ),

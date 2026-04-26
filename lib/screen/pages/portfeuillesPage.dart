@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:smarth_save/core/utils/theme/colors.dart';
 import 'package:smarth_save/models/categorie.dart';
 import 'package:smarth_save/services/api_categorie_service.dart';
+import 'package:smarth_save/widgets/skeleton_loader.dart';
 
 class PortfeuillesPage extends StatefulWidget {
   const PortfeuillesPage({super.key});
@@ -16,6 +18,7 @@ class _PortfeuillesPageState extends State<PortfeuillesPage>
   late TabController _tabController;
 
   List<Categorie> _categories = [];
+  bool _isLoading = true;
 
   // static const _categories = [
   //   _CategoryBudget('Alimentation', Icons.restaurant_outlined, 0.78, 312, 400, Color(0xFFFF6B35)),
@@ -27,9 +30,12 @@ class _PortfeuillesPageState extends State<PortfeuillesPage>
   // ];
 
   Future<void> getCategories() async {
+    setState(() => _isLoading = true);
     final response = await ApiCategorieService().getMyCategories();
+    if (!mounted) return;
     setState(() {
       _categories = response;
+      _isLoading = false;
     });
   }
 
@@ -50,25 +56,55 @@ class _PortfeuillesPageState extends State<PortfeuillesPage>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBgPage,
-      body: NestedScrollView(
-        headerSliverBuilder: (_, __) => [_buildHeader()],
-        body: Column(
-          children: [
-            _buildTabBar(),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  _buildBudgetList(),
-                  _buildSummary(),
-                ],
+      body: LiquidPullToRefresh(
+        onRefresh: getCategories,
+        color: kNavyDark,
+        backgroundColor: kBgPage,
+        height: 80,
+        animSpeedFactor: 2,
+        showChildOpacityTransition: false,
+        child: NestedScrollView(
+          headerSliverBuilder: (_, __) => [_buildHeader()],
+          body: Column(
+            children: [
+              _buildTabBar(),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    _buildBudgetList(),
+                    _buildSummary(),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.push('/addCategorie'),
+        onPressed: () async {
+          final allCategories = await ApiCategorieService().getAllCategories();
+          final myCategories = await ApiCategorieService().getMyCategories();
+          final userCategoryIds = myCategories
+              .where((c) => c.id != null)
+              .map((c) => c.id!)
+              .toList();
+
+          if (!mounted) return;
+
+          // ignore: use_build_context_synchronously
+          final result = await context.push<Map<String, dynamic>>(
+            '/addCategorie',
+            extra: {
+              'availableCategories': allCategories,
+              'userCategoryIds': userCategoryIds,
+            },
+          );
+
+          if (result != null && mounted) {
+            await getCategories();
+          }
+        },
         backgroundColor: kTeal,
         icon: const Icon(Icons.add, color: Colors.white),
         label: const Text(
@@ -153,6 +189,18 @@ class _PortfeuillesPageState extends State<PortfeuillesPage>
   // ─── Budget list ──────────────────────────────────────────────────────────────
 
   Widget _buildBudgetList() {
+    if (_isLoading) {
+      return ListView.separated(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+        itemCount: 5,
+        separatorBuilder: (_, __) => const SizedBox(height: 10),
+        itemBuilder: (_, i) => SkeletonLoader(
+          isLoading: true,
+          child: const BudgetSkeleton(),
+        ),
+      );
+    }
+
     return ListView.separated(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
       itemCount: _categories.length,
@@ -164,6 +212,28 @@ class _PortfeuillesPageState extends State<PortfeuillesPage>
   // ─── Summary ──────────────────────────────────────────────────────────────────
 
   Widget _buildSummary() {
+    if (_isLoading) {
+      return ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          SkeletonLoader(
+            isLoading: true,
+            child: const SummarySkeleton(),
+          ),
+          const SizedBox(height: 10),
+          SkeletonLoader(
+            isLoading: true,
+            child: const SummarySkeleton(),
+          ),
+          const SizedBox(height: 10),
+          SkeletonLoader(
+            isLoading: true,
+            child: const SummarySkeleton(),
+          ),
+        ],
+      );
+    }
+
     final totalBudget = _categories.fold<double>(0, (s, c) => s + (c.total ?? 0));
     final totalSpent  = _categories.fold<double>(0, (s, c) => s + (c.spent ?? 0));
     final remaining   = totalBudget - totalSpent;
@@ -232,7 +302,7 @@ class _PortfeuillesPageState extends State<PortfeuillesPage>
                               ),
                             ),
                             Text(
-                              '${'${(c.progress ?? 0.0) * 100}'.replaceAll('.', ',')}%',
+                              '${((c.progress ?? 0.0) * 100).toStringAsFixed(2).replaceAll('.', ',')}%',
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
@@ -349,7 +419,7 @@ class _BudgetCard extends StatelessWidget {
                 ),
               ),
               Text(
-                '${'${(category.progress ?? 0.0) * 100}'.replaceAll('.', ',')}%',
+                '${((category.progress ?? 0.0) * 100).toStringAsFixed(2).replaceAll('.', ',')}%',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w800,
@@ -362,7 +432,7 @@ class _BudgetCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(6),
             child: LinearProgressIndicator(
-              value: category.progress?.clamp(0.0, 1.0) ?? 0.0,
+              value: (category.progress ?? 0.0) > 1.0 ? 1.0 : (category.progress ?? 0.0),
               minHeight: 8,
               backgroundColor: kBgPage,
               valueColor: AlwaysStoppedAnimation<Color>(color),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:smarth_save/core/utils/theme/colors.dart';
-import 'package:smarth_save/models/user_model.dart';
-import 'package:smarth_save/services/api_user_service.dart';
+import 'package:smarth_save/providers/userProvider.dart';
 import 'package:smarth_save/widgets/textfield.dart';
 
 class DetailCompte extends StatefulWidget {
@@ -18,13 +18,12 @@ class _DetailCompteState extends State<DetailCompte> {
   late TextEditingController nomController;
   late TextEditingController prenomController;
   late TextEditingController emailController;
-  bool _isLoading = false;
-  final ApiUserService _apiUserService = ApiUserService();
 
   @override
   void initState() {
     super.initState();
-    final user = UserModel.sessionUser;
+    final userProvider = context.read<UserProvider>();
+    final user = userProvider.user;
     nomController = TextEditingController(text: user?.nom ?? '');
     prenomController = TextEditingController(text: user?.prenom ?? '');
     emailController = TextEditingController(text: user?.email ?? '');
@@ -64,9 +63,8 @@ class _DetailCompteState extends State<DetailCompte> {
     FocusScope.of(context).unfocus();
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() => _isLoading = true);
     try {
-      await _apiUserService.updateProfile(
+      await context.read<UserProvider>().updateProfile(
         nom: nomController.text,
         prenom: prenomController.text,
         email: emailController.text,
@@ -78,16 +76,13 @@ class _DetailCompteState extends State<DetailCompte> {
       }
     } catch (e) {
       _showError('Erreur: ${e.toString()}');
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = UserModel.sessionUser;
+    final userProvider = context.watch<UserProvider>();
+    final user = userProvider.user;
     final initials =
         '${user?.prenom?.isNotEmpty == true ? user!.prenom![0] : ''}${user?.nom?.isNotEmpty == true ? user!.nom![0] : ''}'
             .toUpperCase();
@@ -110,10 +105,6 @@ class _DetailCompteState extends State<DetailCompte> {
               height: 200,
               decoration: const BoxDecoration(
                 gradient: kHeaderGradient,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
-                ),
               ),
               child: Center(
                 child: Column(
@@ -227,34 +218,38 @@ class _DetailCompteState extends State<DetailCompte> {
                       SizedBox(
                         width: double.infinity,
                         height: 50,
-                        child: ElevatedButton(
-                          onPressed: _isLoading ? null : _handleSave,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: kTeal,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            disabledBackgroundColor: kTeal.withValues(alpha: 0.5),
-                          ),
-                          child: _isLoading
-                              ? const SizedBox(
-                                  height: 24,
-                                  width: 24,
-                                  child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.white,
-                                    ),
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : Text(
-                                  'Enregistrer',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
+                        child: Consumer<UserProvider>(
+                          builder: (context, userProvider, _) {
+                            return ElevatedButton(
+                              onPressed: userProvider.isLoading ? null : _handleSave,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: kTeal,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
+                                disabledBackgroundColor: kTeal.withValues(alpha: 0.5),
+                              ),
+                              child: userProvider.isLoading
+                                  ? const SizedBox(
+                                      height: 24,
+                                      width: 24,
+                                      child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.white,
+                                        ),
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                  : Text(
+                                      'Enregistrer',
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                            );
+                          },
                         ),
                       ),
                     ],

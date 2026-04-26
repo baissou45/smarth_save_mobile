@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:smarth_save/core/utils/theme/colors.dart';
-import 'package:smarth_save/models/user_model.dart';
+import 'package:smarth_save/providers/userProvider.dart';
 
 class MonComptePage extends StatelessWidget {
   const MonComptePage({super.key});
@@ -16,7 +17,8 @@ class MonComptePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = UserModel.sessionUser;
+    final userProvider = context.watch<UserProvider>();
+    final user = userProvider.user;
     final name  = '${user?.prenom ?? ''} ${user?.nom ?? ''}'.trim();
     final email = user?.email ?? '';
     final initials = _initials(name);
@@ -209,7 +211,7 @@ class MonComptePage extends StatelessWidget {
   Widget _buildLogout(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        UserModel.sessionUser?.logout();
+        context.read<UserProvider>().logout();
         context.go('/login');
       },
       child: Container(

@@ -1,6 +1,7 @@
 // ------------------------------------------ Auth routes
 const String registerRoute = "/register";
 const String loginRoute = "/login";
+const String googleLoginRoute = "/login/google";
 const String modifmotdepassefRoute = "/reset_pass";
 const String updateProfileRoute = "/profile";
 const String changePasswordRoute = "/password";

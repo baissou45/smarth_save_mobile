@@ -5,10 +5,11 @@ class SVTextField extends StatefulWidget {
 final TextEditingController? controller;
 final String? hint;
 final Widget? prefix;
+final Widget? suffix;
 final String? label;
 final TextInputType? keyboardType;
 final bool isPassword;
-final bool enabled; // 🔹 Nouvelle variable
+final bool enabled;
 
 const SVTextField({
   super.key,
@@ -17,8 +18,9 @@ const SVTextField({
   this.keyboardType,
   this.label,
   this.prefix,
+  this.suffix,
   this.isPassword = false,
-  this.enabled = true, // 🔹 Valeur par défaut : activé
+  this.enabled = true,
 });
   @override
   _SVTextFieldState createState() => _SVTextFieldState();
@@ -72,18 +74,19 @@ class _SVTextFieldState extends State<SVTextField> {
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide.none,
             ),
-            suffixIcon: widget.isPassword
-                ? IconButton(
-                    icon: Icon(
-                      _obscureText ? Icons.visibility_off : Icons.visibility,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscureText = !_obscureText;
-                      });
-                    },
-                  )
-                : null,
+            suffixIcon: widget.suffix ??
+                (widget.isPassword
+                    ? IconButton(
+                        icon: Icon(
+                          _obscureText ? Icons.visibility_off : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                      )
+                    : null),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {

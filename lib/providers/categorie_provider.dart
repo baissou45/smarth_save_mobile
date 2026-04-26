@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smarth_save/models/categorie.dart';
+import 'package:smarth_save/services/api_categorie_service.dart';
 
 class CategorieProvider with ChangeNotifier {
   List<Categorie> _availableCategories = [];
@@ -20,9 +21,8 @@ class CategorieProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      // TODO: Call GET /api/categories endpoint
-      // For now, using empty list - update when API endpoint is available
-      _availableCategories = [];
+      final categories = await ApiCategorieService().getAllCategories();
+      _availableCategories = categories;
       _error = null;
     } catch (e) {
       _error = e.toString();
@@ -32,19 +32,26 @@ class CategorieProvider with ChangeNotifier {
     }
   }
 
-  // Load user's categories
+  // Load user's categories with spending data (from budget_dashboard endpoint)
   Future<void> loadUserCategories() async {
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
-      // TODO: Call GET /api/users_categories endpoint
-      // For now, using empty list - update when API endpoint is available
-      _userCategories = [];
+      final categories = await ApiCategorieService().getBudgetDashboard();
+      _userCategories = categories;
       _error = null;
     } catch (e) {
       _error = e.toString();
+      // Fallback to getMyCategories if budget_dashboard fails
+      try {
+        final categories = await ApiCategorieService().getMyCategories();
+        _userCategories = categories;
+        _error = null;
+      } catch (fallbackError) {
+        _error = fallbackError.toString();
+      }
     } finally {
       _isLoading = false;
       notifyListeners();

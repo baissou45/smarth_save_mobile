@@ -23,9 +23,12 @@ class ApiCategorieService {
     return _parseCategories(response);
   }
 
-  Future<dynamic> addCategory(Map<String, dynamic> data) async {
-    final response = await _dio.post(categoriesGetMine, data: data);
-    return _parseCategories(response);
+  Future<dynamic> addCategoryToUser(int categorieId, double plafond) async {
+    final response = await _dio.post(
+      '$categoriesGetMine/$categorieId',
+      data: {'plafond': plafond},
+    );
+    return response['data'];
   }
 
   Future<dynamic> updatePlafond(int id, Map<String, dynamic> data) async {
@@ -35,6 +38,11 @@ class ApiCategorieService {
 
   Future<dynamic> deleteCategory(int id) async {
     final response = await _dio.delete('$categoriesGetMine/$id');
+    return _parseCategories(response);
+  }
+
+  Future<List<Categorie>> getBudgetDashboard() async {
+    final response = await _dio.get('/budget_dashboard');
     return _parseCategories(response);
   }
 }

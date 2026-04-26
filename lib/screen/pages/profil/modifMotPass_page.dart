@@ -105,10 +105,6 @@ class _ModifmotpassPageState extends State<ModifmotpassPage> {
               height: 180,
               decoration: const BoxDecoration(
                 gradient: kHeaderGradient,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
-                ),
               ),
               child: Center(
                 child: Column(

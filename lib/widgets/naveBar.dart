@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:smarth_save/core/utils/theme/colors.dart';
-import 'package:smarth_save/models/user_model.dart';
+import 'package:smarth_save/providers/userProvider.dart';
 import 'package:smarth_save/screen/Athantification/login_page.dart';
-import 'package:smarth_save/screen/pages/contact.dart';
-import 'package:go_router/go_router.dart';
+import 'package:smarth_save/screen/pages/profil/contact.dart';
 
 class Navebar extends StatefulWidget {
   const Navebar({super.key});
@@ -36,6 +36,8 @@ class _NavebarState extends State<Navebar> {
   Widget build(BuildContext context) {
     double largeur = MediaQuery.of(context).size.width;
     double longeur = MediaQuery.of(context).size.height;
+    final userProvider = context.watch<UserProvider>();
+
     return Drawer(
       child: Column(children: [
         // En-tête du Drawer
@@ -56,7 +58,7 @@ class _NavebarState extends State<Navebar> {
             ),
             const SizedBox(height: 16),
             Text(
-              "${UserModel.sessionUser?.prenom} ${UserModel.sessionUser?.nom}",
+              "${userProvider.user?.prenom} ${userProvider.user?.nom}",
               maxLines: 1,
               style: TextStyle(
                   fontSize: largeur / 20,
@@ -64,7 +66,7 @@ class _NavebarState extends State<Navebar> {
                   fontWeight: FontWeight.w900),
             ),
             Text(
-              "${UserModel.sessionUser?.email}",
+              "${userProvider.user?.email}",
               style: TextStyle(
                 fontSize: largeur / 25,
                 color: Colors.white,
@@ -142,11 +144,11 @@ class _NavebarState extends State<Navebar> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 TextButton.icon(
-                  onPressed: () {
-                    UserModel.sessionUser?.logout();
-
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  onPressed: () async {
+                    await context.read<UserProvider>().logout();
+                    if (context.mounted) {
+                      context.go('/login');
+                    }
                   },
                   icon: const Icon(Icons.logout, color: Colors.white),
                   label: const Text(

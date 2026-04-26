@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smarth_save/models/categorie.dart';
 import 'package:smarth_save/models/projet_model.dart';
 import 'package:smarth_save/screen/Athantification/login_page.dart';
-import 'package:smarth_save/screen/pages/contact.dart';
+import 'package:smarth_save/screen/pages/profil/contact.dart';
 import 'package:smarth_save/screen/pages/monComptePage.dart';
 import 'package:smarth_save/screen/pages/chat_bot_page.dart';
 import 'package:smarth_save/screen/pages/notificationPage.dart';
 import 'package:smarth_save/screen/pages/portfeuillesPage.dart';
+import 'package:smarth_save/screen/pages/portfeuille/accounts_page.dart';
 import 'package:smarth_save/screen/pages/profil/detail_compte.dart';
 import 'package:smarth_save/screen/pages/profil/modifMotPass_page.dart';
 import 'package:smarth_save/screen/pages/projet/creatProjet_page.dart';
@@ -16,16 +17,16 @@ import 'package:smarth_save/screen/pages/projet/detailProjet_page.dart';
 import 'package:smarth_save/screen/pages/projet/projetPage.dart';
 import 'package:smarth_save/screen/pages/transationPage.dart';
 import 'package:smarth_save/screen/pages/transations/creatTrasation_page.dart';
-import 'package:smarth_save/screen/pages/transations/transationScreen.dart';
 import 'package:smarth_save/screen/pages/wellcommePage.dart';
 import 'package:smarth_save/widgets/onbording.dart';
 import 'package:smarth_save/widgets/redirectPage.dart';
 import 'package:smarth_save/screen/app/home_app.dart';
+import 'package:smarth_save/screen/pages/categories/add_categorie_page.dart';
 
-final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
 final GoRouter router = GoRouter(
-  navigatorKey: _rootNavigatorKey,
+  navigatorKey: rootNavigatorKey,
   initialLocation: '/',
   routes: [
     GoRoute(
@@ -64,6 +65,18 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const ModifmotpassPage(),
     ),
     GoRoute(
+      path: '/addCategorie',
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>?;
+        final categories = extra?['availableCategories'] as List? ?? [];
+        final categoryIds = (extra?['userCategoryIds'] as List?)?.cast<int>() ?? const <int>[];
+        return AddCategoriePage(
+          availableCategories: categories.cast<Categorie>(),
+          userCategoryIds: categoryIds,
+        );
+      },
+    ),
+    GoRoute(
       path: '/onboarding',
       builder: (context, state) => OnbordingPage(onComplete: () async {
         // Redirection centralisee via RedirectPage: respecte isLoggedIn.
@@ -93,6 +106,10 @@ final GoRouter router = GoRouter(
               path: '/portfeuilles',
               builder: (context, state) => const PortfeuillesPage(),
             ),
+            GoRoute(
+              path: '/accounts',
+              builder: (context, state) => const AccountsPage(),
+            ),
           ],
         ),
         StatefulShellBranch(
@@ -108,25 +125,6 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: '/transactions',
               builder: (context, state) => const TransationPage(),
-            ),
-            GoRoute(
-              path: '/transaction/:type',
-              pageBuilder: (context, state) {
-                final type = state.pathParameters['type']!;
-                return CustomTransitionPage(
-                  key: state.pageKey,
-                  child: TransactionScreen(type: type),
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                    return CupertinoPageTransition(
-                      primaryRouteAnimation: animation,
-                      secondaryRouteAnimation: secondaryAnimation,
-                      linearTransition: true,
-                      child: child,
-                    );
-                  },
-                );
-              },
             ),
           ],
         ),

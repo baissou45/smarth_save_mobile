@@ -14,6 +14,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
     _NavItemData(icon: Icons.person_rounded, label: 'Profil'),
   ];
 
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,17 +36,40 @@ class ScaffoldWithNavBar extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: List.generate(_items.length, (i) {
-              final isActive = i == navigationShell.currentIndex;
-              return _NavItem(
-                data: _items[i],
-                isActive: isActive,
-                onTap: () => navigationShell.goBranch(
-                  i,
-                  initialLocation: i == navigationShell.currentIndex,
+            children: [
+              ...List.generate(_items.length, (i) {
+                final isActive = i == navigationShell.currentIndex;
+                return _NavItem(
+                  data: _items[i],
+                  isActive: isActive,
+                  onTap: () => navigationShell.goBranch(
+                    i,
+                    initialLocation: i == navigationShell.currentIndex,
+                  ),
+                );
+              }),
+              // Chatbot button - special styling
+              GestureDetector(
+                onTap: () => context.go('/chatbot'),
+                behavior: HitTestBehavior.opaque,
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF00BCD4).withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: const Color(0xFF00BCD4),
+                      width: 1.5,
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.smart_toy_rounded,
+                    color: Color(0xFF00BCD4),
+                    size: 22,
+                  ),
                 ),
-              );
-            }),
+              ),
+            ],
           ),
         ),
       ),

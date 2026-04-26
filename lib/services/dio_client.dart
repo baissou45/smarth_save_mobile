@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:smarth_save/services/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 
 class DioClient {
   static final DioClient _instance = DioClient._internal();
+  static Function(String)? _onUnauthorized;
 
   late Dio _dio;
 
@@ -18,13 +18,18 @@ class DioClient {
     _initializeDio();
   }
 
+  /// Register the 401 handler callback (typically from GoRouter)
+  static void setUnauthorizedHandler(Function(String) handler) {
+    _onUnauthorized = handler;
+  }
+
   void _initializeDio() {
     _dio = Dio(
       BaseOptions(
         baseUrl: API().baseURL,
         connectTimeout: const Duration(seconds: 10),
         receiveTimeout: const Duration(seconds: 30),
-        responseType: ResponseType.bytes,
+        responseType: ResponseType.json,
         validateStatus: (status) => true, // Handle all status codes
       ),
     );
@@ -36,16 +41,22 @@ class DioClient {
           final token = await _getToken();
           if (token != null) {
             options.headers['Authorization'] = 'Bearer $token';
+            options.headers['Content-Type'] = 'application/json';
+            options.headers['Accept'] = 'application/json';
           }
           return handler.next(options);
         },
         onResponse: (response, handler) {
+          // Check response status for 401
+          if (response.statusCode == 401) {
+            _handleUnauthorized('Votre session a expiré. Veuillez vous reconnecter.');
+          }
           return handler.next(response);
         },
         onError: (error, handler) {
           // Handle 401 — auto logout
           if (error.response?.statusCode == 401) {
-            _handleUnauthorized();
+            _handleUnauthorized('Authentification échouée. Veuillez vous reconnecter.');
           }
           return handler.next(error);
         },
@@ -55,9 +66,6 @@ class DioClient {
 
   Future<String?> _getToken() async {
     try {
-      // Read token from SharedPreferences
-      // This is done inline instead of via UserProvider to avoid context dependency
-      // In a real app, consider using GetIt or a similar service locator
       final prefs = await _getSharedPreferences();
       return prefs.getString('auth_token');
     } catch (e) {
@@ -69,12 +77,14 @@ class DioClient {
     return SharedPreferences.getInstance();
   }
 
-  void _handleUnauthorized() {
-    // Clear token and redirect to login
-    _clearToken();
-    // Navigate via GoRouter global context
-    // This requires access to the navigatorKey from the router
-    // For now, we'll handle this in the app's router setup
+  Future<void> _handleUnauthorized(String message) async {
+    // Clear token
+    await _clearToken();
+
+    // Trigger the registered callback if available
+    if (_onUnauthorized != null) {
+      _onUnauthorized!(message);
+    }
   }
 
   Future<void> _clearToken() async {
@@ -82,19 +92,19 @@ class DioClient {
       final prefs = await _getSharedPreferences();
       await prefs.remove('auth_token');
       await prefs.remove('user');
+
+      prefs.getKeys().forEach((key) {
+        print(key);
+      });
     } catch (e) {
       // Silent fail
     }
   }
 
-  // Helper to decode response from bytes to Map/List
-  dynamic _decodeResponse(List<int> bytes) {
-    try {
-      final String decoded = utf8.decode(bytes);
-      return jsonDecode(decoded);
-    } catch (e) {
-      throw Exception('Failed to decode response: $e');
-    }
+  void checkResponse(Response response) {
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      throw Exception('Request failed with status: ${response.statusCode}');
+    } 
   }
 
   // GET request
@@ -109,7 +119,8 @@ class DioClient {
         queryParameters: queryParameters,
         options: options,
       );
-      return _decodeResponse(response.data);
+      checkResponse(response);
+      return response.data;
     } catch (e) {
       throw _handleError(e as DioException);
     }
@@ -129,7 +140,8 @@ class DioClient {
         queryParameters: queryParameters,
         options: options,
       );
-      return _decodeResponse(response.data);
+      checkResponse(response);
+      return response.data;
     } catch (e) {
       throw _handleError(e as DioException);
     }
@@ -149,7 +161,8 @@ class DioClient {
         queryParameters: queryParameters,
         options: options,
       );
-      return _decodeResponse(response.data);
+      checkResponse(response);
+      return response.data;
     } catch (e) {
       throw _handleError(e as DioException);
     }
@@ -169,7 +182,8 @@ class DioClient {
         queryParameters: queryParameters,
         options: options,
       );
-      return _decodeResponse(response.data);
+      checkResponse(response);
+      return response.data;
     } catch (e) {
       throw _handleError(e as DioException);
     }

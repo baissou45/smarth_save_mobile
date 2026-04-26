@@ -28,7 +28,7 @@ class _ModifpasseState extends State<Modifpasse> {
         content: Text(message),
         backgroundColor: kDanger,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
@@ -39,7 +39,7 @@ class _ModifpasseState extends State<Modifpasse> {
         content: Text(message),
         backgroundColor: kSuccess,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
@@ -54,11 +54,11 @@ class _ModifpasseState extends State<Modifpasse> {
         context,
         emailController.text,
       );
-      _showSuccess('Email de réinitialisation envoyé');
+      _showSuccess('Lien de réinitialisation envoyé par email');
     } catch (e) {
       _showError('Erreur: ${e.toString()}');
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -66,132 +66,186 @@ class _ModifpasseState extends State<Modifpasse> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBgPage,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: kNavyDark),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Header gradient
+            // Header avec gradient
             Container(
-              height: 180,
+              width: double.infinity,
               decoration: const BoxDecoration(
                 gradient: kHeaderGradient,
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
+                  bottomLeft: Radius.circular(40),
+                  bottomRight: Radius.circular(40),
                 ),
               ),
-              child: Center(
+              padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  // Bouton retour personnalisé
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.arrow_back_ios_new_rounded,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.lock_reset_rounded,
+                      color: Colors.white,
+                      size: 48,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    'Réinitialisation',
+                    style: GoogleFonts.poppins(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Retrouvez l\'accès à votre compte',
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      color: Colors.white.withValues(alpha: 0.8),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // Form content
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 40, 24, 20),
+              child: Form(
+                key: _formKey,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Réinitialiser\nmot de passe',
-                      textAlign: TextAlign.center,
+                      'Mot de passe oublié ?',
                       style: GoogleFonts.poppins(
-                        fontSize: 36,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: kTextPrimary,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Entrez votre email pour recevoir un lien',
+                      'Entrez votre email pour recevoir un lien de réinitialisation.',
                       style: GoogleFonts.poppins(
                         fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: kTealLight,
+                        color: kTextSecondary,
+                        height: 1.5,
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
+                    const SizedBox(height: 32),
 
-            // Card form
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: kBgCard,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: kNavyDark.withValues(alpha: 0.08),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
+                    // Email field
+                    SVTextField(
+                      controller: emailController,
+                      label: 'Adresse email',
+                      hint: 'votre@email.com',
+                      keyboardType: TextInputType.emailAddress,
+                      prefix: const Icon(Icons.email_outlined, color: kTeal, size: 20),
                     ),
-                  ],
-                ),
-                padding: const EdgeInsets.all(24),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SVTextField(
-                        controller: emailController,
-                        label: 'Adresse email',
-                        hint: 'votre@email.com',
-                        keyboardType: TextInputType.emailAddress,
-                        prefix: const Icon(Icons.email, color: kTeal),
-                      ),
-                      const SizedBox(height: 24),
+                    const SizedBox(height: 32),
 
-                      SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: _isLoading ? null : _handleReset,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: kTeal,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            disabledBackgroundColor: kTeal.withValues(alpha: 0.5),
+                    // Reset button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: ElevatedButton(
+                        onPressed: _isLoading ? null : _handleReset,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: kTeal,
+                          foregroundColor: Colors.white,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          child: _isLoading
-                              ? const SizedBox(
-                                  height: 24,
-                                  width: 24,
-                                  child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.white,
-                                    ),
-                                    strokeWidth: 2,
+                          disabledBackgroundColor: kTeal.withValues(alpha: 0.5),
+                        ),
+                        child: _isLoading
+                            ? const SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.white,
                                   ),
-                                )
-                              : Text(
-                                  'Envoyer un lien',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
+                                  strokeWidth: 2.5,
                                 ),
+                              )
+                            : Text(
+                                'Envoyer le lien',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Info message box
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: kTeal.withValues(alpha: 0.05),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: kTeal.withValues(alpha: 0.1),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Text(
-                'Vous recevrez un email avec les instructions pour réinitialiser votre mot de passe.',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                  color: kTextSecondary,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Icon(
+                            Icons.info_outline_rounded,
+                            color: kTeal,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              'Un email vous sera envoyé avec les instructions pour réinitialiser votre mot de passe. Pensez à vérifier vos spams.',
+                              style: GoogleFonts.poppins(
+                                fontSize: 13,
+                                color: kTextSecondary,
+                                height: 1.5,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

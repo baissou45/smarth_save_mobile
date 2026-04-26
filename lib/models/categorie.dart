@@ -20,12 +20,12 @@ class Categorie {
 
   Categorie.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    label = json['label'];
-    spent = double.parse(json['spent'].toString());
-    progress = double.parse(json['progress'].toString());
-    total = double.parse(json['total'].toString());
-    color = Color(int.parse(json['color'].replaceFirst('#', '0xFF')));
-    icon = getIconFromString(json['icon']);
+    label = json['libelle'];
+    spent = Categorie._parseDouble(json['spent']);
+    progress = Categorie._parseDouble(json['progress']);
+    total = Categorie._parseDouble(json['total']);
+    color = Categorie._parseColor(json['color']);
+    icon = Categorie._getIconFromString(json['icon'] ?? '');
   }
 
   Map<String, dynamic> toJson() {
@@ -39,7 +39,26 @@ class Categorie {
     return data;
   }
 
-  IconData getIconFromString(String iconName) {
+  static double _parseDouble(dynamic value) {
+    if (value == null) return 0.0;
+    if (value is double) return value;
+    if (value is int) return value.toDouble();
+    final str = value.toString().trim();
+    if (str.isEmpty) return 0.0;
+    return double.tryParse(str) ?? 0.0;
+  }
+
+  static Color _parseColor(dynamic value) {
+    if (value == null) return const Color(0xFF009688);
+    final str = value.toString();
+    try {
+      return Color(int.parse(str.replaceFirst('#', '0xFF')));
+    } catch (e) {
+      return const Color(0xFF009688);
+    }
+  }
+
+  static IconData _getIconFromString(String iconName) {
     switch (iconName) {
       case 'restaurant_outlined':
         return Icons.restaurant_outlined;
@@ -74,7 +93,7 @@ class Categorie {
       case 'help_outlined':
         return Icons.help_outlined;
       default:
-        return Icons.help; // fallback
+        return Icons.help;
     }
   }
 }
