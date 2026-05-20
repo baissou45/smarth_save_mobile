@@ -20,8 +20,8 @@ class Bank {
       institutionLogo: json['institution_logo'],
       brandColor: json['brand_color'], // Ex: "#1F2937"
       accounts: (json['accounts'] as List?)
-          ?.map((account) => Account.fromJson(account))
-          .toList() ??
+              ?.map((account) => Account.fromJson(account))
+              .toList() ??
           [],
     );
   }
@@ -118,8 +118,8 @@ class PatrimoineResponse {
           ? (json['patrimoine'] as num).toDouble()
           : 0.0,
       banks: (json['banks'] as List?)
-          ?.map((bank) => Bank.fromJson(bank))
-          .toList() ??
+              ?.map((bank) => Bank.fromJson(bank))
+              .toList() ??
           [],
     );
   }

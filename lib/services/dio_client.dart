@@ -122,7 +122,10 @@ class DioClient {
       checkResponse(response);
       return response.data;
     } catch (e) {
-      throw _handleError(e as DioException);
+      if (e is DioException) {
+        throw _handleError(e);
+      }
+      rethrow;
     }
   }
 
@@ -143,7 +146,10 @@ class DioClient {
       checkResponse(response);
       return response.data;
     } catch (e) {
-      throw _handleError(e as DioException);
+      if (e is DioException) {
+        throw _handleError(e);
+      }
+      rethrow;
     }
   }
 
@@ -164,7 +170,10 @@ class DioClient {
       checkResponse(response);
       return response.data;
     } catch (e) {
-      throw _handleError(e as DioException);
+      if (e is DioException) {
+        throw _handleError(e);
+      }
+      rethrow;
     }
   }
 
@@ -185,7 +194,10 @@ class DioClient {
       checkResponse(response);
       return response.data;
     } catch (e) {
-      throw _handleError(e as DioException);
+      if (e is DioException) {
+        throw _handleError(e);
+      }
+      rethrow;
     }
   }
 

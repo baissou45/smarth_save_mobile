@@ -50,7 +50,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
               }),
               // Chatbot button - special styling
               GestureDetector(
-                onTap: () => context.go('/chatbot'),
+                onTap: () => context.go('/accueil/chatbot'),
                 behavior: HitTestBehavior.opaque,
                 child: Container(
                   padding: const EdgeInsets.all(10),

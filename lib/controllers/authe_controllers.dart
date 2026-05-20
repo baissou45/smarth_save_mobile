@@ -36,8 +36,9 @@ class AutheControllers {
       }
     } catch (e) {
       if (userProvider.message != null) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("${userProvider.message}")));
+        throw Exception(userProvider.message);
+      } else {
+        throw Exception(e.toString());
       }
     }
   }
@@ -63,8 +64,9 @@ class AutheControllers {
       }
     } catch (e) {
       if (userProvider.message != null) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("${userProvider.message}")));
+        throw Exception(userProvider.message);
+      } else {
+        throw Exception(e.toString());
       }
     }
   }

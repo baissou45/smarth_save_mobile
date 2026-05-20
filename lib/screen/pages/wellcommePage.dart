@@ -165,10 +165,14 @@ class _BalanceCard extends StatelessWidget {
     return Column(
       children: [
         // Total balance card
-        Consumer2<MoneyVisibilityProvider, UserProvider>(
-          builder: (context, moneyVisibilityProvider, userProvider, _) {
+        Consumer3<MoneyVisibilityProvider, UserProvider, AccountProvider>(
+          builder: (context, moneyVisibilityProvider, userProvider,
+              accountProvider, _) {
             final isVisible = moneyVisibilityProvider.isBalanceVisible;
-            final userPatrimoine = userProvider.user?.patrimoineTotal ?? 0.0;
+            final totalBalance = accountProvider.banks.fold<double>(
+              0.0,
+              (sum, bank) => sum + bank.getTotalBalance(),
+            );
 
             return Container(
               width: double.infinity,
@@ -211,7 +215,7 @@ class _BalanceCard extends StatelessWidget {
                     duration: const Duration(milliseconds: 200),
                     child: isVisible
                         ? Text(
-                            '${userPatrimoine.toStringAsFixed(2)} €',
+                            '${totalBalance.toStringAsFixed(2)} €',
                             key: const ValueKey('visible'),
                             style: const TextStyle(
                               color: Colors.white,
@@ -280,6 +284,29 @@ class _BalanceCard extends StatelessWidget {
 class _BankCardsSection extends StatelessWidget {
   const _BankCardsSection();
 
+  int _parseBrandColor(String? brandColor) {
+    if (brandColor == null || brandColor.isEmpty) {
+      return 0xFF000000;
+    }
+    final clean = brandColor.replaceFirst('#', '');
+    return int.parse('FF$clean', radix: 16);
+  }
+
+  List<Color> _generateGradient(String? brandColor) {
+    final baseColor = Color(_parseBrandColor(brandColor));
+    return [
+      baseColor,
+      _lighten(baseColor, 0.15),
+    ];
+  }
+
+  Color _lighten(Color color, double amount) {
+    final hsl = HSLColor.fromColor(color);
+    return hsl
+        .withLightness((hsl.lightness + amount).clamp(0.0, 1.0))
+        .toColor();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -343,14 +370,6 @@ class _BankCardsSection extends StatelessWidget {
               }
 
               final banks = accountProvider.banks;
-              final gradients = const [
-                [Color(0xFF1A5F7A), Color(0xFF0F3D52)], // Patrimoine gradient
-                [Color(0xFF006E4E), Color(0xFF00A36C)], // BNP
-                [Color(0xFF8B0000), Color(0xFFCC2200)], // SG
-                [Color(0xFF0066CC), Color(0xFF0099FF)], // CA
-                [Color(0xFF667BC6), Color(0xFF7B68EE)], // Revolut
-              ];
-
               return SizedBox(
                 height: 90,
                 child: ListView.separated(
@@ -373,12 +392,11 @@ class _BankCardsSection extends StatelessWidget {
 
                     // Bank cards
                     final bank = banks[index - 1];
-                    final gradientIndex = (index % (gradients.length - 1)) + 1;
                     return _BankCard(
                       name: bank.institutionName,
                       balance: bank.getTotalBalance().toStringAsFixed(2),
-                      gradient: gradients[gradientIndex],
-                      logo: bank.institutionLogo,
+                      gradient: _generateGradient(bank.brandColor),
+                      logo: bank.institutionLogo ?? '',
                     );
                   },
                 ),
@@ -399,7 +417,10 @@ class _QuickActionsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+      padding: EdgeInsets.only(
+          left: MediaQuery.of(context).size.height * 0.05,
+          right: MediaQuery.of(context).size.height * 0.05,
+          top: MediaQuery.of(context).size.height * 0.03),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -419,13 +440,13 @@ class _QuickActionsSection extends StatelessWidget {
             icon: Icons.savings_rounded,
             label: 'Projets',
             color: const Color(0xFF7C3AED),
-            onTap: () => context.go('/projet'),
+            onTap: () => context.go('/projets'),
           ),
           _QuickAction(
             icon: Icons.smart_toy_outlined,
             label: 'SmartBot',
             color: kNavyMid,
-            onTap: () => context.push('/chatbot'),
+            onTap: () => context.push('/accueil/chatbot'),
           ),
         ],
       ),
@@ -911,7 +932,7 @@ class _PatrimoineCardState extends State<_PatrimoineCard>
                         '${widget.bankCount} banque${widget.bankCount != 1 ? 's' : ''} • ${widget.accountCount} comptes',
                         style: TextStyle(
                           color: Colors.white.withValues(alpha: 0.65),
-                          fontSize: width * 0.025,
+                          fontSize: width * 0.02,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -1016,7 +1037,8 @@ class _BankCardState extends State<_BankCard>
                       child: Image.network(widget.logo!, width: 50, height: 50),
                     )
                   else
-                    const Icon(Icons.account_balance, color: Colors.white, size: 24),
+                    const Icon(Icons.account_balance,
+                        color: Colors.white, size: 24),
                   const SizedBox(width: 16),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

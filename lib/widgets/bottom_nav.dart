@@ -37,7 +37,7 @@ class BottomNav extends StatelessWidget {
           ),
           TextButton.icon(
             onPressed: () {
-              GoRouter.of(context).go('/chatbot');
+              GoRouter.of(context).go('/accueil/chatbot');
             },
             icon: const Icon(CupertinoIcons.chat_bubble_2_fill,
                 color: Colors.white),

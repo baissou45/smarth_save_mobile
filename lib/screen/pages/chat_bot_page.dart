@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:go_router/go_router.dart';
 import 'package:smarth_save/models/message_history.dart';
 import 'package:smarth_save/services/api_chat_service.dart';
 
@@ -200,7 +201,7 @@ class _ChatBotPageState extends State<ChatBotPage>
               IconButton(
                 icon:
                     const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => context.pop(),
               ),
               const SizedBox(width: 4),
               Container(
