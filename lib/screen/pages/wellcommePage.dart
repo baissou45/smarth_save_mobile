@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:smarth_save/core/utils/theme/colors.dart';
+import 'package:smarth_save/models/prediction_model.dart';
+import 'package:smarth_save/models/transation_model.dart';
 import 'package:smarth_save/providers/account_provider.dart';
-import 'package:smarth_save/providers/userProvider.dart';
-import 'package:smarth_save/providers/transactionProvider.dart';
 import 'package:smarth_save/providers/categorie_provider.dart';
 import 'package:smarth_save/providers/money_visibility_provider.dart';
-import 'package:smarth_save/models/transation_model.dart';
+import 'package:smarth_save/providers/transactionProvider.dart';
+import 'package:smarth_save/providers/userProvider.dart';
+import 'package:smarth_save/services/api_prediction_service.dart';
 
 class Wellcommepage extends StatelessWidget {
   const Wellcommepage({super.key});
@@ -32,6 +34,7 @@ class Wellcommepage extends StatelessWidget {
               const SliverToBoxAdapter(child: _BankCardsSection()),
               const SliverToBoxAdapter(child: _QuickActionsSection()),
               const SliverToBoxAdapter(child: _BudgetSection()),
+              const SliverToBoxAdapter(child: _PredictionSection()),
               const SliverToBoxAdapter(child: _RecentTransactionsSection()),
               const SliverToBoxAdapter(child: SizedBox(height: 24)),
             ],
@@ -541,6 +544,277 @@ class _BudgetSection extends StatelessWidget {
   }
 }
 
+// ─── Prediction Section ──────────────────────────────────────────────────────
+
+class _PredictionSection extends StatefulWidget {
+  const _PredictionSection();
+
+  @override
+  State<_PredictionSection> createState() => _PredictionSectionState();
+}
+
+class _PredictionSectionState extends State<_PredictionSection> {
+  PredictionModel? _prediction;
+  bool _isLoading = false;
+  bool _loaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = context.read<Transactionprovider>();
+      provider.addListener(_onTransactionsChanged);
+      _onTransactionsChanged();
+    });
+  }
+
+  void _onTransactionsChanged() {
+    final transactions = context.read<Transactionprovider>().transactions;
+    if (!_loaded && transactions.isNotEmpty) {
+      _loaded = true;
+      _loadPrediction();
+    }
+  }
+
+  @override
+  void dispose() {
+    context.read<Transactionprovider>().removeListener(_onTransactionsChanged);
+    super.dispose();
+  }
+
+  Future<void> _loadPrediction() async {
+    final transactions = context.read<Transactionprovider>().transactions;
+    setState(() => _isLoading = true);
+    final result = await ApiPredictionService().getPrediction(transactions);
+    if (mounted) {
+      setState(() {
+        _prediction = result;
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(24, 28, 24, 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const _SectionHeader(title: 'Prévisions du mois prochain', onMore: null),
+            const SizedBox(height: 12),
+            Container(
+              height: 90,
+              decoration: BoxDecoration(
+                color: kBgCard,
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (_prediction == null) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 28, 24, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _SectionHeader(
+            title: 'Prévisions — ${_prediction!.nextMonth}',
+            onMore: null,
+          ),
+          const SizedBox(height: 12),
+          Consumer<MoneyVisibilityProvider>(
+            builder: (context, moneyVis, _) {
+              final isVisible = moneyVis.isBalanceVisible;
+              return Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: kBgCard,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: kNavyDark.withValues(alpha: 0.06),
+                      blurRadius: 16,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.auto_graph_rounded,
+                          size: 16,
+                          color: kTeal,
+                        ),
+                        const SizedBox(width: 6),
+                        const Text(
+                          'Estimations basées sur vos habitudes',
+                          style: TextStyle(
+                            color: kTextSecondary,
+                            fontSize: 12,
+                          ),
+                        ),
+                        const Spacer(),
+                        _ConfidenceBadge(level: _prediction!.confidence),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _PredictionChip(
+                            label: 'Entrées',
+                            amount: _prediction!.predictedCredit,
+                            color: kSuccess,
+                            icon: Icons.arrow_downward_rounded,
+                            isVisible: isVisible,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: _PredictionChip(
+                            label: 'Sorties',
+                            amount: _prediction!.predictedDebit,
+                            color: kDanger,
+                            icon: Icons.arrow_upward_rounded,
+                            isVisible: isVisible,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: _PredictionChip(
+                            label: 'Solde',
+                            amount: _prediction!.predictedSolde,
+                            color: kTeal,
+                            icon: Icons.account_balance_wallet_outlined,
+                            isVisible: isVisible,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PredictionChip extends StatelessWidget {
+  final String label;
+  final double amount;
+  final Color color;
+  final IconData icon;
+  final bool isVisible;
+
+  const _PredictionChip({
+    required this.label,
+    required this.amount,
+    required this.color,
+    required this.icon,
+    required this.isVisible,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: color, size: 13),
+              const SizedBox(width: 4),
+              Text(
+                label,
+                style: TextStyle(
+                  color: color.withValues(alpha: 0.8),
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 200),
+            child: isVisible
+                ? Text(
+                    '${amount.toStringAsFixed(0)} €',
+                    key: const ValueKey('visible'),
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  )
+                : Text(
+                    '••••',
+                    key: const ValueKey('hidden'),
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ConfidenceBadge extends StatelessWidget {
+  final String level;
+
+  const _ConfidenceBadge({required this.level});
+
+  @override
+  Widget build(BuildContext context) {
+    final color = switch (level) {
+      'high' => kSuccess,
+      'medium' => kWarning,
+      _ => kTextSecondary,
+    };
+    final label = switch (level) {
+      'high' => 'Fiable',
+      'medium' => 'Moyen',
+      _ => 'Faible',
+    };
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: color,
+          fontSize: 10,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+}
+
 // ─── Recent Transactions Section ──────────────────────────────────────────────
 
 class _RecentTransactionsSection extends StatelessWidget {
@@ -673,59 +947,6 @@ class _SectionHeader extends StatelessWidget {
             ),
           ),
       ],
-    );
-  }
-}
-
-class _KpiChip extends StatelessWidget {
-  final String label;
-  final String value;
-  final IconData icon;
-  final Color color;
-
-  const _KpiChip({
-    required this.label,
-    required this.value,
-    required this.icon,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: color, size: 14),
-          const SizedBox(width: 6),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: TextStyle(
-                  color: color.withValues(alpha: 0.8),
-                  fontSize: 10,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              Text(
-                value,
-                style: TextStyle(
-                  color: color,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
     );
   }
 }
@@ -863,7 +1084,6 @@ class _PatrimoineCardState extends State<_PatrimoineCard>
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
     return ScaleTransition(
